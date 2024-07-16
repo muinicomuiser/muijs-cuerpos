@@ -1,6 +1,7 @@
 import { Matematica } from "../src/Matematica.js";
 import { Matriz } from "../src/Matrices.js";
-
+import { Vector } from "../src/Vector.js";
+import { Punto } from "../src/Punto.js";
 //Módulo Matemática, Aritmética
 function aritmetica(): void{
     console.log(Matematica.redondear(Matematica.PI, 3));
@@ -56,10 +57,30 @@ function matrices(): void{
     console.log("Poroducto entre ", D3X2, " y ", C2X3, ": ", Matriz.productoMatriz(D3X2, C2X3))
 }
 // matrices();
-console.log(Matriz.productoMatriz(Matriz.identidad(2), [[2, 2], [3, 2]]));
-console.log(Matriz.productoMatriz([[0, 1],[1, 0]], [[4],[3]]));
-console.log(Matriz.nula([[1, 0],[0, 1]].length, [[2],[3]][0].length));
-console.log(Matriz.identidad(2));
-console.log(Matriz.nula(2, 1))
-console.log("Matriz traspuesta 3x2 de [[1, 2, 3],[4, 5, 6,]]: ", Matriz.traspuesta([[1, 2, 3],[4, 5, 6,]]));
-console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
+// console.log(Matriz.productoMatriz(Matriz.identidad(2), [[2, 2], [3, 2]]));
+// console.log(Matriz.productoMatriz([[0, 1],[1, 0]], [[4],[3]]));
+// console.log(Matriz.nula([[1, 0],[0, 1]].length, [[2],[3]][0].length));
+// console.log(Matriz.identidad(2));
+// console.log(Matriz.nula(2, 1))
+// console.log("Matriz traspuesta 3x2 de [[1, 2, 3],[4, 5, 6,]]: ", Matriz.traspuesta([[1, 2, 3],[4, 5, 6,]]));
+// console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
+
+//VECTORES
+function vectores(): void{
+let vectorUno: Vector = Vector.segunComponentes(5, 6);
+let vectorDos: Vector = Vector.segunAngulo(10, Matematica.gradoARadian(50));
+let vectorTres: Vector = Vector.segunPuntos(Punto.crear(2, 2), Punto.crear(4, 4));
+console.log(vectorTres)
+console.log(Matematica.radianAGrado(vectorTres.angulo))
+// console.log("VectorUno")
+// console.log(vectorUno);
+// vectorUno.y = 10;
+// console.log(vectorUno);
+// console.log("VectorDos")
+// console.log(vectorDos);
+// vectorDos.angulo = 0.7;
+// console.log(vectorDos);
+// console.log(vectorUno.escalar(5));
+
+}
+vectores();

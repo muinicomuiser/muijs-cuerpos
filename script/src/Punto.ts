@@ -1,9 +1,5 @@
-// export type Punto = {
-//     id?: number,
-//     x: number,
-//     y: number,
-// }
-
+import { Matriz } from "./Matrices.js";
+import { Vector } from "./Vector.js";
 export class Punto{
     _x: number;
     _y: number;
@@ -46,4 +42,8 @@ export class Punto{
         clon.y += punto.y;
         return clon;
     }
+    public rotar(angulo: number){
+        return Matriz.rotarPunto2D(this, angulo);
+    }
+    
 }

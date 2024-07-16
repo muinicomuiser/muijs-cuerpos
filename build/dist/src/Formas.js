@@ -65,9 +65,10 @@ export class Forma {
         }
         this._vertices = nVertices;
     }
-    moverVertice(i, punto) {
-        this._vertices[i - 1].x = punto.x;
-        this._vertices[i - 1].y = punto.y;
+    //Agregar control de errores para índices mayores al número de vértices
+    moverVertice(indice, punto) {
+        this._vertices[indice].x = punto.x;
+        this._vertices[indice].y = punto.y;
     }
     static poligono(x, y, lados, radio) {
         let nuevoPoligono = new Forma(x, y, lados, radio);
@@ -129,16 +130,13 @@ export class Forma {
     }
     rotarSegunOrigen(angulo) {
         for (let vertice of this._vertices) {
-            vertice = Matriz.rotarPunto2D(vertice, -angulo);
+            vertice.rotar(-angulo);
         }
         this._posicion = Matriz.rotarPunto2D(this._posicion, -angulo);
     }
     rotarSegunCentro(angulo) {
-        let centroX = this._posicion.x;
-        let centroY = this._posicion.y;
-        let centro = Punto.crear(centroX, centroY);
-        let origen = Punto.origen();
-        this.ubicar(origen);
+        let centro = Punto.clonar(this._posicion);
+        this.ubicar(Punto.origen());
         this.rotarSegunOrigen(angulo);
         this.ubicar(centro);
     }

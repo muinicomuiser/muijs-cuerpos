@@ -65,6 +65,13 @@ export class Matematica {
         }
         return numero1 * numero2;
     }
+    static divisionSegura(numero1, numero2) {
+        if (3 * (numero1.toString(10).length + numero2.toString(10).length) < (numero1 / numero2).toString(10).length) {
+            return (numero1 * 10) / (numero2 * 10);
+            // return (Matematica.multiplicacionSegura(numero1, 10)/(Matematica.multiplicacionSegura(numero2, 10)));
+        }
+        return numero1 / numero2;
+    }
     static sumaSegura(numero1, numero2) {
         if (3 * (numero1.toString(10).length + numero2.toString(10).length) < (numero1 + numero2).toString(10).length) {
             return ((numero1 * 10) + (numero2 * 10)) / 10;
@@ -73,10 +80,12 @@ export class Matematica {
     }
     //Grados
     static gradoARadian(grado) {
-        return (grado / 180) * this.PI;
+        return Matematica.multiplicacionSegura(Matematica.divisionSegura(grado, 180), this.PI);
+        // return (grado / 180) * this.PI;
     }
     static radianAGrado(rad) {
-        return (rad / this.PI) * 180;
+        return Matematica.multiplicacionSegura(Matematica.divisionSegura(rad, this.PI), 180);
+        // return (rad / this.PI)*180;
     }
     static potencia(base, exponente) {
         return base ** exponente;

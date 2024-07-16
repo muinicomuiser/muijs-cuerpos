@@ -1,6 +1,7 @@
 import { Matematica } from "./Matematica.js";
 import { Matriz } from "./Matrices.js";
 import { Punto } from "./Punto.js";
+import { Vector } from "./Vector.js";
 //POR INTEGRAR
 //  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 export class Forma{
@@ -68,9 +69,10 @@ export class Forma{
         }
         this._vertices = nVertices;
     }
-    public moverVertice(i: number, punto: Punto){
-        this._vertices![i-1].x = punto.x;
-        this._vertices![i-1].y = punto.y;
+    //Agregar control de errores para índices mayores al número de vértices
+    public moverVertice(indice: number, punto: Punto){
+        this._vertices![indice].x = punto.x;
+        this._vertices![indice].y = punto.y;
     }
     static poligono(x: number, y: number, lados: number, radio: number){
         let nuevoPoligono = new Forma(x, y, lados, radio);
@@ -102,7 +104,6 @@ export class Forma{
         return rectangulo;
     }
     static recta(puntoUno: Punto, puntoDos: Punto){
-
         let centro = Punto.crear(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
         let vertices: Punto[] = [puntoUno, puntoDos];
         let linea: Forma = new Forma(centro.x, centro.y, 2, 1);
@@ -135,16 +136,13 @@ export class Forma{
     } 
     public rotarSegunOrigen(angulo: number): void{
         for(let vertice of this._vertices!){
-            vertice = Matriz.rotarPunto2D(vertice, -angulo);
+            vertice.rotar(-angulo);
         }
         this._posicion = Matriz.rotarPunto2D(this._posicion, -angulo);
     }
     public rotarSegunCentro(angulo: number): void{
-        let centroX: number = this._posicion.x;
-        let centroY: number = this._posicion.y;
-        let centro: Punto = Punto.crear(centroX, centroY)
-        let origen: Punto = Punto.origen();
-        this.ubicar(origen);
+        let centro: Punto = Punto.clonar(this._posicion)
+        this.ubicar(Punto.origen());
         this.rotarSegunOrigen(angulo);
         this.ubicar(centro);
     }

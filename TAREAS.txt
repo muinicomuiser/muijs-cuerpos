@@ -1,3 +1,4 @@
 - Hacer Matriz y Dibujante instanciables.
 - Clase Vector
 - Documentación
+- Revisar multiplicaciones/divisiones por cero en módulos

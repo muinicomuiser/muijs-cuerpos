@@ -2,6 +2,7 @@ import { Forma } from "../src/Formas.js";
 import { Matematica } from "../src/Matematica.js";
 import { Punto } from "../src/Punto.js";
 import { Dibujante } from "../src/Dibujante.js";
+import { Vector } from "../src/Vector.js";
 const CANVAS = document.getElementById("canvas");
 const CONTEXT = CANVAS.getContext("2d");
 CANVAS.width = 500;
@@ -23,14 +24,18 @@ window.addEventListener("load", () => {
     dibujante.opacidad = 1;
     dibujante.color = "white";
     dibujante.grosorTrazo = 4;
+    let vectorUno = Vector.segunComponentes(50, 100);
+    vectorUno.origen = Punto.crear(250, 250);
     let trazo = Forma.trazo([Punto.crear(250, 210), Punto.crear(250, 250), Punto.crear(150, 300), Punto.crear(150, 200), Punto.crear(200, 150)]);
     dibujante.trazar(trazo);
     function animar() {
         // trazo.ubicar(hexagono.posicion)
         let centroTrazo = Forma.circunferencia(trazo.posicion.x, trazo.posicion.y, 2);
-        raya.moverVertice(1, hexagono.posicion);
-        raya.moverVertice(2, octogono.posicion);
+        raya.moverVertice(0, hexagono.posicion);
+        raya.moverVertice(1, octogono.posicion);
         CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
+        vectorUno.origen = hexagono.posicion;
+        dibujante.trazarVector(vectorUno);
         dibujante.trazar(trazo);
         dibujante.rellenar(centroTrazo);
         dibujante.rellenar(circunferencia);
@@ -41,9 +46,9 @@ window.addEventListener("load", () => {
         hexagono.rotarSegunPunto(circunferencia.posicion, Matematica.gradoARadian(2));
         octogono.rotarSegunPunto(circunferencia.posicion, Matematica.gradoARadian(2));
         hexagono.rotarSegunCentro(Matematica.gradoARadian(-2));
-        trazo.rotarSegunPunto(trazo.vertices[0], Matematica.gradoARadian(-4));
+        trazo.rotarSegunPunto(trazo.vertices[1], Matematica.gradoARadian(-4));
         // trazo.rotarSegunCentro(Matematica.gradoARadian(-4));
-        octogono.rotarSegunCentro(Matematica.gradoARadian(-2));
+        // octogono.rotarSegunCentro(Matematica.gradoARadian(-2));
         requestAnimationFrame(animar);
     }
     animar();
