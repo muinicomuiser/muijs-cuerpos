@@ -1,22 +1,27 @@
 import { Matematica } from "./Matematica.js";
 import { Matriz } from "./Matrices.js";
+import { Punto } from "./Punto.js";
+//POR INTEGRAR
+//  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 export class Forma {
-    constructor(posicionX, posicionY, lados, radio) {
-        this._posicion = { x: posicionX, y: posicionY };
+    constructor(posicionX, posicionY, lados, radio, vertices) {
+        this._posicion = Punto.crear(posicionX, posicionY);
         this._lados = lados;
         this._radio = radio;
-        this.crearVertices();
+        if (vertices) {
+            this._vertices = vertices;
+        }
+        else {
+            this.crearVertices();
+        }
     }
     get id() {
         return this._id;
     }
     get posicion() {
-        let punto = { x: this._posicion.x, y: this._posicion.y };
+        let punto = Punto.crear(this._posicion.x, this._posicion.y);
         return punto;
     }
-    // get posicion(): Punto{
-    //     return this._posicion!;
-    // }
     get lados() {
         return this._lados;
     }
@@ -26,14 +31,12 @@ export class Forma {
     get vertices() {
         let copiaVertices = [];
         for (let vertice of this._vertices) {
-            let punto = { x: vertice.x, y: vertice.y };
+            let punto = Punto.clonar(vertice);
+            ;
             copiaVertices.push(punto);
         }
         return copiaVertices;
     }
-    // get vertices(): Punto[]{
-    //     return this._vertices!;
-    // }
     set id(nuevaId) {
         this._id = nuevaId;
     }
@@ -57,7 +60,7 @@ export class Forma {
             let angulo = offset + (i * theta);
             let xx = Math.cos(angulo) * this._radio + this._posicion.x;
             let yy = Math.sin(angulo) * this._radio + this._posicion.y;
-            let vertice = { x: xx, y: yy };
+            let vertice = Punto.crear(xx, yy);
             nVertices.push(vertice);
         }
         this._vertices = nVertices;
@@ -86,21 +89,32 @@ export class Forma {
     static rectangulo(x, y, base, altura) {
         let rectangulo = new Forma(x, y, 4, Matematica.hipotenusa(base * 0.5, altura * 0.5));
         rectangulo.id = "poligono";
-        let ver1 = { x: base / 2 + x, y: altura / 2 + y };
-        let ver2 = { x: -base / 2 + x, y: altura / 2 + y };
-        let ver3 = { x: -base / 2 + x, y: -altura / 2 + y };
-        let ver4 = { x: base / 2 + x, y: -altura / 2 + y };
+        let ver1 = Punto.crear(Matematica.sumaSegura(base / 2, x), Matematica.sumaSegura(altura / 2, y));
+        let ver2 = Punto.crear(Matematica.sumaSegura(-base / 2, x), Matematica.sumaSegura(altura / 2, y));
+        let ver3 = Punto.crear(Matematica.sumaSegura(-base / 2, x), Matematica.sumaSegura(-altura / 2, y));
+        let ver4 = Punto.crear(Matematica.sumaSegura(base / 2, x), Matematica.sumaSegura(-altura / 2, y));
         let rectVertices = [ver1, ver2, ver3, ver4];
         rectangulo.vertices = rectVertices;
         return rectangulo;
     }
-    static linea(puntoUno, puntoDos) {
-        let centro = { x: puntoUno.x / 2 + puntoDos.x / 2, y: puntoUno.y / 2 + puntoDos.y / 2 };
+    static recta(puntoUno, puntoDos) {
+        let centro = Punto.crear(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
         let vertices = [puntoUno, puntoDos];
         let linea = new Forma(centro.x, centro.y, 2, 1);
         linea.vertices = vertices;
         linea.id = "linea";
         return linea;
+    }
+    static trazo(vertices) {
+        let centro = Punto.origen();
+        ;
+        for (let punto of vertices) {
+            centro.x += punto.x / vertices.length;
+            centro.y += punto.y / vertices.length;
+        }
+        let trazo = new Forma(centro.x, centro.y, vertices.length - 1, undefined, vertices);
+        trazo.id = "linea";
+        return trazo;
     }
     //Mueve la forma ubicando el centro en el punto ingresado
     ubicar(punto) {
@@ -122,8 +136,8 @@ export class Forma {
     rotarSegunCentro(angulo) {
         let centroX = this._posicion.x;
         let centroY = this._posicion.y;
-        let centro = { x: centroX, y: centroY };
-        let origen = { x: 0, y: 0 };
+        let centro = Punto.crear(centroX, centroY);
+        let origen = Punto.origen();
         this.ubicar(origen);
         this.rotarSegunOrigen(angulo);
         this.ubicar(centro);
@@ -131,10 +145,10 @@ export class Forma {
     rotarSegunPunto(punto, angulo) {
         let dx = this._posicion.x - punto.x;
         let dy = this._posicion.y - punto.y;
-        let centroRotacion = { x: dx, y: dy };
+        let centroRotacion = Punto.crear(dx, dy);
         this.ubicar(centroRotacion);
         this.rotarSegunOrigen(angulo);
-        centroRotacion = { x: this._posicion.x + punto.x, y: this._posicion.y + punto.y };
+        centroRotacion = Punto.crear(this._posicion.x + punto.x, this._posicion.y + punto.y);
         this.ubicar(centroRotacion);
     }
 }

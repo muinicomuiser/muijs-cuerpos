@@ -36,6 +36,7 @@ export class Dibujante{
     set opacidad(opacidad: number){
         this._opacidad = opacidad;
     }
+
     trazar(forma: Forma): void{
         if(forma.id == "circunferencia"){
             this.pathCircunferencia(forma);
@@ -44,7 +45,7 @@ export class Dibujante{
             this.pathPoligono(forma);
         }
         if(forma.id == "linea"){
-            this.pathPoligono(forma);
+            this.pathLinea(forma);
         }
         this._context.strokeStyle = this._color;
         this._context.lineWidth = this._grosorTrazo;
@@ -56,6 +57,9 @@ export class Dibujante{
             this.pathCircunferencia(forma);
         }
         if(forma.id == "poligono"){
+            this.pathPoligono(forma);
+        }
+        if(forma.id == "linea"){
             this.pathPoligono(forma);
         }
         this._context.fillStyle = this._color;
@@ -73,5 +77,12 @@ export class Dibujante{
             this._context.lineTo(vertice.x, vertice.y);
         }
         this._context.closePath();
+    }
+    protected pathLinea(forma: Forma){
+        this._context.beginPath();
+        this._context.moveTo(forma.vertices[0].x, forma.vertices[0].y);
+        for (let vertice of forma.vertices){
+            this._context.lineTo(vertice.x, vertice.y);
+        }
     }
 }
