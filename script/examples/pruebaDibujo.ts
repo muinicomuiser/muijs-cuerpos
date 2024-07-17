@@ -12,8 +12,8 @@ CANVAS.style.backgroundColor = "darkblue";
 window.addEventListener("load", ()=>{
     let dibujante: Dibujante = new Dibujante(CONTEXT);
     let vectorUno: Vector = Vector.segunComponentes(50, 100);
-    vectorUno.origen = Punto.crear(200, 200);
-    vectorUno = Vector.normalizar(vectorUno);    
+    vectorUno.origen = {x:200, y: 200};
+    // vectorUno = Vector.normalizar(vectorUno);    
     console.log(vectorUno)
     function animar(){
         dibujante.trazarVector(vectorUno);

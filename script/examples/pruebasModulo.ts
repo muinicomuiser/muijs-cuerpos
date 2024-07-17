@@ -69,7 +69,7 @@ function matrices(): void{
 function vectores(): void{
 let vectorUno: Vector = Vector.segunComponentes(5, 6);
 let vectorDos: Vector = Vector.segunAngulo(10, Matematica.gradoARadian(50));
-let vectorTres: Vector = Vector.segunPuntos(Punto.crear(2, 2), Punto.crear(4, 4));
+let vectorTres: Vector = Vector.segunPuntos({x:2, y:2}, {x: 4, y: 4});
 console.log(vectorTres)
 console.log(Matematica.radianAGrado(vectorTres.angulo))
 // console.log("VectorUno")

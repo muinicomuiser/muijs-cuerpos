@@ -1,6 +1,5 @@
 import { Forma } from "./Formas.js";
 import { Matematica } from "./Matematica.js";
-import { Punto } from "./Punto.js";
 //POR INCORPORAR:
 //  Formato de colores (rgba, hsla, hex)
 //  Throw de errores, por valores incompatibles
@@ -73,8 +72,8 @@ export class Dibujante {
     }
     trazarVector(vector) {
         let origen = vector.origen;
-        let punta = Punto.crear(vector.x + origen.x, vector.y + origen.y);
-        let trazoVector = Forma.recta(origen, punta);
+        let extremo = vector.extremo;
+        let trazoVector = Forma.recta(origen, extremo);
         trazoVector.id = "vector";
         this.trazar(trazoVector);
     }

@@ -23,15 +23,15 @@ export class Vector{
             this._angulo = angulo;
             this.calcularComponentes()
         }
-        this._origen = Punto.origen();
-        this._extremo = Punto.crear(this._x! + this._origen.x, this._y! + this._origen.y);
+        this._origen = {x:0, y:0};
+        this._extremo = {x:this._x! + this._origen.x, y:this._y! + this._origen.y};
     }
     get origen(): Punto{
-        let origen: Punto = Punto.clonar(this._origen);
+        let origen: Punto = {x: this._origen.x, y: this._origen.y};
         return origen;
     }
     get extremo(): Punto{
-        let extremo: Punto = Punto.clonar(this._extremo);
+        let extremo: Punto = {x: this._extremo.x, y: this._extremo.y};
         return extremo;
     }
     get x(): number{
@@ -47,7 +47,8 @@ export class Vector{
         return this._angulo!;
     }
     set origen(origen: Punto){
-        this._origen = Punto.clonar(origen);
+        this._origen.x = origen.x;
+        this._origen.y = origen.y;
         this._extremo.x += origen.x;
         this._extremo.y += origen.y;
     }

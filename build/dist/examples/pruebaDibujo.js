@@ -1,4 +1,3 @@
-import { Punto } from "../src/Punto.js";
 import { Dibujante } from "../src/Dibujante.js";
 import { Vector } from "../src/Vector.js";
 const CANVAS = document.getElementById("canvas");
@@ -9,8 +8,8 @@ CANVAS.style.backgroundColor = "darkblue";
 window.addEventListener("load", () => {
     let dibujante = new Dibujante(CONTEXT);
     let vectorUno = Vector.segunComponentes(50, 100);
-    vectorUno.origen = Punto.crear(200, 200);
-    vectorUno = Vector.normalizar(vectorUno);
+    vectorUno.origen = { x: 200, y: 200 };
+    // vectorUno = Vector.normalizar(vectorUno);    
     console.log(vectorUno);
     function animar() {
         dibujante.trazarVector(vectorUno);

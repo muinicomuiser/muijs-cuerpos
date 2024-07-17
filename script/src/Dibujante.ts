@@ -82,8 +82,8 @@ export class Dibujante{
     }
     trazarVector(vector: Vector): void{
         let origen: Punto = vector.origen;
-        let punta: Punto = Punto.crear(vector.x + origen.x, vector.y + origen.y)
-        let trazoVector: Forma = Forma.recta(origen, punta);
+        let extremo: Punto = vector.extremo;
+        let trazoVector: Forma = Forma.recta(origen, extremo);
         trazoVector.id = "vector";
         this.trazar(trazoVector);
     }

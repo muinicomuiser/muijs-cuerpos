@@ -1,5 +1,4 @@
 import { Matematica } from "./Matematica.js";
-import { Punto } from "./Punto.js";
 //POR REVISAR
 //Revisar métodos de recálculo de componentes, ángulo y magnitud
 export class Vector {
@@ -15,15 +14,15 @@ export class Vector {
             this._angulo = angulo;
             this.calcularComponentes();
         }
-        this._origen = Punto.origen();
-        this._extremo = Punto.crear(this._x + this._origen.x, this._y + this._origen.y);
+        this._origen = { x: 0, y: 0 };
+        this._extremo = { x: this._x + this._origen.x, y: this._y + this._origen.y };
     }
     get origen() {
-        let origen = Punto.clonar(this._origen);
+        let origen = { x: this._origen.x, y: this._origen.y };
         return origen;
     }
     get extremo() {
-        let extremo = Punto.clonar(this._extremo);
+        let extremo = { x: this._extremo.x, y: this._extremo.y };
         return extremo;
     }
     get x() {
@@ -39,7 +38,8 @@ export class Vector {
         return this._angulo;
     }
     set origen(origen) {
-        this._origen = Punto.clonar(origen);
+        this._origen.x = origen.x;
+        this._origen.y = origen.y;
         this._extremo.x += origen.x;
         this._extremo.y += origen.y;
     }
