@@ -7,22 +7,24 @@ export class Vector {
         if (x && y) {
             this._x = x;
             this._y = y;
-            this._magnitud = this.calcularMagnitud();
-            this._angulo = this.calcularAngulo();
-            console.log("calculé la magnitud");
+            this.calcularMagnitud();
+            this.calcularAngulo();
         }
         else if (angulo && magnitud) {
             this._magnitud = magnitud;
             this._angulo = angulo;
-            this._x = this._magnitud * Math.cos(this._angulo);
-            this._y = this._magnitud * Math.sin(this._angulo);
-            console.log("calculé las componentes");
+            this.calcularComponentes();
         }
         this._origen = Punto.origen();
+        this._extremo = Punto.crear(this._x + this._origen.x, this._y + this._origen.y);
     }
     get origen() {
         let origen = Punto.clonar(this._origen);
         return origen;
+    }
+    get extremo() {
+        let extremo = Punto.clonar(this._extremo);
+        return extremo;
     }
     get x() {
         return this._x;
@@ -36,26 +38,33 @@ export class Vector {
     get angulo() {
         return this._angulo;
     }
-    set magnitud(magnitud) {
-        this._magnitud = magnitud;
-        this.calcularComponentes();
+    set origen(origen) {
+        this._origen = Punto.clonar(origen);
+        this._extremo.x += origen.x;
+        this._extremo.y += origen.y;
     }
-    set angulo(angulo) {
-        this._angulo = angulo;
-        this.calcularComponentes();
+    calcularMagnitud() {
+        if (this._x == 0 && this._y == 0) {
+            this._magnitud = 0;
+        }
+        else {
+            this._magnitud = Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x, 2), Matematica.potencia(this._y, 2)), 2);
+        }
     }
-    set y(y) {
-        this._y = y;
-        this._magnitud = this.calcularMagnitud();
-        this._angulo = this.calcularAngulo();
+    calcularAngulo() {
+        if (this._x == 0 && this._y >= 0) {
+            this._angulo = Matematica.PI * 0.5;
+        }
+        else if (this._x == 0 && this._y < 0) {
+            this._angulo = Matematica.PI * 1.5;
+        }
+        else {
+            this._angulo = Math.atan(this._y / this._x);
+        }
     }
-    set x(x) {
-        this._x = x;
-        this._magnitud = this.calcularMagnitud();
-        this._angulo = this.calcularAngulo();
-    }
-    set origen(punto) {
-        this._origen = Punto.clonar(punto);
+    calcularComponentes() {
+        this._x = Matematica.multiplicacionSegura(this._magnitud, Math.cos(this._angulo));
+        this._y = Matematica.multiplicacionSegura(this._magnitud, Math.sin(this._angulo));
     }
     static segunComponentes(x, y) {
         return new Vector(x, y);
@@ -63,43 +72,38 @@ export class Vector {
     static segunAngulo(magnitud, angulo) {
         return new Vector(undefined, undefined, magnitud, angulo);
     }
-    static segunPuntos(puntoUno, puntoDos) {
-        let vector = new Vector(puntoDos.x - puntoUno.x, puntoDos.y - puntoUno.y);
+    static segunPuntos(origen, extremo) {
+        let vector = new Vector(extremo.x - origen.x, extremo.y - origen.y);
         return vector;
     }
-    calcularMagnitud() {
-        let magnitud = Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x, 2), Matematica.potencia(this._y, 2)), 2);
-        return magnitud;
+    static clonar(vector) {
+        return new Vector(vector.x, vector.y);
     }
-    calcularAngulo() {
-        let angulo = Math.acos(this._x / this.calcularMagnitud());
-        return angulo;
-    }
-    calcularComponentes() {
-        this._x = Matematica.multiplicacionSegura(this._magnitud, Math.cos(this._angulo));
-        this._y = Matematica.multiplicacionSegura(this._magnitud, Math.sin(this._angulo));
-    }
-    suma(vector) {
-        let vectorSuma = new Vector(Matematica.sumaSegura(this._x, vector.x), Matematica.sumaSegura(this._y, vector.y));
+    static suma(vectorUno, vectorDos) {
+        let vectorSuma = new Vector(Matematica.sumaSegura(vectorUno.x, vectorDos.x), Matematica.sumaSegura(vectorUno.y, vectorDos.y));
         return vectorSuma;
     }
-    resta(vector) {
-        let vectorSuma = new Vector(Matematica.sumaSegura(this._x, -vector.x), Matematica.sumaSegura(this._y, -vector.y));
-        return vectorSuma;
+    static resta(vectorUno, vectorDos) {
+        let vectorResta = new Vector(Matematica.sumaSegura(vectorUno.x, -vectorDos.x), Matematica.sumaSegura(vectorUno.y, -vectorDos.y));
+        return vectorResta;
     }
-    escalar(escalar) {
-        let vectorEscalado = new Vector(Matematica.multiplicacionSegura(this._x, escalar), Matematica.multiplicacionSegura(this._y, escalar));
+    static escalar(vector, escalar) {
+        let vectorEscalado = new Vector(Matematica.multiplicacionSegura(vector.x, escalar), Matematica.multiplicacionSegura(vector.y, escalar));
         return vectorEscalado;
     }
-    productoPunto(vector) {
-        let productoX = Matematica.multiplicacionSegura(this._x, vector.x);
-        let productoY = Matematica.multiplicacionSegura(this._y, vector.y);
+    static normalizar(vector) {
+        let normalizado = Vector.segunComponentes(Matematica.divisionSegura(vector.x, vector.magnitud), Matematica.divisionSegura(vector.y, vector.magnitud));
+        return normalizado;
+    }
+    static productoPunto(vectorUno, vectorDos) {
+        let productoX = Matematica.multiplicacionSegura(vectorUno.x, vectorDos.x);
+        let productoY = Matematica.multiplicacionSegura(vectorUno.y, vectorDos.y);
         let producto = Matematica.sumaSegura(productoX, productoY);
         return producto;
     }
-    anguloConVector(vector) {
-        let punto = this.productoPunto(vector);
-        let magnitudes = Matematica.multiplicacionSegura(this._magnitud, vector.magnitud);
+    static anguloConVector(vectorUno, vectorDos) {
+        let punto = Vector.productoPunto(vectorUno, vectorDos);
+        let magnitudes = Matematica.multiplicacionSegura(vectorUno.magnitud, vectorDos.magnitud);
         return Math.acos(punto / magnitudes);
     }
 }

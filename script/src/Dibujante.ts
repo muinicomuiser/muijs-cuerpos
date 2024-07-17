@@ -89,7 +89,7 @@ export class Dibujante{
     }
     protected pathCircunferencia(forma: Forma): void{
         this._context.beginPath();
-        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radio, 0, Matematica.DOS_PI);
+        this._context.arc(forma.centro.x, forma.centro.y, forma.radio, 0, Matematica.DOS_PI);
     }
     protected pathPoligono(forma: Forma){
         this._context.beginPath();
