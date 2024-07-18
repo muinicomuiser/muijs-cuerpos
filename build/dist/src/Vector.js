@@ -1,24 +1,11 @@
 import { Matematica } from "./Matematica.js";
 //POR REVISAR
-//Revisar métodos de recálculo de componentes, ángulo y magnitud
+//Producto cruz
 export class Vector {
-    constructor(x, y, magnitud, angulo) {
-        if (x && y || (x == 0 && y != 0) || (x != 0 && y == 0) || (x == 0 && y == 0)) {
-            this._x = x;
-            this._y = y;
-            this._magnitud = this.calcularMagnitud();
-            this._angulo = this.calcularAngulo();
-        }
-        else {
-            this._magnitud = magnitud;
-            this._angulo = angulo;
-            this.calcularComponentes();
-        }
+    constructor(x, y) {
+        this._x = x;
+        this._y = y;
         this._origen = { x: 0, y: 0 };
-    }
-    get origen() {
-        let origen = { x: this._origen.x, y: this._origen.y };
-        return origen;
     }
     get x() {
         return this._x;
@@ -27,55 +14,66 @@ export class Vector {
         return this._y;
     }
     get magnitud() {
-        return this._magnitud;
+        return Vector.magnitud(this);
     }
     get angulo() {
-        return this._angulo;
+        return Vector.angulo(this);
+    }
+    get origen() {
+        return { x: this._origen.x, y: this._origen.y };
     }
     set origen(origen) {
-        this._origen.x = origen.x;
-        this._origen.y = origen.y;
+        this._origen = { x: origen.x, y: origen.y };
     }
-    calcularMagnitud() {
-        if (this._x == 0 && this._y == 0) {
+    // get magnitud(): number{
+    //     return this._magnitud!;
+    // }
+    // get angulo(): number{
+    //     return this._angulo!;
+    // }
+    static magnitud(vector) {
+        return Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2);
+    }
+    static angulo(vector) {
+        if (vector.x == 0 && vector.y > 0) {
+            return Matematica.PI * 0.5;
+        }
+        else if (vector.x == 0 && vector.y < 0) {
+            return Matematica.PI * 1.5;
+        }
+        else if (vector.x == 0 && vector.y == 0) {
             return 0;
         }
         else {
-            // return (this._y!**2 + this._x!**2)**(1/2);
-            return Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x, 2), Matematica.potencia(this._y, 2)), 2);
-            // this._magnitud = Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x!, 2), Matematica.potencia(this._y!, 2)), 2);
+            return Math.atan(vector.y / vector.x);
         }
-    }
-    calcularAngulo() {
-        if (this._x == 0 && this._y >= 0) {
-            return Matematica.PI * 0.5;
-        }
-        else if (this._x == 0 && this._y < 0) {
-            return Matematica.PI * 1.5;
-        }
-        else {
-            return Math.atan(this._y / this._x);
-        }
-    }
-    calcularComponentes() {
-        this._x = Matematica.multiplicacionSegura(this._magnitud, Math.cos(this._angulo));
-        this._y = Matematica.multiplicacionSegura(this._magnitud, Math.sin(this._angulo));
     }
     static cero() {
-        return Vector.segunComponentes(0, 0);
+        return new Vector(0, 0);
     }
-    static segunComponentes(x, y) {
+    static arriba() {
+        return new Vector(0, -1);
+    }
+    static abajo() {
+        return new Vector(0, 1);
+    }
+    static izquierda() {
+        return new Vector(-1, 0);
+    }
+    static derecha() {
+        return new Vector(1, 0);
+    }
+    static crear(x, y) {
         return new Vector(x, y);
-    }
-    static segunAngulo(magnitud, angulo) {
-        return new Vector(undefined, undefined, magnitud, angulo);
     }
     static segunPuntos(origen, extremo) {
         let vector = new Vector(extremo.x - origen.x, extremo.y - origen.y);
         return vector;
     }
     static clonar(vector) {
-        return new Vector(vector.x, vector.y);
+        let x = vector.x;
+        let y = vector.y;
+        return new Vector(x, y);
     }
     static suma(vectorUno, vectorDos) {
         let vectorSuma = new Vector(Matematica.sumaSegura(vectorUno.x, vectorDos.x), Matematica.sumaSegura(vectorUno.y, vectorDos.y));
@@ -90,18 +88,31 @@ export class Vector {
         return vectorEscalado;
     }
     static normalizar(vector) {
-        let normalizado = Vector.segunComponentes(Matematica.divisionSegura(vector.x, vector.magnitud), Matematica.divisionSegura(vector.y, vector.magnitud));
-        return normalizado;
+        let magnitud = Matematica.raiz(vector.x ** 2 + vector.y ** 2, 2);
+        return new Vector(vector.x / magnitud, vector.y / magnitud);
     }
-    static productoPunto(vectorUno, vectorDos) {
+    static punto(vectorUno, vectorDos) {
         let productoX = Matematica.multiplicacionSegura(vectorUno.x, vectorDos.x);
         let productoY = Matematica.multiplicacionSegura(vectorUno.y, vectorDos.y);
         let producto = Matematica.sumaSegura(productoX, productoY);
         return producto;
     }
-    static anguloConVector(vectorUno, vectorDos) {
-        let punto = Vector.productoPunto(vectorUno, vectorDos);
+    static anguloVectores(vectorUno, vectorDos) {
+        let punto = Vector.punto(vectorUno, vectorDos);
         let magnitudes = Matematica.multiplicacionSegura(vectorUno.magnitud, vectorDos.magnitud);
         return Math.acos(punto / magnitudes);
+    }
+    static clonarConjunto(vectores) {
+        let conjuntoCopia = [];
+        for (let vector of vectores) {
+            conjuntoCopia.push(Vector.clonar(vector));
+        }
+        return conjuntoCopia;
+    }
+    static rotar(vector, angulo) {
+        // cos*x -sin*y, sin*x + cos*y
+        let x = Math.cos(angulo) * vector.x - Math.sin(angulo) * vector.y;
+        let y = Math.sin(angulo) * vector.x + Math.cos(angulo) * vector.y;
+        return new Vector(x, y);
     }
 }

@@ -6,21 +6,29 @@ import { Punto } from "./Punto.js";
 export class Vector{
     private _x: number;
     private _y: number;
+    private _origen: Punto;
     constructor(x: number, y: number){
         this._x = x;
         this._y = y;
+        this._origen = {x: 0, y: 0};
     }
-    get x(): number{
-        return this._x!;
+    public get x(): number{
+        return this._x;
     }
-    get y(): number{
-        return this._y!;
+    public get y(): number{
+        return this._y;
     }
-    get magnitud(): number{
+    public get magnitud(): number{
         return Vector.magnitud(this);
     }
-    get angulo(): number{
+    public get angulo(): number{
         return Vector.angulo(this);
+    }
+    public get origen(): Punto{
+        return {x: this._origen.x, y: this._origen.y};
+    }
+    public set origen(origen: Punto){
+        this._origen = {x: origen.x, y: origen.y};
     }
     // get magnitud(): number{
     //     return this._magnitud!;
@@ -63,12 +71,14 @@ export class Vector{
     static crear(x: number, y: number): Vector{
         return new Vector(x, y);
     }
-     static segunPuntos(origen: Punto, extremo: Punto): Vector{
+    static segunPuntos(origen: Punto, extremo: Punto): Vector{
         let vector: Vector = new Vector(extremo.x - origen.x, extremo.y - origen.y);
         return vector;
     }
     static clonar(vector: Vector): Vector{
-        return new Vector(vector.x, vector.y)
+        let x: number = vector.x;
+        let y: number = vector.y;
+        return new Vector(x, y)
     }
     static suma(vectorUno: Vector, vectorDos: Vector): Vector{
         let vectorSuma: Vector = new Vector(Matematica.sumaSegura(vectorUno.x, vectorDos.x), Matematica.sumaSegura(vectorUno.y, vectorDos.y));
@@ -96,5 +106,18 @@ export class Vector{
         let punto: number = Vector.punto(vectorUno, vectorDos);
         let magnitudes: number = Matematica.multiplicacionSegura(vectorUno.magnitud, vectorDos.magnitud);
         return Math.acos(punto / magnitudes);
+    }
+    static clonarConjunto(vectores: Vector[]): Vector[]{
+        let conjuntoCopia: Vector[] = [];
+        for(let vector of vectores){
+            conjuntoCopia.push(Vector.clonar(vector));
+        }
+        return conjuntoCopia;
+    }
+    static rotar(vector: Vector, angulo: number): Vector{
+        // cos*x -sin*y, sin*x + cos*y
+        let x: number = Math.cos(angulo)*vector.x - Math.sin(angulo)*vector.y;
+        let y: number = Math.sin(angulo)*vector.x + Math.cos(angulo)*vector.y;
+        return new Vector(x, y);
     }
 }
