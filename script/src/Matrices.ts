@@ -152,11 +152,16 @@ export class Matriz{
         return producto;
     }
     static rotarPunto2D(punto: Punto, angulo: number): Punto{
-        let puntoRotado: Punto = punto;
+        let puntoRotado: Punto = {x: punto.x, y: punto.y};
         let matrizRotacion: number[][] = [[Math.cos(angulo), -Math.sin(angulo)],[Math.sin(angulo), Math.cos(angulo)]];
         let matrizRotado: number[][] = this.productoMatriz(matrizRotacion, [[punto.x],[punto.y]]);
         puntoRotado.x = matrizRotado[0][0];
         puntoRotado.y = matrizRotado[1][0];
         return puntoRotado;
+    }
+    static trasladarPunto2D(punto: Punto, vector: Punto): Punto{
+        let matrizRotado: number[][] = Matriz.suma([[punto.x],[punto.y]], [[vector.x],[vector.y]])
+        let puntoTrasladado: Punto = {x:matrizRotado[0][0], y: matrizRotado[0][1]};
+        return puntoTrasladado;
     }
 }

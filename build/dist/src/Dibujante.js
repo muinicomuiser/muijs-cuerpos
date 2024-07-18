@@ -72,7 +72,7 @@ export class Dibujante {
     }
     trazarVector(vector) {
         let origen = vector.origen;
-        let extremo = vector.extremo;
+        let extremo = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
         let trazoVector = Forma.recta(origen, extremo);
         trazoVector.id = "vector";
         this.trazar(trazoVector);

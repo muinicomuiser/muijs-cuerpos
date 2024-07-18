@@ -60,15 +60,24 @@ export class Matematica {
         return (Matematica.absoluto(a - b) < tolerancia);
     }
     static multiplicacionSegura(numero1, numero2) {
+        if (numero1 == 0 || numero2 == 0) {
+            return 0;
+        }
         if (3 * (numero1.toString(10).length + numero2.toString(10).length) < (numero1 * numero2).toString(10).length) {
             return ((numero1 * 10) * (numero2 * 10)) / 100;
         }
         return numero1 * numero2;
     }
     static divisionSegura(numero1, numero2) {
-        if (3 * (numero1.toString(10).length + numero2.toString(10).length) < (numero1 / numero2).toString(10).length) {
-            return (numero1 * 10) / (numero2 * 10);
-            // return (Matematica.multiplicacionSegura(numero1, 10)/(Matematica.multiplicacionSegura(numero2, 10)));
+        if (numero1 == 0) {
+            return 0;
+        }
+        else if (numero2 == 0) {
+            throw new Error("El módulo Matematica no permite divisiones por cero");
+        }
+        else if (3 * (numero1.toString(10).length + numero2.toString(10).length) < (numero1 / numero2).toString(10).length) {
+            // return (numero1*10) / (numero2*10)
+            return (Matematica.multiplicacionSegura(numero1, 10) / (Matematica.multiplicacionSegura(numero2, 10)));
         }
         return numero1 / numero2;
     }
@@ -80,11 +89,11 @@ export class Matematica {
     }
     //Grados
     static gradoARadian(grado) {
-        return Matematica.multiplicacionSegura(Matematica.divisionSegura(grado, 180), this.PI);
+        return Matematica.multiplicacionSegura(Matematica.divisionSegura(grado, 180), Matematica.PI);
         // return (grado / 180) * this.PI;
     }
     static radianAGrado(rad) {
-        return Matematica.multiplicacionSegura(Matematica.divisionSegura(rad, this.PI), 180);
+        return Matematica.multiplicacionSegura(Matematica.divisionSegura(rad, Matematica.PI), 180);
         // return (rad / this.PI)*180;
     }
     static potencia(base, exponente) {

@@ -2,6 +2,7 @@ import { Matematica } from "../src/Matematica.js";
 import { Matriz } from "../src/Matrices.js";
 import { Vector } from "../src/Vector.js";
 import { Punto } from "../src/Punto.js";
+import { Forma } from "../src/Formas.js";
 //Módulo Matemática, Aritmética
 function aritmetica(): void{
     console.log(Matematica.redondear(Matematica.PI, 3));
@@ -67,20 +68,26 @@ function matrices(): void{
 
 //VECTORES
 function vectores(): void{
-let vectorUno: Vector = Vector.segunComponentes(5, 6);
-let vectorDos: Vector = Vector.segunAngulo(10, Matematica.gradoARadian(50));
-let vectorTres: Vector = Vector.segunPuntos({x:2, y:2}, {x: 4, y: 4});
-console.log(vectorTres)
-console.log(Matematica.radianAGrado(vectorTres.angulo))
-// console.log("VectorUno")
-// console.log(vectorUno);
-// vectorUno.y = 10;
-// console.log(vectorUno);
-// console.log("VectorDos")
-// console.log(vectorDos);
+    let vectorDos: Vector = Vector.segunAngulo(10, Matematica.gradoARadian(50));
+    let vectorTres: Vector = Vector.segunPuntos({x:2, y:2}, {x: 4, y: 4});
+    console.log(vectorTres)
+    console.log(Matematica.radianAGrado(vectorTres.angulo))
+    // console.log("VectorUno")
+    // console.log(vectorUno);
+    // vectorUno.y = 10;
+    // console.log(vectorUno);
+    // console.log("VectorDos")
+    // console.log(vectorDos);
 // vectorDos.angulo = 0.7;
 // console.log(vectorDos);
 // console.log(vectorUno.escalar(5));
 
 }
-vectores();
+// vectores();
+// console.log(Matriz.rotarPunto2D(Vector.segunComponentes(0, 0), 2))
+console.log(Vector.segunComponentes(0,0))
+// let vectorUno: Vector = Vector.segunComponentes(1, 1);
+// let poligonoUno = Forma.poligono(300, 300, 10, 80);
+// console.log(poligonoUno)
+// console.log(poligonoUno.centro);
+// poligonoUno.rotarSegunCentro(Matematica.gradoARadian(2));

@@ -3,27 +3,22 @@ import { Matematica } from "./Matematica.js";
 //Revisar métodos de recálculo de componentes, ángulo y magnitud
 export class Vector {
     constructor(x, y, magnitud, angulo) {
-        if (x && y) {
+        if (x && y || (x == 0 && y != 0) || (x != 0 && y == 0) || (x == 0 && y == 0)) {
             this._x = x;
             this._y = y;
-            this.calcularMagnitud();
-            this.calcularAngulo();
+            this._magnitud = this.calcularMagnitud();
+            this._angulo = this.calcularAngulo();
         }
-        else if (angulo && magnitud) {
+        else {
             this._magnitud = magnitud;
             this._angulo = angulo;
             this.calcularComponentes();
         }
         this._origen = { x: 0, y: 0 };
-        this._extremo = { x: this._x + this._origen.x, y: this._y + this._origen.y };
     }
     get origen() {
         let origen = { x: this._origen.x, y: this._origen.y };
         return origen;
-    }
-    get extremo() {
-        let extremo = { x: this._extremo.x, y: this._extremo.y };
-        return extremo;
     }
     get x() {
         return this._x;
@@ -40,31 +35,34 @@ export class Vector {
     set origen(origen) {
         this._origen.x = origen.x;
         this._origen.y = origen.y;
-        this._extremo.x += origen.x;
-        this._extremo.y += origen.y;
     }
     calcularMagnitud() {
         if (this._x == 0 && this._y == 0) {
-            this._magnitud = 0;
+            return 0;
         }
         else {
-            this._magnitud = Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x, 2), Matematica.potencia(this._y, 2)), 2);
+            // return (this._y!**2 + this._x!**2)**(1/2);
+            return Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x, 2), Matematica.potencia(this._y, 2)), 2);
+            // this._magnitud = Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(this._x!, 2), Matematica.potencia(this._y!, 2)), 2);
         }
     }
     calcularAngulo() {
         if (this._x == 0 && this._y >= 0) {
-            this._angulo = Matematica.PI * 0.5;
+            return Matematica.PI * 0.5;
         }
         else if (this._x == 0 && this._y < 0) {
-            this._angulo = Matematica.PI * 1.5;
+            return Matematica.PI * 1.5;
         }
         else {
-            this._angulo = Math.atan(this._y / this._x);
+            return Math.atan(this._y / this._x);
         }
     }
     calcularComponentes() {
         this._x = Matematica.multiplicacionSegura(this._magnitud, Math.cos(this._angulo));
         this._y = Matematica.multiplicacionSegura(this._magnitud, Math.sin(this._angulo));
+    }
+    static cero() {
+        return Vector.segunComponentes(0, 0);
     }
     static segunComponentes(x, y) {
         return new Vector(x, y);

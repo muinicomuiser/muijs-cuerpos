@@ -61,7 +61,6 @@ function matrices() {
 // console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
 //VECTORES
 function vectores() {
-    let vectorUno = Vector.segunComponentes(5, 6);
     let vectorDos = Vector.segunAngulo(10, Matematica.gradoARadian(50));
     let vectorTres = Vector.segunPuntos({ x: 2, y: 2 }, { x: 4, y: 4 });
     console.log(vectorTres);
@@ -76,4 +75,11 @@ function vectores() {
     // console.log(vectorDos);
     // console.log(vectorUno.escalar(5));
 }
-vectores();
+// vectores();
+// console.log(Matriz.rotarPunto2D(Vector.segunComponentes(0, 0), 2))
+console.log(Vector.segunComponentes(0, 0));
+// let vectorUno: Vector = Vector.segunComponentes(1, 1);
+// let poligonoUno = Forma.poligono(300, 300, 10, 80);
+// console.log(poligonoUno)
+// console.log(poligonoUno.centro);
+// poligonoUno.rotarSegunCentro(Matematica.gradoARadian(2));

@@ -4,8 +4,8 @@ import { Vector } from "./Vector.js";
 //POR INTEGRAR
 //  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 export class Forma {
-    constructor(centroX, centroY, lados, radio, vertices) {
-        this._centro = { x: centroX, y: centroY };
+    constructor(x, y, lados, radio, vertices) {
+        this._centro = Vector.segunComponentes(x, y);
         this._lados = lados;
         this._radio = radio;
         if (vertices) {
@@ -19,8 +19,8 @@ export class Forma {
         return this._id;
     }
     get centro() {
-        let punto = { x: this._centro.x, y: this._centro.y };
-        return punto;
+        let centro = Vector.segunComponentes(this._centro.x, this._centro.y);
+        return centro;
     }
     get lados() {
         return this._lados;
@@ -40,7 +40,7 @@ export class Forma {
         this._id = nuevaId;
     }
     set centro(nuevoCentro) {
-        this._centro = nuevoCentro;
+        this._centro = Vector.clonar(nuevoCentro);
     }
     set lados(numeroLados) {
         this._lados = numeroLados;
@@ -59,15 +59,14 @@ export class Forma {
             let angulo = offset + (i * theta);
             let xx = Math.cos(angulo) * this._radio + this._centro.x;
             let yy = Math.sin(angulo) * this._radio + this._centro.y;
-            let vertice = { x: xx, y: yy };
+            let vertice = Vector.segunComponentes(xx, yy);
             nVertices.push(vertice);
         }
         this._vertices = nVertices;
     }
     //Agregar control de errores para índices mayores al número de vértices
     moverVertice(indice, punto) {
-        this._vertices[indice].x = punto.x;
-        this._vertices[indice].y = punto.y;
+        this._vertices[indice] = Vector.segunComponentes(punto.x, punto.y);
     }
     static poligono(x, y, lados, radio) {
         let nuevoPoligono = new Forma(x, y, lados, radio);
@@ -89,17 +88,17 @@ export class Forma {
     static rectangulo(x, y, base, altura) {
         let rectangulo = new Forma(x, y, 4, Matematica.hipotenusa(base * 0.5, altura * 0.5));
         rectangulo.id = "poligono";
-        let ver1 = { x: Matematica.sumaSegura(base / 2, x), y: Matematica.sumaSegura(altura / 2, y) };
-        let ver2 = { x: Matematica.sumaSegura(-base / 2, x), y: Matematica.sumaSegura(altura / 2, y) };
-        let ver3 = { x: Matematica.sumaSegura(-base / 2, x), y: Matematica.sumaSegura(-altura / 2, y) };
-        let ver4 = { x: Matematica.sumaSegura(base / 2, x), y: Matematica.sumaSegura(-altura / 2, y) };
+        let ver1 = Vector.segunComponentes(Matematica.sumaSegura(base / 2, x), Matematica.sumaSegura(altura / 2, y));
+        let ver2 = Vector.segunComponentes(Matematica.sumaSegura(-base / 2, x), Matematica.sumaSegura(altura / 2, y));
+        let ver3 = Vector.segunComponentes(Matematica.sumaSegura(-base / 2, x), Matematica.sumaSegura(-altura / 2, y));
+        let ver4 = Vector.segunComponentes(Matematica.sumaSegura(base / 2, x), Matematica.sumaSegura(-altura / 2, y));
         let rectVertices = [ver1, ver2, ver3, ver4];
         rectangulo.vertices = rectVertices;
         return rectangulo;
     }
     static recta(puntoUno, puntoDos) {
         let centro = Vector.segunComponentes(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
-        let vertices = [puntoUno, puntoDos];
+        let vertices = [Vector.segunComponentes(puntoUno.x, puntoUno.y), Vector.segunComponentes(puntoDos.x, puntoDos.y)];
         let linea = new Forma(centro.x, centro.y, 2, 1);
         linea.vertices = vertices;
         linea.id = "linea";
@@ -119,18 +118,26 @@ export class Forma {
     ubicar(punto) {
         let dx = this._centro.x - punto.x;
         let dy = this._centro.y - punto.y;
+        let vectorReubicacion = Vector.segunComponentes(dx, dy);
         for (let vertice of this._vertices) {
-            vertice.x -= dx;
-            vertice.y -= dy;
+            let verticeInicial = Vector.clonar(vertice);
+            vertice = Vector.suma(verticeInicial, vectorReubicacion);
+            // vertice.x -= dx;
+            // vertice.y -= dy;
         }
-        this._centro.x = punto.x;
-        this._centro.y = punto.y;
+        this._centro = Vector.segunComponentes(punto.x, punto.y);
     }
     rotarSegunOrigen(angulo) {
         for (let vertice of this._vertices) {
-            vertice = Matriz.rotarPunto2D(vertice, angulo);
+            let rotado = Matriz.rotarPunto2D(vertice, angulo);
+            vertice = Vector.segunComponentes(rotado.x, rotado.y);
+            // vertice = Matriz.rotarPunto2D(vertice, angulo);
+            // vertice.x = rotado.x;
+            // vertice.y = rotado.y;
         }
-        this._centro = Matriz.rotarPunto2D(this._centro, angulo);
+        // let nuevoCentro: Punto = Matriz.rotarPunto2D(this._centro, angulo);
+        let nuevoCentro = Matriz.rotarPunto2D({ x: this.centro.x, y: this.centro.y }, angulo);
+        this._centro = Vector.segunComponentes(nuevoCentro.x, nuevoCentro.y);
     }
     rotarSegunCentro(angulo) {
         let centro = { x: this._centro.x, y: this._centro.y };
@@ -151,5 +158,9 @@ export class Forma {
     trasladar(vector) {
         let nuevoCentro = { x: vector.x, y: vector.y };
         this.ubicar(nuevoCentro);
+    }
+    mover(vector) {
+        let vectorSuma = Vector.suma(this._centro, vector);
+        this.ubicar(vectorSuma);
     }
 }
