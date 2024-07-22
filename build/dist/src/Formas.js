@@ -2,6 +2,7 @@ import { Matematica } from "./Matematica.js";
 import { Vector } from "./Vector.js";
 //POR INTEGRAR
 //  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
+// Función de escalar, reflejar
 export class Forma {
     constructor(x, y, lados = 0, radio = 0) {
         this._id = "";
@@ -9,6 +10,7 @@ export class Forma {
         this._lados = lados;
         this._radio = radio;
         this._vertices = this.crearVertices();
+        this._angulo = -Matematica.PI / 2;
     }
     get id() {
         return this._id;
@@ -146,6 +148,9 @@ export class Forma {
         centroRotacion = { x: this._centro.x + punto.x, y: this._centro.y + punto.y };
         this.ubicar(centroRotacion);
     }
+    /**
+     * Rota la forma teniendo como referencia su inclinación original.
+     */
     mover(vector) {
         let vectorSuma = Vector.suma(this._centro, vector);
         this.ubicar(vectorSuma);

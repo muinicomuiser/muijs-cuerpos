@@ -2,20 +2,27 @@ import { Matematica } from "./Matematica.js";
 import { Matriz } from "./Matrices.js";
 import { Punto } from "./Punto.js";
 import { Vector } from "./Vector.js";
+import { Transformacion } from "./Transformacion.js";
 //POR INTEGRAR
 //  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
+// Función de escalar, reflejar
+// Integrar la clase Transformacion
 export class Forma{
     protected _id: string;
     protected _centro: Vector;
     protected _lados: number;
     protected _radio: number;
     protected _vertices: Vector[];
-    private constructor(x: number, y: number, lados: number = 0, radio: number = 0){
+    protected _verticesTransformadas: Vector[];
+    protected _transformacion: Transformacion;
+    protected constructor(x: number, y: number, lados: number = 0, radio: number = 0){
         this._id = "";
         this._centro = Vector.crear(x, y);
         this._lados = lados;
         this._radio = radio;
         this._vertices = this.crearVertices();
+        this._verticesTransformadas = [];
+        this._transformacion = new Transformacion(x, y)
     }
     get id(): string{
         return this._id;
@@ -122,7 +129,7 @@ export class Forma{
 
 
     //Centra la forma en el punto
-    private ubicar(punto: Punto): void{
+    public ubicar(punto: Punto): void{
         let dx: number = this._centro.x - punto.x;
         let dy: number = this._centro.y - punto.y;
         let nuevosVertices: Vector[] = []
@@ -157,6 +164,10 @@ export class Forma{
         centroRotacion = {x: this._centro.x + punto.x, y: this._centro.y + punto.y};
         this.ubicar(centroRotacion);
     }
+    /**
+     * Rota la forma teniendo como referencia su inclinación original.
+     */
+
     public mover(vector: Vector){
         let vectorSuma = Vector.suma(this._centro, vector)
         this.ubicar(vectorSuma);

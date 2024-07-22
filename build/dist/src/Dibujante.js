@@ -1,8 +1,7 @@
 import { Forma } from "./Formas.js";
 import { Matematica } from "./Matematica.js";
 //POR INCORPORAR:
-//  Formato de colores (rgba, hsla, hex)
-//  Throw de errores, por valores incompatibles
+//  Throw de errores para valores incompatibles
 //  Opacidad, letras
 export class Dibujante {
     constructor(context) {
@@ -35,6 +34,42 @@ export class Dibujante {
     }
     set opacidad(opacidad) {
         this._opacidad = opacidad;
+    }
+    /**
+     * Retorna un string con el color en formato HSL.
+     *
+     * (hue) recibe grados entre 0 y 360,
+     * (saturation) y (lightness) reciben porcentajes.
+     */
+    static colorHSL(hue, saturation, lightness) {
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+    /**
+     * Retorna un string con el color en formato HSLA.
+     *
+     * (hue) recibe grados entre 0 y 360,
+     * (saturation) y (lightness) reciben porcentajes, y (alpha)
+     * valores entre 0 y 1.
+     */
+    static colorHSLA(hue, saturation, lightness, alpha) {
+        return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+    }
+    /**
+     * Retorna un string con el color en formato RGB.
+     *
+     * (red), (green) y (blue) reciben valores entre 0 y 255.
+     */
+    static colorRGB(red, green, blue) {
+        return `rgb(${red}, ${green}, ${blue})`;
+    }
+    /**
+     * Retorna un string con el color en formato RGBA.
+     *
+     * (red), (green) y (blue) reciben valores entre 0 y 255,
+     * y (alpha) valores entre 0 y 1.
+     */
+    static colorRGBA(red, green, blue, alpha) {
+        return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
     trazar(forma) {
         if (forma.id == "circunferencia") {

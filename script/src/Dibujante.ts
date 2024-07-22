@@ -4,8 +4,7 @@ import { Matematica } from "./Matematica.js";
 import { Punto } from "./Punto.js";
 import { Vector } from "./Vector.js";
 //POR INCORPORAR:
-//  Formato de colores (rgba, hsla, hex)
-//  Throw de errores, por valores incompatibles
+//  Throw de errores para valores incompatibles
 //  Opacidad, letras
 export class Dibujante{
     _color: string;
@@ -20,7 +19,6 @@ export class Dibujante{
         this._opacidad = 1;
         this._colorVectores = "red"
     }
-
     get color(): string{
         return this._color;
     }
@@ -45,7 +43,42 @@ export class Dibujante{
     set opacidad(opacidad: number){
         this._opacidad = opacidad;
     }
-
+    /**
+     * Retorna un string con el color en formato HSL.
+     * 
+     * (hue) recibe grados entre 0 y 360,
+     * (saturation) y (lightness) reciben porcentajes.
+     */
+    static colorHSL(hue: number, saturation: number, lightness: number){
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+    /**
+     * Retorna un string con el color en formato HSLA.
+     * 
+     * (hue) recibe grados entre 0 y 360,
+     * (saturation) y (lightness) reciben porcentajes, y (alpha)
+     * valores entre 0 y 1.
+     */
+    static colorHSLA(hue: number, saturation: number, lightness: number, alpha: number){
+        return `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+    }
+    /**
+     * Retorna un string con el color en formato RGB.
+     * 
+     * (red), (green) y (blue) reciben valores entre 0 y 255.
+     */
+    static colorRGB(red: number, green: number, blue: number){
+        return `rgb(${red}, ${green}, ${blue})`;
+    }
+    /**
+     * Retorna un string con el color en formato RGBA.
+     * 
+     * (red), (green) y (blue) reciben valores entre 0 y 255,
+     * y (alpha) valores entre 0 y 1.
+     */
+    static colorRGBA(red: number, green: number, blue: number, alpha: number){
+        return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    }
     trazar(forma: Forma): void{
         if(forma.id == "circunferencia"){
             this.pathCircunferencia(forma);

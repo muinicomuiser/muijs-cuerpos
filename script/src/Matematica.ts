@@ -1,3 +1,4 @@
+import { Punto } from "./Punto.js";
 /**
  * MÓDULO MATEMÁTICO EN ESPAÑOL
  * por agregar: potencia, floor, ceil, log, trigonometrías, exp, sign, raizcuadrada, cuadrado, cubo, max, min, promedio
@@ -116,8 +117,8 @@ export class Matematica{
     }
 
     //Coordenadas
-    static distanciaEntrePuntos(x1: number, y1: number, x2: number, y2: number): number{
-        let distancia = Matematica.hipotenusa(x2 - x1, y2 - y1);
+    static distanciaEntrePuntos(puntoUno: Punto, puntoDos: Punto): number{
+        let distancia = Matematica.hipotenusa(puntoDos.x - puntoUno.x, puntoDos.y - puntoUno.y);
         return distancia;
     }
 }

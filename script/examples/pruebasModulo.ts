@@ -84,9 +84,12 @@ function vectores(): void{
 }
 // vectores();
 // console.log(Matriz.rotarPunto2D(Vector.crear(0, 0), 2))
-console.log(Vector.crear(0,0))
 // let vectorUno: Vector = Vector.crear(1, 1);
 // let poligonoUno = Forma.poligono(300, 300, 10, 80);
 // console.log(poligonoUno)
 // console.log(poligonoUno.centro);
 // poligonoUno.rotarSegunCentro(Matematica.gradoARadian(2));
+let vectorUno: Vector = Vector.derecha()
+let vectorDos: Vector = Vector.izquierda()
+let vectorTres: Vector = Vector.crear(-1, -1)
+console.log(Matematica.radianAGrado(Vector.anguloVectores(vectorUno, vectorTres)));

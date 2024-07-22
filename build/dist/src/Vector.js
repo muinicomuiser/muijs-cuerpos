@@ -25,12 +25,6 @@ export class Vector {
     set origen(origen) {
         this._origen = { x: origen.x, y: origen.y };
     }
-    // get magnitud(): number{
-    //     return this._magnitud!;
-    // }
-    // get angulo(): number{
-    //     return this._angulo!;
-    // }
     static magnitud(vector) {
         return Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2);
     }
@@ -97,6 +91,11 @@ export class Vector {
         let producto = Matematica.sumaSegura(productoX, productoY);
         return producto;
     }
+    static cruz(vectorUno, vectorDos) {
+        let magnitudes = Vector.magnitud(vectorUno) * Vector.magnitud(vectorDos);
+        let angulo = Vector.anguloVectores(vectorUno, vectorDos);
+        return magnitudes * Math.sin(angulo);
+    }
     static anguloVectores(vectorUno, vectorDos) {
         let punto = Vector.punto(vectorUno, vectorDos);
         let magnitudes = Matematica.multiplicacionSegura(vectorUno.magnitud, vectorDos.magnitud);
@@ -110,7 +109,6 @@ export class Vector {
         return conjuntoCopia;
     }
     static rotar(vector, angulo) {
-        // cos*x -sin*y, sin*x + cos*y
         let x = Math.cos(angulo) * vector.x - Math.sin(angulo) * vector.y;
         let y = Math.sin(angulo) * vector.x + Math.cos(angulo) * vector.y;
         return new Vector(x, y);

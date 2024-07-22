@@ -112,8 +112,8 @@ export class Matematica {
         return cateto2;
     }
     //Coordenadas
-    static distanciaEntrePuntos(x1, y1, x2, y2) {
-        let distancia = Matematica.hipotenusa(x2 - x1, y2 - y1);
+    static distanciaEntrePuntos(puntoUno, puntoDos) {
+        let distancia = Matematica.hipotenusa(puntoDos.x - puntoUno.x, puntoDos.y - puntoUno.y);
         return distancia;
     }
 }

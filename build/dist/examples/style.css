@@ -1,0 +1,14 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    align-items: center;    
+    justify-content: center;
+    padding: 2rem;
+}
+canvas {
+    border: 4px solid hsl(200, 50%, 50%)
+}
