@@ -9,7 +9,7 @@ CANVAS.height = 650;
 CANVAS.style.backgroundColor = Dibujante.colorHSL(220, 70, 0);
 let centroCanvas = { x: CANVAS.width / 2, y: CANVAS.height / 2 };
 let velocidad = Vector.crear(1, 1);
-let cuerpoDeCuerpos = Cuerpo.poligono(centroCanvas.x * 1.5, centroCanvas.y, 100, 20);
+let cuerpoDeCuerpos = Cuerpo.poligono(centroCanvas.x * 1.1, centroCanvas.y, 100, 20);
 let cuerpoGuia = Cuerpo.poligono(centroCanvas.x, centroCanvas.y, 1, 100);
 let atractores = crearAtractores(cuerpoGuia);
 let cuerpos = crearCuerpos(cuerpoDeCuerpos);
@@ -46,7 +46,7 @@ window.addEventListener("load", () => {
             cuerpito.aceleracion = Vector.cero();
             for (let atractor of atractores) {
                 let vectorAtraccion = Vector.segunPuntos(cuerpito.posicion, atractor.posicion);
-                vectorAtraccion = Vector.escalar(Vector.normalizar(vectorAtraccion), 0.1);
+                vectorAtraccion = Vector.escalar(Vector.normalizar(vectorAtraccion), 0.2);
                 cuerpito.aceleracion = Vector.suma(vectorAtraccion, cuerpito.aceleracion);
             }
             cuerpito.actualizarMovimiento();
