@@ -1,23 +1,27 @@
 import { Matematica } from "./Matematica.js";
 import { Vector } from "./Vector.js";
+import { Transformacion } from "./Transformacion.js";
 //POR INTEGRAR
 //  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
+// Integrar la clase Transformacion
 export class Forma {
     constructor(x, y, lados = 0, radio = 0) {
         this._id = "";
-        this._centro = Vector.crear(x, y);
+        this._centro = Vector.cero();
         this._lados = lados;
         this._radio = radio;
         this._vertices = this.crearVertices();
-        this._angulo = -Matematica.PI / 2;
+        this._verticesTransformados = [];
+        this._transformacion = new Transformacion(x, y);
+        this.aplicarTransformacion();
     }
     get id() {
         return this._id;
     }
-    get centro() {
-        let centro = Vector.crear(this._centro.x, this._centro.y);
-        return centro;
+    get posicion() {
+        let posicion = Vector.clonar(this._transformacion.posicion);
+        return posicion;
     }
     get lados() {
         return this._lados;
@@ -28,11 +32,18 @@ export class Forma {
     get vertices() {
         return Vector.clonarConjunto(this._vertices);
     }
+    get verticesTransformados() {
+        this.aplicarTransformacion();
+        return this._verticesTransformados;
+    }
+    get transformacion() {
+        return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion);
+    }
     set id(nuevaId) {
         this._id = nuevaId;
     }
-    set centro(nuevoCentro) {
-        this._centro = Vector.clonar(nuevoCentro);
+    set posicion(nuevaPosicion) {
+        this._transformacion.posicion = Vector.clonar(nuevaPosicion);
     }
     set lados(numeroLados) {
         this._lados = numeroLados;
@@ -40,6 +51,7 @@ export class Forma {
     set radio(nuevoRadio) {
         this._radio = nuevoRadio;
     }
+    //REVISAR
     set vertices(vertices) {
         this._vertices = Vector.clonarConjunto(vertices);
     }
@@ -52,8 +64,8 @@ export class Forma {
         let nVertices = [];
         for (let i = 0; i < this._lados; i++) {
             let angulo = offset + (i * theta);
-            let xx = Math.cos(angulo) * this._radio + this._centro.x;
-            let yy = Math.sin(angulo) * this._radio + this._centro.y;
+            let xx = Math.cos(angulo) * this._radio;
+            let yy = Math.sin(angulo) * this._radio;
             let vertice = Vector.crear(xx, yy);
             nVertices.push(vertice);
         }
@@ -83,76 +95,66 @@ export class Forma {
     static rectangulo(x, y, base, altura) {
         let rectangulo = new Forma(x, y, 4, Matematica.hipotenusa(base * 0.5, altura * 0.5));
         rectangulo.id = "poligono";
-        let ver1 = Vector.crear(Matematica.sumaSegura(base / 2, x), Matematica.sumaSegura(altura / 2, y));
-        let ver2 = Vector.crear(Matematica.sumaSegura(-base / 2, x), Matematica.sumaSegura(altura / 2, y));
-        let ver3 = Vector.crear(Matematica.sumaSegura(-base / 2, x), Matematica.sumaSegura(-altura / 2, y));
-        let ver4 = Vector.crear(Matematica.sumaSegura(base / 2, x), Matematica.sumaSegura(-altura / 2, y));
+        let ver1 = Vector.crear(base / 2, altura / 2);
+        let ver2 = Vector.crear(-base / 2, altura / 2);
+        let ver3 = Vector.crear(-base / 2, -altura / 2);
+        let ver4 = Vector.crear(base / 2, -altura / 2);
         let rectVertices = [ver1, ver2, ver3, ver4];
         rectangulo.vertices = rectVertices;
+        rectangulo.aplicarTransformacion();
         return rectangulo;
     }
+    //Crea una recta centrada en el origen y con la posición ingresada almacenada en su registro de transformación
     static recta(puntoUno, puntoDos) {
         let centro = Vector.crear(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
-        let vertices = [Vector.crear(puntoUno.x, puntoUno.y), Vector.crear(puntoDos.x, puntoDos.y)];
+        let vertices = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
         let linea = new Forma(centro.x, centro.y, 1);
         linea.vertices = vertices;
+        linea.aplicarTransformacion();
         linea.id = "linea";
         return linea;
     }
+    /**
+     * Crea un conjunto de rectas a partir de un grupo de vértices.
+     * Calcula el centro de los vértices, centra la forma en el origen y almacena
+     * el centro en el registro de transformación.
+     */
     static trazo(vertices) {
         let centro = { x: 0, y: 0 };
-        let trazo = new Forma(0, 0);
         for (let vertice of vertices) {
             centro.x += vertice.x / vertices.length;
             centro.y += vertice.y / vertices.length;
-            trazo.vertices.push(vertice);
         }
-        trazo.centro = Vector.crear(centro.x, centro.y);
+        let posicion = Vector.crear(centro.x, centro.y);
+        let trazo = new Forma(centro.x, centro.y);
+        for (let vertice of vertices) {
+            trazo.vertices.push(Vector.resta(vertice, posicion));
+        }
+        trazo.aplicarTransformacion();
         trazo.id = "linea";
         trazo.lados = vertices.length - 1;
         return trazo;
     }
-    //Centra la forma en el punto
-    ubicar(punto) {
-        let dx = this._centro.x - punto.x;
-        let dy = this._centro.y - punto.y;
-        let nuevosVertices = [];
-        for (let vertice of this._vertices) {
-            nuevosVertices.push(Vector.resta(vertice, Vector.crear(dx, dy)));
-        }
-        this._vertices = Vector.clonarConjunto(nuevosVertices);
-        this._centro = Vector.crear(punto.x, punto.y);
+    aplicarTransformacion() {
+        this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+    }
+    rotar(angulo) {
+        this._transformacion.rotacion += angulo;
+        this.aplicarTransformacion();
+    }
+    mover(vector) {
+        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vector);
+        this.aplicarTransformacion();
     }
     rotarSegunOrigen(angulo) {
-        let nuevosVertices = [];
-        for (let vertice of this._vertices) {
-            let verticeRotado = Vector.rotar(vertice, angulo);
-            nuevosVertices.push(verticeRotado);
-        }
-        this._vertices = Vector.clonarConjunto(nuevosVertices);
-        this._centro = Vector.rotar(this._centro, angulo);
-    }
-    rotarSegunCentro(angulo) {
-        let centro = { x: this._centro.x, y: this._centro.y };
-        let origen = { x: 0, y: 0 };
-        this.ubicar(origen);
-        this.rotarSegunOrigen(angulo);
-        this.ubicar(centro);
+        this._transformacion.posicion = Vector.rotar(this._transformacion.posicion, angulo);
+        this.aplicarTransformacion();
     }
     rotarSegunPunto(punto, angulo) {
-        let dx = this._centro.x - punto.x;
-        let dy = this._centro.y - punto.y;
-        let centroRotacion = { x: dx, y: dy };
-        this.ubicar(centroRotacion);
+        let vectorAcomodador = Vector.crear(punto.x, punto.y);
+        this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
         this.rotarSegunOrigen(angulo);
-        centroRotacion = { x: this._centro.x + punto.x, y: this._centro.y + punto.y };
-        this.ubicar(centroRotacion);
-    }
-    /**
-     * Rota la forma teniendo como referencia su inclinación original.
-     */
-    mover(vector) {
-        let vectorSuma = Vector.suma(this._centro, vector);
-        this.ubicar(vectorSuma);
+        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
+        this.aplicarTransformacion();
     }
 }

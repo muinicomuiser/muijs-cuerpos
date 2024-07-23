@@ -114,20 +114,20 @@ export class Dibujante {
     }
     pathCircunferencia(forma) {
         this._context.beginPath();
-        this._context.arc(forma.centro.x, forma.centro.y, forma.radio, 0, Matematica.DOS_PI);
+        this._context.arc(forma.transformacion.posicion.x, forma.transformacion.posicion.y, forma.radio, 0, Matematica.DOS_PI);
     }
     pathPoligono(forma) {
         this._context.beginPath();
-        this._context.moveTo(forma.vertices[0].x, forma.vertices[0].y);
-        for (let vertice of forma.vertices) {
+        this._context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+        for (let vertice of forma.verticesTransformados) {
             this._context.lineTo(vertice.x, vertice.y);
         }
         this._context.closePath();
     }
     pathLinea(forma) {
         this._context.beginPath();
-        this._context.moveTo(forma.vertices[0].x, forma.vertices[0].y);
-        for (let vertice of forma.vertices) {
+        this._context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+        for (let vertice of forma.verticesTransformados) {
             this._context.lineTo(vertice.x, vertice.y);
         }
     }

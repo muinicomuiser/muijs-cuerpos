@@ -9,11 +9,8 @@ export class Cuerpo extends Forma {
         super(x, y, lados, radio);
         this._masa = masa;
         this._densidad = densidad;
-        this._velocidad = Vector.clonar(velocidad);
-        if (velocidad) {
-            this._velocidad = velocidad;
-        }
-        this._velocidad.origen = this._centro;
+        this._velocidad = velocidad;
+        this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
         this._fijo = false;
     }
@@ -47,7 +44,7 @@ export class Cuerpo extends Forma {
     trazarVelocidad(dibujante) {
         let vectorVelocidad = Vector.clonar(this._velocidad);
         vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-        vectorVelocidad.origen = this._centro;
+        vectorVelocidad.origen = this._transformacion.posicion;
         dibujante.trazarVector(vectorVelocidad);
     }
     rellenar(dibujante) {
@@ -68,16 +65,15 @@ export class Cuerpo extends Forma {
     }
     actualizarMovimiento() {
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-        // this.rotarSegunVelocidad();
-        super.mover(this._velocidad);
-        this._velocidad.origen = this._centro;
+        this.mover(this._velocidad);
+        this._velocidad.origen = this._transformacion.posicion;
     }
-    desplazar(vector) {
+    mover(vector) {
         super.mover(vector);
-        this._velocidad.origen = this._centro;
+        this._velocidad.origen = this._transformacion.posicion;
     }
-    rotarSegunPunto(punto, angulo) {
-        super.rotarSegunPunto(punto, angulo);
-        this._velocidad.origen = this._centro;
+    rotar(angulo) {
+        super.rotar(angulo);
+        this._velocidad.origen = this._transformacion.posicion;
     }
 }

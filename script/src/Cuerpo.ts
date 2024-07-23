@@ -18,11 +18,8 @@ export class Cuerpo extends Forma{
         super(x, y, lados, radio);
         this._masa = masa;
         this._densidad = densidad;
-        this._velocidad = Vector.clonar(velocidad);
-        if(velocidad){
-            this._velocidad = velocidad;
-        }
-        this._velocidad.origen = this._centro;
+        this._velocidad = velocidad;
+        this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
         this._fijo = false;
     }
@@ -56,7 +53,7 @@ export class Cuerpo extends Forma{
     public trazarVelocidad(dibujante: Dibujante): void{
         let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
         vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-        vectorVelocidad.origen = this._centro;      
+        vectorVelocidad.origen = this._transformacion.posicion;      
         dibujante.trazarVector(vectorVelocidad);
     }
     public rellenar(dibujante: Dibujante): void{
@@ -77,27 +74,15 @@ export class Cuerpo extends Forma{
     }
     public actualizarMovimiento(): void{
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-        // this.rotarSegunVelocidad();
-        super.mover(this._velocidad);
-        this._velocidad.origen = this._centro;
+        this.mover(this._velocidad);
+        this._velocidad.origen = this._transformacion.posicion;
     }
-    public desplazar(vector: Vector): void{
+    public mover(vector: Vector): void{
         super.mover(vector);
-        this._velocidad.origen = this._centro;
+        this._velocidad.origen = this._transformacion.posicion;
     }
-    public rotarSegunPunto(punto: Punto, angulo: number): void {
-        super.rotarSegunPunto(punto, angulo);
-        this._velocidad.origen = this._centro;
+    public rotar(angulo: number): void {
+        super.rotar(angulo);
+        this._velocidad.origen = this._transformacion.posicion;
     }
-    // private rotarSegunVelocidad(){
-    //     this._angulo = Vector.angulo(Vector.segunPuntos(this._centro, this._vertices[0]))
-    //     let anguloRotacion: number = Vector.angulo(this._velocidad) - this._angulo;
-    //     this.rotarSegunCentro(anguloRotacion);
-    //     if(Vector.magnitud(this.velocidad) < 1){
-    //         this._angulo = Vector.angulo(Vector.segunPuntos(this._centro, this._vertices[0]))
-    //     }
-    //     else{
-    //         this._angulo = Vector.angulo(this._velocidad);
-    //     }
-    // }
 }
