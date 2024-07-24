@@ -1,5 +1,4 @@
 import { Forma } from "./Formas.js";
-import { Matriz } from "./Matrices.js";
 import { Matematica } from "./Matematica.js";
 import { Punto } from "./Punto.js";
 import { Vector } from "./Vector.js";

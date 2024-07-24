@@ -1,10 +1,9 @@
 import { Matematica } from "./Matematica.js";
-import { Matriz } from "./Matrices.js";
 import { Punto } from "./Punto.js";
 import { Vector } from "./Vector.js";
 import { Transformacion } from "./Transformacion.js";
 //POR INTEGRAR
-//  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
+// Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
 // Integrar la clase Transformacion
 export class Forma{
@@ -46,13 +45,16 @@ export class Forma{
         return this._verticesTransformados;
     }
     get transformacion(): Transformacion{
-        return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion);
+        return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion, this._transformacion.escala);
     }
     set id(nuevaId: string){
         this._id = nuevaId;
     }
     set posicion(nuevaPosicion: Vector){
         this._transformacion.posicion = Vector.clonar(nuevaPosicion);
+    }
+    set escala(nuevaEscala: number){
+        this._transformacion.escala = nuevaEscala;
     }
     set lados(numeroLados: number){
         this._lados = numeroLados;

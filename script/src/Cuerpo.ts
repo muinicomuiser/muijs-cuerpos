@@ -4,10 +4,8 @@ import { Vector } from "./Vector.js";
 import { Punto } from "./Punto.js";
 import { Dibujante } from "./Dibujante.js";
 import { Transformacion } from "./Transformacion.js";
-//Funciones estáticas para crear formas específicas(circulares, cuadradas, poligonales)
-//que baste con agrerar la posición y las dimensiones del cuerpo para 
-//que el método cree la forma y los vectores
-//O la clase Cuerpo extiende a Forma??
+//Una propiedad que defina si es necesario actualizar la posición y la rotación.
+//Un solo método para aplicar transformar y actualizar transformaciones
 export class Cuerpo extends Forma{
     _masa: number;
     _densidad: number;
@@ -64,6 +62,12 @@ export class Cuerpo extends Forma{
         let poligono: Cuerpo = new Cuerpo(x, y, lados, radio, masa, densidad, velocidad);
         poligono.id = poli.id;
         return poligono; 
+    }
+    static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number= 1, velocidad?: Vector){
+        let rect: Forma = super.rectangulo(x, y, base, altura);
+        let rectangulo: Cuerpo = new Cuerpo(x, y, 4, rect.radio);
+        rectangulo.id = "poligono";
+        return rectangulo;
     }
     static circunferencia(x: number, y: number, radio: number, masa: number = 1, densidad: number= 1, velocidad?: Vector): Cuerpo {
         let circulo: Forma = super.circunferencia(x, y, radio);

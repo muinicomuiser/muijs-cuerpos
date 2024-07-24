@@ -1,8 +1,6 @@
 import { Matematica } from "./Matematica.js";
-import { Matriz } from "./Matrices.js";
 import { Punto } from "./Punto.js";
 //POR REVISAR
-//Producto cruz
 export class Vector{
     private _x: number;
     private _y: number;
@@ -41,7 +39,7 @@ export class Vector{
             return Matematica.PI * 1.5;
         }
         else if (vector.x == 0 && vector.y == 0){
-            return 0;
+            return Matematica.PI * 0.5;
         }
         else {
             return Math.atan(vector.y / vector.x)
