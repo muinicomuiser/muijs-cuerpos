@@ -14,6 +14,7 @@ export class Forma{
     protected _vertices: Vector[];
     protected _verticesTransformados: Vector[];
     protected _transformacion: Transformacion;
+    protected _radioTransformado: number;
     protected constructor(x: number, y: number, lados: number = 0, radio: number = 0){
         this._id = "";
         this._centro = Vector.cero();
@@ -23,6 +24,7 @@ export class Forma{
         this._verticesTransformados = [];
         this._transformacion = new Transformacion(x, y);
         this.aplicarTransformacion();
+        this._radioTransformado = this._radio*this._transformacion.escala;
     }
     get id(): string{
         return this._id;
@@ -35,7 +37,8 @@ export class Forma{
         return this._lados;
     }
     get radio(): number{
-        return this._radio;
+        this._radioTransformado = this._radio*this._transformacion.escala;
+        return this._radioTransformado;
     }
     get vertices(): Vector[]{
         return Vector.clonarConjunto(this._vertices);
@@ -167,6 +170,10 @@ export class Forma{
         this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
         this.rotarSegunOrigen(angulo);
         this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
+        this.aplicarTransformacion();
+    }
+    public escalar(escala: number): void{
+        this._transformacion.escala = escala;
         this.aplicarTransformacion();
     }
 }

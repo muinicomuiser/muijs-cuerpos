@@ -2,7 +2,7 @@ import { Matematica } from "./Matematica.js";
 import { Vector } from "./Vector.js";
 import { Transformacion } from "./Transformacion.js";
 //POR INTEGRAR
-//  Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
+// Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
 // Integrar la clase Transformacion
 export class Forma {
@@ -15,6 +15,7 @@ export class Forma {
         this._verticesTransformados = [];
         this._transformacion = new Transformacion(x, y);
         this.aplicarTransformacion();
+        this._radioTransformado = this._radio * this._transformacion.escala;
     }
     get id() {
         return this._id;
@@ -27,7 +28,8 @@ export class Forma {
         return this._lados;
     }
     get radio() {
-        return this._radio;
+        this._radioTransformado = this._radio * this._transformacion.escala;
+        return this._radioTransformado;
     }
     get vertices() {
         return Vector.clonarConjunto(this._vertices);
@@ -37,13 +39,16 @@ export class Forma {
         return this._verticesTransformados;
     }
     get transformacion() {
-        return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion);
+        return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion, this._transformacion.escala);
     }
     set id(nuevaId) {
         this._id = nuevaId;
     }
     set posicion(nuevaPosicion) {
         this._transformacion.posicion = Vector.clonar(nuevaPosicion);
+    }
+    set escala(nuevaEscala) {
+        this._transformacion.escala = nuevaEscala;
     }
     set lados(numeroLados) {
         this._lados = numeroLados;
@@ -155,6 +160,10 @@ export class Forma {
         this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
         this.rotarSegunOrigen(angulo);
         this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
+        this.aplicarTransformacion();
+    }
+    escalar(escala) {
+        this._transformacion.escala = escala;
         this.aplicarTransformacion();
     }
 }

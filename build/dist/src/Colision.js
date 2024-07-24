@@ -4,7 +4,5 @@
 //y si son fijos o móviles.
 //Métodos particulares para determinar colisiones entre circunferencias, entre polígonos, mixtos, y quizá con rectas.
 //También con fronteras.
-
-export class Colision{
-
+export class Colision {
 }

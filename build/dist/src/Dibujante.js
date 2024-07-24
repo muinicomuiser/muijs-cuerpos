@@ -1,4 +1,3 @@
-import { Forma } from "./Formas.js";
 import { Matematica } from "./Matematica.js";
 //POR INCORPORAR:
 //  Throw de errores para valores incompatibles
@@ -71,6 +70,9 @@ export class Dibujante {
     static colorRGBA(red, green, blue, alpha) {
         return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
+    limpiarCanvas(canvas) {
+        this._context.clearRect(0, 0, canvas.width, canvas.height);
+    }
     trazar(forma) {
         if (forma.id == "circunferencia") {
             this.pathCircunferencia(forma);
@@ -108,13 +110,20 @@ export class Dibujante {
     trazarVector(vector) {
         let origen = vector.origen;
         let extremo = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
-        let trazoVector = Forma.recta(origen, extremo);
-        trazoVector.id = "vector";
-        this.trazar(trazoVector);
+        // let trazoVector: Forma = Forma.recta(origen, extremo);
+        // trazoVector.id = "vector";
+        // this.trazar(trazoVector);
+        this._context.beginPath();
+        this._context.moveTo(origen.x, origen.y);
+        this._context.lineTo(extremo.x, extremo.y);
+        this._context.lineWidth = this._grosorTrazo;
+        this._context.globalAlpha = this._opacidad;
+        this._context.strokeStyle = this._colorVectores;
+        this._context.stroke();
     }
     pathCircunferencia(forma) {
         this._context.beginPath();
-        this._context.arc(forma.transformacion.posicion.x, forma.transformacion.posicion.y, forma.radio, 0, Matematica.DOS_PI);
+        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radio, 0, Matematica.DOS_PI);
     }
     pathPoligono(forma) {
         this._context.beginPath();

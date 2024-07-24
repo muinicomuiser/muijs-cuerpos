@@ -33,14 +33,22 @@ function crearAtractores(cuerpo: Cuerpo): Cuerpo[]{
     }
     return atractoresEnVertices;
 }
+let escalita: number = 5;
+let escalador: number = 0.01;
 window.addEventListener("load", ()=>{
     let dibujante: Dibujante = new Dibujante(CONTEXT);
-    dibujante.grosorTrazo = 3;
+    dibujante.grosorTrazo = 1;
     function prueba(){
         CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
         dibujante.color = Dibujante.colorHSL(300, 100, 40);
+        if(escalita > 6){
+            escalador = Matematica.absoluto(escalador) * -1;
+        }
+        if(escalita < 4){
+            escalador = Matematica.absoluto(escalador);
+        }
+        escalita += escalador;
         for(let i in atractores){
-            // atractores[i].posicion = cuerpoGuia.verticesTransformados[i];
             atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Matematica.gradoARadian(-1));
             atractores[i].actualizarMovimiento();
             atractores[i].rellenar(dibujante);
@@ -53,6 +61,7 @@ window.addEventListener("load", ()=>{
                 vectorAtraccion = Vector.escalar(Vector.normalizar(vectorAtraccion), 0.2);
                 cuerpito.aceleracion = Vector.suma(vectorAtraccion, cuerpito.aceleracion);
             }
+            cuerpito.escalar(escalita);
             cuerpito.actualizarMovimiento();
             cuerpito.trazar(dibujante);
         }

@@ -1,6 +1,7 @@
 import { Matematica } from "./Matematica.js";
 import { Vector } from "./Vector.js";
 //Módulo de cálculos
+//Considerar: fricción, gravedad, momento, resortes, movimiento angular, torques.
 export class Fuerza {
     static rebote(cuerpo, normal) {
         let anguloNormal = Vector.angulo(normal);

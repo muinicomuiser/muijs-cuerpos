@@ -21,6 +21,10 @@ export class Cuerpo extends Forma{
         this._aceleracion = Vector.cero();
         this._fijo = false;
     }
+    ///REVISAR
+    setearRotacinVelocidad(){
+        this._transformacion.rotacion = Vector.angulo(this._velocidad) - Matematica.PI;
+    }
     get fijo(): boolean{
         return this._fijo;
     }
@@ -31,6 +35,7 @@ export class Cuerpo extends Forma{
         return this._densidad;
     }
     get velocidad(): Vector{
+
         return Vector.clonar(this._velocidad)
     }
     get aceleracion(): Vector{
@@ -38,6 +43,7 @@ export class Cuerpo extends Forma{
     }
     set velocidad(velocidad: Vector){
         this._velocidad = Vector.clonar(velocidad);
+        this.setearRotacinVelocidad();
     }
     set aceleracion(aceleracion: Vector){
         this._aceleracion = Vector.clonar(aceleracion);
@@ -45,13 +51,18 @@ export class Cuerpo extends Forma{
     set fijo(fijo: boolean){
         this._fijo = fijo;
     }
+    set escala(escala: number){
+        this.transformacion.escala = escala;
+    }
     public trazar(dibujante: Dibujante): void{
         dibujante.trazar(this);
     }
     public trazarVelocidad(dibujante: Dibujante): void{
         let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
+        // vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
         vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-        vectorVelocidad.origen = this._transformacion.posicion;      
+        vectorVelocidad.origen = this._transformacion.posicion;
+        console.log(vectorVelocidad);      
         dibujante.trazarVector(vectorVelocidad);
     }
     public rellenar(dibujante: Dibujante): void{
@@ -66,6 +77,7 @@ export class Cuerpo extends Forma{
     static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number= 1, velocidad?: Vector){
         let rect: Forma = super.rectangulo(x, y, base, altura);
         let rectangulo: Cuerpo = new Cuerpo(x, y, 4, rect.radio);
+        rectangulo.vertices = rect.vertices;
         rectangulo.id = "poligono";
         return rectangulo;
     }
@@ -79,14 +91,14 @@ export class Cuerpo extends Forma{
     public actualizarMovimiento(): void{
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
         this.mover(this._velocidad);
-        this._velocidad.origen = this._transformacion.posicion;
     }
     public mover(vector: Vector): void{
         super.mover(vector);
-        this._velocidad.origen = this._transformacion.posicion;
     }
     public rotar(angulo: number): void {
         super.rotar(angulo);
-        this._velocidad.origen = this._transformacion.posicion;
+    }
+    public escalar(escala: number): void {
+        super.escalar(escala);
     }
 }

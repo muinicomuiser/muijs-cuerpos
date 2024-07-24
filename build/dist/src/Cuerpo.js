@@ -1,9 +1,8 @@
 import { Forma } from "./Formas.js";
+import { Matematica } from "./Matematica.js";
 import { Vector } from "./Vector.js";
-//Funciones estáticas para crear formas específicas(circulares, cuadradas, poligonales)
-//que baste con agrerar la posición y las dimensiones del cuerpo para 
-//que el método cree la forma y los vectores
-//O la clase Cuerpo extiende a Forma??
+//Una propiedad que defina si es necesario actualizar la posición y la rotación.
+//Un solo método para aplicar transformar y actualizar transformaciones
 export class Cuerpo extends Forma {
     constructor(x, y, lados = 0, radio = 0, masa = 1, densidad = 1, velocidad = Vector.cero()) {
         super(x, y, lados, radio);
@@ -13,6 +12,10 @@ export class Cuerpo extends Forma {
         this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
         this._fijo = false;
+    }
+    ///REVISAR
+    setearRotacinVelocidad() {
+        this._transformacion.rotacion = Vector.angulo(this._velocidad) - Matematica.PI;
     }
     get fijo() {
         return this._fijo;
@@ -31,6 +34,7 @@ export class Cuerpo extends Forma {
     }
     set velocidad(velocidad) {
         this._velocidad = Vector.clonar(velocidad);
+        this.setearRotacinVelocidad();
     }
     set aceleracion(aceleracion) {
         this._aceleracion = Vector.clonar(aceleracion);
@@ -38,13 +42,18 @@ export class Cuerpo extends Forma {
     set fijo(fijo) {
         this._fijo = fijo;
     }
+    set escala(escala) {
+        this.transformacion.escala = escala;
+    }
     trazar(dibujante) {
         dibujante.trazar(this);
     }
     trazarVelocidad(dibujante) {
         let vectorVelocidad = Vector.clonar(this._velocidad);
+        // vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
         vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
         vectorVelocidad.origen = this._transformacion.posicion;
+        console.log(vectorVelocidad);
         dibujante.trazarVector(vectorVelocidad);
     }
     rellenar(dibujante) {
@@ -56,6 +65,13 @@ export class Cuerpo extends Forma {
         poligono.id = poli.id;
         return poligono;
     }
+    static rectangulo(x, y, base, altura, masa = 1, densidad = 1, velocidad) {
+        let rect = super.rectangulo(x, y, base, altura);
+        let rectangulo = new Cuerpo(x, y, 4, rect.radio);
+        rectangulo.vertices = rect.vertices;
+        rectangulo.id = "poligono";
+        return rectangulo;
+    }
     static circunferencia(x, y, radio, masa = 1, densidad = 1, velocidad) {
         let circulo = super.circunferencia(x, y, radio);
         let circunferencia = new Cuerpo(x, y, circulo.lados, circulo.radio, masa, densidad, velocidad);
@@ -66,14 +82,14 @@ export class Cuerpo extends Forma {
     actualizarMovimiento() {
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
         this.mover(this._velocidad);
-        this._velocidad.origen = this._transformacion.posicion;
     }
     mover(vector) {
         super.mover(vector);
-        this._velocidad.origen = this._transformacion.posicion;
     }
     rotar(angulo) {
         super.rotar(angulo);
-        this._velocidad.origen = this._transformacion.posicion;
+    }
+    escalar(escala) {
+        super.escalar(escala);
     }
 }

@@ -32,18 +32,33 @@ export class Vector{
             return Matematica.raiz(Matematica.sumaSegura(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2)
         }
     static angulo(vector: Vector): number{
-        if(vector.x == 0 && vector.y > 0){
-            return Matematica.PI * 0.5;
+        if(vector.x > 0 && vector.y >= 0){
+            return Math.acos(vector.x / Vector.magnitud(vector));
         }
-        else if (vector.x == 0 && vector.y < 0){
-            return Matematica.PI * 1.5;
+        else if (vector.x <= 0 && vector.y >= 0){
+            return  Math.acos(vector.x / Vector.magnitud(vector));
         }
-        else if (vector.x == 0 && vector.y == 0){
-            return Matematica.PI * 0.5;
+        else if (vector.x >= 0 && vector.y < 0){
+            // return Math.asin(vector.y / Vector.magnitud(vector));
+            return Matematica.DOS_PI + Math.asin(vector.y / Vector.magnitud(vector));
         }
-        else {
-            return Math.atan(vector.y / vector.x)
+        else if (vector.x <= 0 && vector.y < 0){
+            return Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));        }
+        else{
+            return 0
         }
+        // if(vector.x == 0 && vector.y > 0){
+        //     return Matematica.PI * 0.5;
+        // }
+        // else if (vector.x == 0 && vector.y < 0){
+        //     return Matematica.PI * 1.5;
+        // }
+        // else if (vector.x == 0 && vector.y == 0){
+        //     return Matematica.PI * 0.5;
+        // }
+        // else {
+        //     return Math.atan(vector.y / vector.x)
+        // }
     }
     static cero(): Vector{
         return new Vector(0, 0);
