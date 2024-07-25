@@ -81,7 +81,4 @@ function vectores() {
 // console.log(poligonoUno)
 // console.log(poligonoUno.centro);
 // poligonoUno.rotarSegunCentro(Matematica.gradoARadian(2));
-let vectorUno = Vector.derecha();
-let vectorDos = Vector.izquierda();
-let vectorTres = Vector.crear(-1, -1);
-console.log(Matematica.radianAGrado(Vector.anguloVectores(vectorUno, vectorTres)));
+console.log(Matematica.raiz(-49, 2));

@@ -12,6 +12,7 @@ console.assert(Matematica.parteEntera(1) == 1);
 console.assert(Matematica.parteEntera(0) == 0);
 console.assert(Matematica.parteEntera(0.15) == 0);
 console.assert(Matematica.parteEntera(10.10) == 10);
+console.assert(Matematica.parteEntera(10.9) == 10);
 console.assert(Matematica.parteEntera(2.111111111) == 2);
 console.assert(Matematica.parteEntera(-2.111111111) == -2);
 //Matematica.parteDecimal(numero: number)
