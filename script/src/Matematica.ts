@@ -121,4 +121,8 @@ export class Matematica{
         let distancia = Matematica.hipotenusa(puntoDos.x - puntoUno.x, puntoDos.y - puntoUno.y);
         return distancia;
     }
+    static puntoMedio(puntoUno: Punto, puntoDos: Punto): Punto{
+        let puntoMedio: Punto = {x: puntoUno.x/2 + puntoDos.x/2, y: puntoUno.y/2 + puntoDos.y/2};
+        return puntoMedio;
+    }
 }

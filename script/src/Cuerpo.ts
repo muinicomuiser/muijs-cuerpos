@@ -6,12 +6,14 @@ import { Dibujante } from "./Dibujante.js";
 import { Transformacion } from "./Transformacion.js";
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
+//Buscar un modo de anclar un vértice a otro vector. Así se puede acoplar un ala a otro cuerpo. Método anclar(vector)
 export class Cuerpo extends Forma{
     _masa: number;
     _densidad: number;
     _velocidad: Vector;
     _aceleracion: Vector;
     _fijo: boolean;
+    _rotarSegunVelocidad: boolean;
     protected constructor(x: number, y: number, lados: number = 0, radio: number = 0, masa: number = 1, densidad: number = 1, velocidad: Vector = Vector.cero()){
         super(x, y, lados, radio);
         this._masa = masa;
@@ -20,10 +22,13 @@ export class Cuerpo extends Forma{
         this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
         this._fijo = false;
+        this._rotarSegunVelocidad = false;
     }
     ///REVISAR
-    setearRotacinVelocidad(){
-        this._transformacion.rotacion = Vector.angulo(this._velocidad) - Matematica.PI;
+    setearRotacionVelocidad(){
+        let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
+        let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
+        this._transformacion.rotacion = Vector.angulo(this._velocidad) - anguloVerticeCero;
     }
     get fijo(): boolean{
         return this._fijo;
@@ -35,7 +40,6 @@ export class Cuerpo extends Forma{
         return this._densidad;
     }
     get velocidad(): Vector{
-
         return Vector.clonar(this._velocidad)
     }
     get aceleracion(): Vector{
@@ -43,7 +47,6 @@ export class Cuerpo extends Forma{
     }
     set velocidad(velocidad: Vector){
         this._velocidad = Vector.clonar(velocidad);
-        this.setearRotacinVelocidad();
     }
     set aceleracion(aceleracion: Vector){
         this._aceleracion = Vector.clonar(aceleracion);
@@ -53,16 +56,18 @@ export class Cuerpo extends Forma{
     }
     set escala(escala: number){
         this.transformacion.escala = escala;
+        super.escalar(escala);
+    }
+    set rotarSegunVelocidad(opcion: boolean){
+        this._rotarSegunVelocidad = opcion;
     }
     public trazar(dibujante: Dibujante): void{
         dibujante.trazar(this);
     }
     public trazarVelocidad(dibujante: Dibujante): void{
         let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
-        // vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
+        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
-        console.log(vectorVelocidad);      
         dibujante.trazarVector(vectorVelocidad);
     }
     public rellenar(dibujante: Dibujante): void{
@@ -76,7 +81,7 @@ export class Cuerpo extends Forma{
     }
     static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number= 1, velocidad?: Vector){
         let rect: Forma = super.rectangulo(x, y, base, altura);
-        let rectangulo: Cuerpo = new Cuerpo(x, y, 4, rect.radio);
+        let rectangulo: Cuerpo = new Cuerpo(x, y, 4, rect.radio, masa, densidad, velocidad);
         rectangulo.vertices = rect.vertices;
         rectangulo.id = "poligono";
         return rectangulo;
@@ -88,17 +93,22 @@ export class Cuerpo extends Forma{
         circunferencia.lados = circulo.lados;
         return circunferencia;
     }
-    public actualizarMovimiento(): void{
+    public mover(): void{
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-        this.mover(this._velocidad);
+        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+        this.actualizarTransformacion();
     }
-    public mover(vector: Vector): void{
-        super.mover(vector);
-    }
-    public rotar(angulo: number): void {
-        super.rotar(angulo);
-    }
-    public escalar(escala: number): void {
-        super.escalar(escala);
+    public actualizarTransformacion(): void{
+        if(this._rotarSegunVelocidad == true){
+            let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
+            let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
+            let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - anguloVerticeCero;
+            this._transformacion.rotacion += anguloTransformacionVelocidad;
+            super.aplicarTransformacion();
+            this._transformacion.rotacion -= anguloTransformacionVelocidad;
+        }
+        else{
+            this.aplicarTransformacion();
+        }
     }
 }

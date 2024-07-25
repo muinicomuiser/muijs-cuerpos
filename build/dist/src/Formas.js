@@ -35,11 +35,13 @@ export class Forma {
         return Vector.clonarConjunto(this._vertices);
     }
     get verticesTransformados() {
-        this.aplicarTransformacion();
-        return this._verticesTransformados;
+        return Vector.clonarConjunto(this._verticesTransformados);
     }
     get transformacion() {
         return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion, this._transformacion.escala);
+    }
+    get rotacion() {
+        return this._transformacion.rotacion;
     }
     set id(nuevaId) {
         this._id = nuevaId;
@@ -49,6 +51,9 @@ export class Forma {
     }
     set escala(nuevaEscala) {
         this._transformacion.escala = nuevaEscala;
+    }
+    set rotacion(rotacion) {
+        this._transformacion.rotacion = rotacion;
     }
     set lados(numeroLados) {
         this._lados = numeroLados;

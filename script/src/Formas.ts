@@ -44,11 +44,13 @@ export class Forma{
         return Vector.clonarConjunto(this._vertices);
     }
     get verticesTransformados(): Vector[]{
-        this.aplicarTransformacion();
-        return this._verticesTransformados;
+        return Vector.clonarConjunto(this._verticesTransformados);
     }
     get transformacion(): Transformacion{
         return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion, this._transformacion.escala);
+    }
+    get rotacion(): number{
+        return this._transformacion.rotacion;
     }
     set id(nuevaId: string){
         this._id = nuevaId;
@@ -58,6 +60,9 @@ export class Forma{
     }
     set escala(nuevaEscala: number){
         this._transformacion.escala = nuevaEscala;
+    }
+    set rotacion(rotacion: number){
+        this._transformacion.rotacion = rotacion;
     }
     set lados(numeroLados: number){
         this._lados = numeroLados;
@@ -150,7 +155,7 @@ export class Forma{
         trazo.lados = vertices.length - 1;
         return trazo;
     }
-    private aplicarTransformacion(): void{
+    protected aplicarTransformacion(): void{
         this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
     }
     public rotar(angulo: number): void{

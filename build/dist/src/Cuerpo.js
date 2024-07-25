@@ -1,8 +1,8 @@
 import { Forma } from "./Formas.js";
-import { Matematica } from "./Matematica.js";
 import { Vector } from "./Vector.js";
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
+//Buscar un modo de anclar un vértice a otro vector. Así se puede acoplar un ala a otro cuerpo. Método anclar(vector)
 export class Cuerpo extends Forma {
     constructor(x, y, lados = 0, radio = 0, masa = 1, densidad = 1, velocidad = Vector.cero()) {
         super(x, y, lados, radio);
@@ -12,10 +12,13 @@ export class Cuerpo extends Forma {
         this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
         this._fijo = false;
+        this._rotarSegunVelocidad = false;
     }
     ///REVISAR
-    setearRotacinVelocidad() {
-        this._transformacion.rotacion = Vector.angulo(this._velocidad) - Matematica.PI;
+    setearRotacionVelocidad() {
+        let vectorVerticeCero = Vector.segunPuntos({ x: 0, y: 0 }, this._vertices[0]);
+        let anguloVerticeCero = Vector.angulo(vectorVerticeCero);
+        this._transformacion.rotacion = Vector.angulo(this._velocidad) - anguloVerticeCero;
     }
     get fijo() {
         return this._fijo;
@@ -34,7 +37,6 @@ export class Cuerpo extends Forma {
     }
     set velocidad(velocidad) {
         this._velocidad = Vector.clonar(velocidad);
-        this.setearRotacinVelocidad();
     }
     set aceleracion(aceleracion) {
         this._aceleracion = Vector.clonar(aceleracion);
@@ -44,16 +46,18 @@ export class Cuerpo extends Forma {
     }
     set escala(escala) {
         this.transformacion.escala = escala;
+        super.escalar(escala);
+    }
+    set rotarSegunVelocidad(opcion) {
+        this._rotarSegunVelocidad = opcion;
     }
     trazar(dibujante) {
         dibujante.trazar(this);
     }
     trazarVelocidad(dibujante) {
         let vectorVelocidad = Vector.clonar(this._velocidad);
-        // vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
+        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
-        console.log(vectorVelocidad);
         dibujante.trazarVector(vectorVelocidad);
     }
     rellenar(dibujante) {
@@ -67,7 +71,7 @@ export class Cuerpo extends Forma {
     }
     static rectangulo(x, y, base, altura, masa = 1, densidad = 1, velocidad) {
         let rect = super.rectangulo(x, y, base, altura);
-        let rectangulo = new Cuerpo(x, y, 4, rect.radio);
+        let rectangulo = new Cuerpo(x, y, 4, rect.radio, masa, densidad, velocidad);
         rectangulo.vertices = rect.vertices;
         rectangulo.id = "poligono";
         return rectangulo;
@@ -79,17 +83,22 @@ export class Cuerpo extends Forma {
         circunferencia.lados = circulo.lados;
         return circunferencia;
     }
-    actualizarMovimiento() {
+    mover() {
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-        this.mover(this._velocidad);
+        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+        this.actualizarTransformacion();
     }
-    mover(vector) {
-        super.mover(vector);
-    }
-    rotar(angulo) {
-        super.rotar(angulo);
-    }
-    escalar(escala) {
-        super.escalar(escala);
+    actualizarTransformacion() {
+        if (this._rotarSegunVelocidad == true) {
+            let vectorVerticeCero = Vector.segunPuntos({ x: 0, y: 0 }, this._vertices[0]);
+            let anguloVerticeCero = Vector.angulo(vectorVerticeCero);
+            let anguloTransformacionVelocidad = Vector.angulo(this._velocidad) - anguloVerticeCero;
+            this._transformacion.rotacion += anguloTransformacionVelocidad;
+            super.aplicarTransformacion();
+            this._transformacion.rotacion -= anguloTransformacionVelocidad;
+        }
+        else {
+            this.aplicarTransformacion();
+        }
     }
 }
