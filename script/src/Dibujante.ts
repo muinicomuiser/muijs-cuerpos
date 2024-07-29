@@ -148,5 +148,5 @@ export class Dibujante{
         for (let vertice of forma.verticesTransformados){
             this._context.lineTo(vertice.x, vertice.y);
         }
-    }
+    }    
 }

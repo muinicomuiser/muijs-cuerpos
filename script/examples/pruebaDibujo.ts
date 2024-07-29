@@ -35,40 +35,40 @@ function crearAtractores(cuerpo: Cuerpo): Cuerpo[]{
 }
 let escalita: number = 5;
 let escalador: number = 0.01;
-// window.addEventListener("load", ()=>{
-//     let dibujante: Dibujante = new Dibujante(CONTEXT);
-//     dibujante.grosorTrazo = 1;
-//     function prueba(){
-//         CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
-//         dibujante.color = Dibujante.colorHSL(300, 100, 40);
-//         if(escalita > 6){
-//             escalador = Matematica.absoluto(escalador) * -1;
-//         }
-//         if(escalita < 4){
-//             escalador = Matematica.absoluto(escalador);
-//         }
-//         escalita += escalador;
-//         for(let i in atractores){
-//             atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Matematica.gradoARadian(-1));
-//             atractores[i].actualizarMovimiento();
-//             atractores[i].rellenar(dibujante);
-//         }
-//         dibujante.color = Dibujante.colorHSL(200, 100, 40);
-//         for(let cuerpito of cuerpos){
-//             cuerpito.aceleracion = Vector.cero();
-//             for(let atractor of atractores){
-//                 let vectorAtraccion: Vector = Vector.segunPuntos(cuerpito.posicion, atractor.posicion);
-//                 vectorAtraccion = Vector.escalar(Vector.normalizar(vectorAtraccion), 0.2);
-//                 cuerpito.aceleracion = Vector.suma(vectorAtraccion, cuerpito.aceleracion);
-//             }
-//             cuerpito.escalar(escalita);
-//             cuerpito.actualizarMovimiento();
-//             cuerpito.trazar(dibujante);
-//         }
-//         requestAnimationFrame(prueba)
-//         }
-//     prueba();
+window.addEventListener("load", ()=>{
+    let dibujante: Dibujante = new Dibujante(CONTEXT);
+    dibujante.grosorTrazo = 1;
+    function prueba(){
+        CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
+        dibujante.color = Dibujante.colorHSL(300, 100, 40);
+        if(escalita > 6){
+            escalador = Matematica.absoluto(escalador) * -1;
+        }
+        if(escalita < 4){
+            escalador = Matematica.absoluto(escalador);
+        }
+        escalita += escalador;
+        for(let i in atractores){
+            atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Matematica.gradoARadian(-1));
+            atractores[i].mover();
+            atractores[i].rellenar(dibujante);
+        }
+        dibujante.color = Dibujante.colorHSL(200, 100, 40);
+        for(let cuerpito of cuerpos){
+            cuerpito.aceleracion = Vector.cero();
+            for(let atractor of atractores){
+                let vectorAtraccion: Vector = Vector.segunPuntos(cuerpito.posicion, atractor.posicion);
+                vectorAtraccion = Vector.escalar(Vector.normalizar(vectorAtraccion), 0.2);
+                cuerpito.aceleracion = Vector.suma(vectorAtraccion, cuerpito.aceleracion);
+            }
+            cuerpito.escalar(escalita);
+            cuerpito.mover();
+            cuerpito.trazar(dibujante);
+        }
+        requestAnimationFrame(prueba)
+        }
+    prueba();
 
-// })
+})
 
 
