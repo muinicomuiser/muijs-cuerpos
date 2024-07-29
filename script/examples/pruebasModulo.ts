@@ -90,4 +90,4 @@ function vectores(): void{
 // console.log(poligonoUno.centro);
 // poligonoUno.rotarSegunCentro(Matematica.gradoARadian(2));
 
-console.log(Matematica.raiz(-49, 2))
+console.log(Matematica.divisionSegura(0, 40))

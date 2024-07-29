@@ -1,1 +1,1 @@
-Módulo nicograf.js [MR]
+Módulo nicograf[MR]

@@ -75,7 +75,7 @@ export class Matematica{
     */
     static truncar(numero: number, decimales: number):number{
         if(decimales < 0){
-            throw new Error("El método truncar solo acepta números entre 0 y 100")
+            throw new Error("El método .truncar solo acepta números entre 0 y 100")
         }
         // let dec: number = Matematica.parteEntera(decimales);
         let dec: number = Matematica.sumaSegura(decimales, - Matematica.parteDecimal(decimales));
@@ -138,7 +138,7 @@ export class Matematica{
             return 0;
         }
         else if(numero2 == 0){
-            throw new Error("El módulo Matematica no permite divisiones por cero");
+            throw new Error("El método .divisionSegura no permite divisiones por cero");
         }
         else if((numero1.toString().length + numero2.toString().length) < (numero1/numero2).toString().length){
             // return (numero1*10) / (numero2*10)
@@ -169,6 +169,9 @@ export class Matematica{
     static raiz(radicando: number, indice: number): number{
         if(radicando < 0 && indice % 2 == 0){
             throw new Error("El método .raiz solo trabaja con números reales. No responde a la raíz par de un número negativo.")
+        }
+        if(indice == 0){
+            throw new Error("El método .raiz no contempla el uso de un índice igual a cero en una raíz.")
         }
         return radicando **Matematica.divisionSegura(1, indice);
     }
