@@ -119,6 +119,22 @@ function probarAleatorio(){
     aleatorio = Matematica.parteDecimal(aleatorio);
     console.log(aleatorio)
 }
-for(let i: number = 0; i < 10; i++){
-    console.log(Matematica.parteEntera(Matematica.aleatorio(0, 500)))
+let aleatorios: number[] = []
+let min: number = 0;
+let max: number = 100;
+let suma: number = 0;
+let repeticiones: number = 1;
+console.log(new Date())
+for(let i: number = 0; i < repeticiones; i++){
+    let aleatorio: number = Matematica.aleatorioEntero(min, max);
+    // let aleatorio: number = Math.random();
+    if(aleatorio == min || aleatorio == max){
+        // console.log(aleatorio, " es límite.")
+    }
+    suma+= aleatorio;
+    aleatorios.push(aleatorio);
 }
+// console.log(Math.random())
+console.log(new Date())
+// console.log(aleatorios)
+console.log("promedio: ", Matematica.divisionSegura(suma, repeticiones))
