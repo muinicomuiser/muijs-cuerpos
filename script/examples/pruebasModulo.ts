@@ -90,4 +90,35 @@ function vectores(): void{
 // console.log(poligonoUno.centro);
 // poligonoUno.rotarSegunCentro(Matematica.gradoARadian(2));
 
-console.log(Matematica.divisionSegura(0, 40))
+function generarAleatorio(){
+    let aleatorio: number = 0;
+    for(let i: number = 0; i < 10000; i++){
+        let unidades: number = 1234567890;
+        let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
+        numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
+        let selector: number = (Date.now() % 10) + 1;
+        unidades = unidades / (10**(selector+1));
+        aleatorio += numero * unidades;
+    } 
+    aleatorio = Matematica.parteDecimal(aleatorio);
+    console.log(aleatorio)   
+    console.log(Date.now())
+}
+
+    
+function probarAleatorio(){
+    let aleatorio: number = 0;
+    for(let i: number = 0; i < 25; i++){
+        let unidades: number = 1234567890;
+        let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
+        numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
+        let selector: number = (Date.now() % 10) + 1;
+        unidades = unidades / (10**(selector+1));
+        aleatorio += numero * unidades;
+    } 
+    aleatorio = Matematica.parteDecimal(aleatorio);
+    console.log(aleatorio)
+}
+for(let i: number = 0; i < 10; i++){
+    console.log(Matematica.parteEntera(Matematica.aleatorio(0, 500)))
+}

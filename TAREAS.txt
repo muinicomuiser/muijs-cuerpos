@@ -3,3 +3,5 @@
 - Revisar getters y setters, simplificar métodos de aplicación de transformaciones.
 - Simplificar. Que a todas las funcionalidades de trabajo con cuerpos se pueda acceder por medio de una o dos instancias y módulos.
 - Organizar en carpetas por jerarquías o utilidades.
+
+*Propuesta de estructura

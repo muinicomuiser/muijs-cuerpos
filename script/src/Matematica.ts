@@ -59,7 +59,26 @@ export class Matematica{
         return parseFloat(num);
     }
     
-    
+
+    /**Retorna un número aleatorio dentro del rango ingresado.*/
+    static aleatorio(min: number, max: number): number{
+        let aleatorio: number = 0;
+        for(let i: number = 0; i < 10000; i++){
+            let unidades: number = 1234567890;
+            let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
+            numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
+            let selector: number = (Date.now() % 10) + 1;
+            unidades = unidades / (10**(selector+1));
+            aleatorio += numero * unidades;
+        } 
+        aleatorio = Matematica.parteDecimal(aleatorio);
+        let rango = Matematica.sumaSegura(max, -min);
+        aleatorio = Matematica.multiplicacionSegura(aleatorio, rango);
+        aleatorio = Matematica.sumaSegura(aleatorio, min);
+        return aleatorio;
+    }
+
+
     /**Retorna 1 si el número es positivo, -1 si es negativo y 0 cuando el número es 0.*/
     static signo(numero: number): number{
         let signo: number;
