@@ -184,9 +184,6 @@ export class Matematica{
                 return ((numero1*10000000)*(numero2*10000000))/100000000000000;
             }
         }
-        // if((numero1.toString().length + numero2.toString().length) < (numero1*numero2).toString().length){
-        //     return ((numero1*10)*(numero2*10))/100;
-        // }
         return numero1*numero2;
     }
 
@@ -214,7 +211,7 @@ export class Matematica{
     */
     static sumaSegura(numero1: number, numero2: number): number{
         if((numero1.toString().length + numero2.toString().length) < (numero1 + numero2).toString().length){
-            return ((numero1*10) + (numero2*10))/10;
+            return Matematica.divisionSegura((numero1*10) + (numero2*10), 10);
         }
         return numero1 + numero2;
     }
@@ -263,7 +260,7 @@ export class Matematica{
 
     /**Retorna la longitud de un cateto según la longitud de la hipotenusa y del otro cateto.*/
     static cateto(hipotenusa: number, cateto: number){
-        let cateto2: number = Matematica.raiz(hipotenusa**2 - cateto**2, 2);
+        let cateto2: number = Matematica.raiz(Matematica.sumaSegura(hipotenusa**2, -(cateto**2)), 2);
         return cateto2;
     }
 
@@ -271,14 +268,18 @@ export class Matematica{
     //COORDENADAS
     /**Retorna el valor de la distancia entre dos puntos de un plano cartesiano.*/
     static distanciaEntrePuntos(puntoUno: Punto, puntoDos: Punto): number{
-        let distancia = Matematica.hipotenusa(puntoDos.x - puntoUno.x, puntoDos.y - puntoUno.y);
+        let distanciaX: number = Matematica.sumaSegura(puntoDos.x, -puntoUno.x)
+        let distanciaY: number = Matematica.sumaSegura(puntoDos.y, -puntoUno.y)
+        let distancia = Matematica.hipotenusa(distanciaX, distanciaY);
         return distancia;
     }
 
 
     /**Retorna el punto medio entre dos puntos de un plano cartesiano.*/
     static puntoMedio(puntoUno: Punto, puntoDos: Punto): Punto{
-        let puntoMedio: Punto = {x: puntoUno.x/2 + puntoDos.x/2, y: puntoUno.y/2 + puntoDos.y/2};
+        let medioX: number = Matematica.sumaSegura(Matematica.divisionSegura(puntoUno.x, 2), Matematica.divisionSegura(puntoDos.x, 2));
+        let medioY: number = Matematica.sumaSegura(Matematica.divisionSegura(puntoUno.y, 2), Matematica.divisionSegura(puntoDos.y, 2));
+        let puntoMedio: Punto = {x: medioX, y: medioY};
         return puntoMedio;
     }
 }
