@@ -106,35 +106,16 @@ function generarAleatorio(){
 }
 
     
-function probarAleatorio(){
-    let aleatorio: number = 0;
-    for(let i: number = 0; i < 25; i++){
-        let unidades: number = 1234567890;
-        let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
-        numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
-        let selector: number = (Date.now() % 10) + 1;
-        unidades = unidades / (10**(selector+1));
-        aleatorio += numero * unidades;
-    } 
-    aleatorio = Matematica.parteDecimal(aleatorio);
-    console.log(aleatorio)
-}
-let aleatorios: number[] = []
-let min: number = 0;
-let max: number = 100;
-let suma: number = 0;
-let repeticiones: number = 1;
-console.log(new Date())
-for(let i: number = 0; i < repeticiones; i++){
-    let aleatorio: number = Matematica.aleatorioEntero(min, max);
-    // let aleatorio: number = Math.random();
-    if(aleatorio == min || aleatorio == max){
-        // console.log(aleatorio, " es límite.")
+function pruebaDecimales(){
+    let repeticiones: number = 500;
+    let resultados: number[] = [];
+    for(let i: number = 0; i <= repeticiones; i++){
+        // let multiplo: number = Matematica.multiplicacionSegura(1.000002, i)
+        // resultados.push(Matematica.truncar(multiplo, 15));
+        // resultados.push(multiplo);
+        resultados.push(Matematica.aleatorio(-1000, 1000));
     }
-    suma+= aleatorio;
-    aleatorios.push(aleatorio);
+    console.log(resultados);
 }
-// console.log(Math.random())
-console.log(new Date())
-// console.log(aleatorios)
-console.log("promedio: ", Matematica.divisionSegura(suma, repeticiones))
+
+pruebaDecimales()

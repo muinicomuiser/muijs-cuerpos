@@ -40,8 +40,10 @@ export class Matematica{
      *lo aproximará automáticamente. Pueden ocurrir cosas raras con más de 15 decimales.
     */
     static parteEntera(numero: number): number{
-        let numeroPrueba: number = Matematica.sumaSegura(numero, - Matematica.parteDecimal(numero));
-        return numeroPrueba;
+        let numString: string = numero.toPrecision(15);
+        numString = numString.split('.')[0];
+        return parseFloat(numString)
+        //Checkeado
         //ANOTACIÓN
         //Para cualquier número con más de 15 decimales que podría ser aproximado al número superior, typescript
         //lo aproximará automáticamente.
@@ -49,14 +51,17 @@ export class Matematica{
     
     
     /**Retorna la parte decimal de cualquier número real.*/
-    static parteDecimal(numero: number):number{
-        let num: string = "0" + numero;
-        num = num.split(".")[1];
-        num = "0." + num;        
-        if(numero < 0 && parseFloat(num) > 0){
-            return -parseFloat(num)
+    static parteDecimal(numero: number): number{
+        let num: string = numero.toPrecision(15);
+        if(num.split(".")[1]){
+            let decimales: number = parseFloat("0." + num.split(".")[1])
+            if(numero < 0){
+                return -decimales;
+            }
+            return decimales;
         }
-        return parseFloat(num);
+        return 0;
+        //Checkeado
     }
     
 
@@ -68,10 +73,12 @@ export class Matematica{
             let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
             numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
             let selector: number = (Date.now() % 10) + 1;
-            unidades = unidades / (10**(selector+1));
-            aleatorio += numero * unidades;
+            unidades = Matematica.divisionSegura(unidades, Matematica.potencia(10, Matematica.sumaSegura(selector, 1)));
+            aleatorio = Matematica.sumaSegura(aleatorio, Matematica.multiplicacionSegura(numero, unidades));
         } 
-        aleatorio = Matematica.parteDecimal(aleatorio);
+        // aleatorio = Matematica.parteDecimal(aleatorio);
+        aleatorio = aleatorio - Matematica.parteEntera(aleatorio);
+        aleatorio = Matematica.truncar(aleatorio, 15)
         let rango = Matematica.sumaSegura(max, -min);
         aleatorio = Matematica.multiplicacionSegura(aleatorio, rango);
         aleatorio = Matematica.sumaSegura(aleatorio, min);
@@ -90,11 +97,12 @@ export class Matematica{
             unidades = unidades / (10**(selector+1));
             aleatorio += numero * unidades;
         } 
-        aleatorio = Matematica.parteDecimal(aleatorio);
+        aleatorio = aleatorio - Matematica.parteEntera(aleatorio);
+        aleatorio = Matematica.truncar(aleatorio, 15)
         let rango = Matematica.sumaSegura(max, -min);
         aleatorio = Matematica.multiplicacionSegura(aleatorio, rango);
         aleatorio = Matematica.sumaSegura(aleatorio, min);
-        return Matematica.redondear(aleatorio, 0);
+        return Matematica.parteEntera(aleatorio);
     }
 
 
@@ -116,19 +124,10 @@ export class Matematica{
             throw new Error("El método .truncar solo acepta números entre 0 y 100")
         }
         // let dec: number = Matematica.parteEntera(decimales);
-        let dec: number = Matematica.sumaSegura(decimales, - Matematica.parteDecimal(decimales));
+        let dec: number = Matematica.sumaSegura(decimales, -Matematica.parteDecimal(decimales));
         let numString: string = numero.toFixed(dec + 1);
         let num: number = parseFloat(numString.slice(0, -1));
         return num;
-    }
-
-
-    /**Retorna el valor absoluto de cualquier número real.*/
-    static absoluto(numero: number): number{
-        if(numero < 0){
-            return -numero;
-        }
-        return numero;
     }
 
 
@@ -143,6 +142,13 @@ export class Matematica{
         num = parseFloat(num).toFixed(decimales);
         return parseFloat(num);
     }
+    /**Retorna el valor absoluto de cualquier número real.*/
+    static absoluto(numero: number): number{
+        if(numero < 0){
+            return -numero;
+        }
+        return numero;
+    }
 
 
     /**Retorna true o false dependiendo de si los números ingresados son iguales o no.
@@ -150,7 +156,7 @@ export class Matematica{
      * defecto el rango de Number.EPSILON (2.220446049250313e-16)
     */
     static comparar(a: number, b: number, tolerancia: number = Number.EPSILON){
-        return (Matematica.absoluto(a - b) < tolerancia) 
+        return (Matematica.absoluto(Matematica.sumaSegura(a, -b)) < tolerancia) 
     }
 
 
@@ -161,9 +167,26 @@ export class Matematica{
         if(numero1 == 0 || numero2 == 0){
             return 0;
         }
-        if(3*(numero1.toString(10).length + numero2.toString(10).length) < (numero1*numero2).toString(10).length){
-            return ((numero1*10)*(numero2*10))/100;
+        let num1string: string = (numero1.toString());
+        let num2string: string = (numero2.toString());
+        if(num1string.split(".")[1] && num2string.split(".")[1]){
+            if((num1string.length + num2string.length) < (numero1*numero2).toString().length){
+                return ((numero1*10000000)*(numero2*10000000))/100000000000000;
+            }
         }
+        else if(num1string.split(".")[1]){
+            if((num1string.length + num2string.length) < (numero1*numero2).toString().length){
+                return ((numero1*10000000)*(numero2*10000000))/100000000000000;
+            }
+        }
+        else if(num2string.split(".")[1]){
+            if((num1string.length + num2string.length) < (numero1*numero2).toString().length){
+                return ((numero1*10000000)*(numero2*10000000))/100000000000000;
+            }
+        }
+        // if((numero1.toString().length + numero2.toString().length) < (numero1*numero2).toString().length){
+        //     return ((numero1*10)*(numero2*10))/100;
+        // }
         return numero1*numero2;
     }
 
