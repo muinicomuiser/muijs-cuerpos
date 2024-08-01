@@ -29,7 +29,6 @@ export class Vector{
         this._origen = {x: origen.x, y: origen.y};
     }
     static magnitud(vector: Vector): number{
-            // return (vector.x**2 + vector.y**2)**(1/2)
             return Matematica.raiz(Matematica.suma(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2)
         }
         //REVISARRRRRRRRRRRRRRRR
@@ -80,7 +79,6 @@ export class Vector{
         return new Vector(x, y)
     }
     static suma(vectorUno: Vector, vectorDos: Vector): Vector{
-        // let vectorSuma: Vector = new Vector((vectorUno.x + vectorDos.x), (vectorUno.y + vectorDos.y));
         let vectorSuma: Vector = new Vector(Matematica.suma(vectorUno.x, vectorDos.x), Matematica.suma(vectorUno.y, vectorDos.y));
         return vectorSuma;
     }

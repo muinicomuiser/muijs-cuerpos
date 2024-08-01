@@ -127,7 +127,6 @@ export class Matriz{
         for(let i in matriz){
             matrizEscalada.push([]);
             for(let elemento of matriz[i]){
-                // matrizEscalada[i].push(elemento*escalar);
                 matrizEscalada[i].push(Matematica.multiplicacion(elemento, escalar));
             }
         }

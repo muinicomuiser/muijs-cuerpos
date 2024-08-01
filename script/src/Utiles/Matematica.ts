@@ -255,12 +255,6 @@ export class Matematica{
             return entero + decimal;
         }
         return entero;
-
-        // if((numero1.toString().length + numero2.toString().length) < (numero1 + numero2).toString().length){
-        //     return Matematica.divisionSegura((Matematica.multiplicacion(numero1, 1000000)) + (Matematica.multiplicacion(numero2, 1000000)), 1000000);
-        // }
-        // return Matematica.divisionSegura((Matematica.multiplicacion(numero1, 10000)) + (Matematica.multiplicacion(numero2, 10000)), 10000);
-        // // return numero1 + numero2;
     }
 
 
