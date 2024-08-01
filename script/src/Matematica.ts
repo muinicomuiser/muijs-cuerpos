@@ -68,41 +68,59 @@ export class Matematica{
     /**Retorna un número aleatorio dentro del rango ingresado.*/
     static aleatorio(min: number, max: number): number{
         let aleatorio: number = 0;
-        for(let i: number = 0; i < 10000; i++){
-            let unidades: number = 1234567890;
+        for(let i: number = 0; i < 111; i++){
+            let unidades: number = 9518462378;
             let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
-            numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
-            let selector: number = (Date.now() % 10) + 1;
-            unidades = Matematica.divisionSegura(unidades, Matematica.potencia(10, Matematica.sumaSegura(selector, 1)));
+            numero = Matematica.multiplicacionSegura(numero, Matematica.PHI);
+            let selector: number = Matematica.sumaSegura((Date.now() % 10), 1);
+            unidades = Matematica.divisionSegura(unidades, (10**(selector)));
             aleatorio = Matematica.sumaSegura(aleatorio, Matematica.multiplicacionSegura(numero, unidades));
+            aleatorio = Matematica.sumaSegura(aleatorio, -Matematica.parteEntera(aleatorio))
+            aleatorio = Matematica.truncar(aleatorio, 15)
         } 
-        // aleatorio = Matematica.parteDecimal(aleatorio);
-        aleatorio = aleatorio - Matematica.parteEntera(aleatorio);
         aleatorio = Matematica.truncar(aleatorio, 15)
-        let rango = Matematica.sumaSegura(max, -min);
-        aleatorio = Matematica.multiplicacionSegura(aleatorio, rango);
-        aleatorio = Matematica.sumaSegura(aleatorio, min);
-        return aleatorio;
+        aleatorio = Matematica.parteDecimal(aleatorio);
+        let rango: number;
+        if(min < 0){
+            rango = Matematica.sumaSegura(max, Matematica.absoluto(min));
+        }
+        else if(min > 0){
+            rango  = Matematica.sumaSegura(max, -min);
+        }        
+        else if(min == 0){
+            rango = max;
+        }
+        aleatorio = Matematica.multiplicacionSegura(aleatorio, rango!);
+        return Matematica.sumaSegura(aleatorio, min);
     }
 
 
     /**Retorna un número entero aleatorio dentro del rango ingresado.*/
     static aleatorioEntero(min: number, max: number): number{
         let aleatorio: number = 0;
-        for(let i: number = 0; i < 2000; i++){
-            let unidades: number = 1234567890;
+        for(let i: number = 0; i < 111; i++){
+            let unidades: number = 1234567891;
             let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
             numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
-            let selector: number = (Date.now() % 10) + 1;
-            unidades = unidades / (10**(selector+1));
-            aleatorio += numero * unidades;
+            let selector: number = Matematica.sumaSegura((Date.now() % 10), 1);
+            unidades = Matematica.divisionSegura(unidades, (10**(selector)));
+            aleatorio = Matematica.sumaSegura(aleatorio, Matematica.multiplicacionSegura(numero, unidades));
         } 
-        aleatorio = aleatorio - Matematica.parteEntera(aleatorio);
         aleatorio = Matematica.truncar(aleatorio, 15)
-        let rango = Matematica.sumaSegura(max, -min);
-        aleatorio = Matematica.multiplicacionSegura(aleatorio, rango);
-        aleatorio = Matematica.sumaSegura(aleatorio, min);
-        return Matematica.parteEntera(aleatorio);
+        aleatorio = Matematica.parteDecimal(aleatorio);
+        let rango: number;
+        if(min < 0){
+            rango = Matematica.sumaSegura(max + 1, Matematica.absoluto(min));
+        }
+        else if(min > 0){
+            rango  = Matematica.sumaSegura(max + 1, -min);
+        }        
+        else if(min == 0){
+            rango = max +2;
+        }
+        aleatorio = Matematica.multiplicacionSegura(aleatorio, rango!);
+        aleatorio = Matematica.parteEntera(aleatorio);
+        return Matematica.sumaSegura(aleatorio, min);
     }
 
 
@@ -210,10 +228,32 @@ export class Matematica{
      * como el caso típico 0.1 + 0.2 = 0.30000000000000004;
     */
     static sumaSegura(numero1: number, numero2: number): number{
-        if((numero1.toString().length + numero2.toString().length) < (numero1 + numero2).toString().length){
-            return Matematica.divisionSegura((numero1*10) + (numero2*10), 10);
+        let numUnoString: string = numero1.toPrecision(15).split('.')[0];
+        let numDosString: string = numero2.toPrecision(15).split('.')[0];
+        let entero: number = parseFloat(numUnoString) + parseFloat(numDosString);
+        if(numero1.toPrecision(15).split('.')[1] && numero2.toPrecision(15).split('.')[1]){
+            let decimalUnoString: string = "0." + numero1.toPrecision(15).split('.')[1];
+            let decimalDosString: string = "0." + numero2.toPrecision(15).split('.')[1];
+            let decimal: number = (parseFloat(decimalUnoString)*1000000000 + parseFloat(decimalDosString)*1000000000)/1000000000;
+            return entero + decimal;
         }
-        return numero1 + numero2;
+        else if(numero1.toPrecision(15).split('.')[1]){
+            let decimalUnoString: string = "0." + numero1.toPrecision(15).split('.')[1];
+            let decimal: number = parseFloat(decimalUnoString);
+            return entero + decimal;
+        }
+        else if(numero2.toPrecision(15).split('.')[1]){
+            let decimalDosString: string = "0." + numero2.toPrecision(15).split('.')[1];
+            let decimal: number = parseFloat(decimalDosString);
+            return entero + decimal;
+        }
+        return entero;
+
+        // if((numero1.toString().length + numero2.toString().length) < (numero1 + numero2).toString().length){
+        //     return Matematica.divisionSegura((Matematica.multiplicacionSegura(numero1, 1000000)) + (Matematica.multiplicacionSegura(numero2, 1000000)), 1000000);
+        // }
+        // return Matematica.divisionSegura((Matematica.multiplicacionSegura(numero1, 10000)) + (Matematica.multiplicacionSegura(numero2, 10000)), 10000);
+        // // return numero1 + numero2;
     }
 
 

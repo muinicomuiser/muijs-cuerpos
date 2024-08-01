@@ -47,18 +47,6 @@ export class Vector{
         else{
             return 0
         }
-        // if(vector.x == 0 && vector.y > 0){
-        //     return Matematica.PI * 0.5;
-        // }
-        // else if (vector.x == 0 && vector.y < 0){
-        //     return Matematica.PI * 1.5;
-        // }
-        // else if (vector.x == 0 && vector.y == 0){
-        //     return Matematica.PI * 0.5;
-        // }
-        // else {
-        //     return Math.atan(vector.y / vector.x)
-        // }
     }
     static cero(): Vector{
         return new Vector(0, 0);

@@ -106,16 +106,66 @@ function generarAleatorio(){
 }
 
     
-function pruebaDecimales(){
-    let repeticiones: number = 500;
+/**Me gusta cómo quedó esta prueba */
+function pruebaAleatorioEnteroRango(){
+    let repeticiones: number = 50000;
     let resultados: number[] = [];
-    for(let i: number = 0; i <= repeticiones; i++){
-        // let multiplo: number = Matematica.multiplicacionSegura(1.000002, i)
-        // resultados.push(Matematica.truncar(multiplo, 15));
-        // resultados.push(multiplo);
-        resultados.push(Matematica.aleatorio(-1000, 1000));
+    let min: number = -1;
+    let max: number = 2;
+    let a: number = 0;
+    let b: number = 0;
+    let c: number = 0;
+    let d: number = 0;
+    console.log(new Date())
+    for(let i: number = 0; i < repeticiones; i++){
+        let aleatorio: number = Matematica.aleatorioEntero(min, max);
+        if(aleatorio == min){
+            a++
+        }
+        if(aleatorio == min+1){
+            b++
+        }
+        if(aleatorio == max-1){
+            c++
+        }
+        if(aleatorio == max){
+            d++
+        }
+        resultados.push(aleatorio)
+        if(aleatorio == min-1 || aleatorio == max+1){
+            console.log(aleatorio)
+        }
     }
-    console.log(resultados);
+    console.log(new Date())
+    console.log(`${min}:`, a, `${min+1}:`, b, `${max-1}:`, c,  `${max}:`, d)
+    console.log(resultados)
 }
+// pruebaAleatorioEnteroRango()
 
-pruebaDecimales()
+
+function pruebaAleatorioRango(){
+    let repeticiones: number = 1;
+    let resultados: number[] = [];
+    let min: number = 10;
+    let max: number = 20;
+    let a: number = 0;
+    let b: number = 0;
+    console.log(new Date())
+    for(let i: number = 0; i < repeticiones; i++){
+        let aleatorio: number = Matematica.aleatorio(min, max);
+        if(aleatorio < min){
+            a++
+        }
+
+        if(aleatorio > max){
+            b++
+        }
+        resultados.push(aleatorio)
+    }
+    console.log(new Date())
+    console.log("Mínimo: ", min, "Máximo: ", max)
+    console.log(`Menos que ${min}:`, a)
+    console.log(`Más que ${max}:`, b)
+    console.log(resultados)
+}
+pruebaAleatorioRango()
