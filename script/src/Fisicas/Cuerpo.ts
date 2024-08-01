@@ -14,25 +14,15 @@ export class Cuerpo extends Forma{
     _aceleracion: Vector;
     _fijo: boolean;
     _rotarSegunVelocidad: boolean;
-    protected constructor(x: number, y: number, lados: number = 0, radio: number = 0, masa: number = 1, densidad: number = 1, velocidad: Vector = Vector.cero()){
+    protected constructor(x: number, y: number, lados: number = 0, radio: number = 0, masa: number = 1, densidad: number = 1){
         super(x, y, lados, radio);
         this._masa = masa;
         this._densidad = densidad;
-        this._velocidad = velocidad;
+        this._velocidad = Vector.cero();
         this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
         this._fijo = false;
         this._rotarSegunVelocidad = false;
-    }
-    ///REVISAR
-    setearRotacionSegunVelocidad(){
-        // let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
-        // let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
-        // let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - anguloVerticeCero;
-        // this._transformacion.rotacion += anguloTransformacionVelocidad;
-        let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
-        let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
-        this._transformacion.rotacion = Vector.angulo(this._velocidad) - anguloVerticeCero;
     }
     get fijo(): boolean{
         return this._fijo;
@@ -77,22 +67,22 @@ export class Cuerpo extends Forma{
     public rellenar(dibujante: Dibujante): void{
         dibujante.rellenar(this);
     }
-    static poligono(x: number, y: number, lados: number, radio: number, masa: number = 1, densidad: number= 1, velocidad?: Vector){
+    static poligono(x: number, y: number, lados: number, radio: number, masa: number = 1, densidad: number = 1){
         let poli: Forma = super.poligono(x, y, lados, radio);
-        let poligono: Cuerpo = new Cuerpo(x, y, lados, radio, masa, densidad, velocidad);
+        let poligono: Cuerpo = new Cuerpo(x, y, lados, radio, masa, densidad);
         poligono.id = poli.id;
         return poligono; 
     }
-    static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number= 1, velocidad?: Vector){
+    static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number= 1){
         let rect: Forma = super.rectangulo(x, y, base, altura);
-        let rectangulo: Cuerpo = new Cuerpo(x, y, 4, rect.radio, masa, densidad, velocidad);
+        let rectangulo: Cuerpo = new Cuerpo(x, y, 4, rect.radio, masa);
         rectangulo.vertices = rect.vertices;
         rectangulo.id = "poligono";
         return rectangulo;
     }
     static circunferencia(x: number, y: number, radio: number, masa: number = 1, densidad: number= 1, velocidad?: Vector): Cuerpo {
         let circulo: Forma = super.circunferencia(x, y, radio);
-        let circunferencia: Cuerpo = new Cuerpo(x, y, circulo.lados, circulo.radio, masa, densidad, velocidad);
+        let circunferencia: Cuerpo = new Cuerpo(x, y, circulo.lados, circulo.radio, masa);
         circunferencia.id = circulo.id;
         circunferencia.lados = circulo.lados;
         return circunferencia;
@@ -104,13 +94,9 @@ export class Cuerpo extends Forma{
     }
     public actualizarTransformacion(): void{
         if(this._rotarSegunVelocidad == true){
-            // this.setearRotacionSegunVelocidad();
-            let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
-            let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
-            let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - anguloVerticeCero;
-            // let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
             this._transformacion.rotacion += anguloTransformacionVelocidad;
-            super.aplicarTransformacion();
+            this.aplicarTransformacion();
             this._transformacion.rotacion -= anguloTransformacionVelocidad;
         }
         else{

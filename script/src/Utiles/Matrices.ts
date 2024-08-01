@@ -97,7 +97,7 @@ export class Matriz{
             suma.push([]);
             for(let j in matrizUno[i]){
                 // suma[i].push(matrizUno[i][j] - matrizDos[i][j]);
-                suma[i].push(Matematica.sumaSegura(matrizUno[i][j], + matrizDos[i][j]));
+                suma[i].push(Matematica.suma(matrizUno[i][j], + matrizDos[i][j]));
             }
         }
         return suma;
@@ -111,7 +111,7 @@ export class Matriz{
             resta.push([]);
             for(let j in matrizUno[i]){
                 // resta[i].push(matrizUno[i][j] - matrizDos[i][j]);
-                resta[i].push(Matematica.sumaSegura(matrizUno[i][j], - matrizDos[i][j]));
+                resta[i].push(Matematica.suma(matrizUno[i][j], - matrizDos[i][j]));
             }
         }
         return resta;
@@ -128,7 +128,7 @@ export class Matriz{
             matrizEscalada.push([]);
             for(let elemento of matriz[i]){
                 // matrizEscalada[i].push(elemento*escalar);
-                matrizEscalada[i].push(Matematica.multiplicacionSegura(elemento, escalar));
+                matrizEscalada[i].push(Matematica.multiplicacion(elemento, escalar));
             }
         }
         return matrizEscalada;
@@ -144,8 +144,8 @@ export class Matriz{
         for(let i in producto){
             for(let j in producto[i]){
                 for(let posicion: number = 0; posicion < matrizUno[0].length; posicion++){
-                    let multiplicacion: number = Matematica.multiplicacionSegura(matrizUno[i][posicion], matrizDos[posicion][j]);
-                    producto[i][j] = Matematica.sumaSegura(producto[i][j], multiplicacion)
+                    let multiplicacion: number = Matematica.multiplicacion(matrizUno[i][posicion], matrizDos[posicion][j]);
+                    producto[i][j] = Matematica.suma(producto[i][j], multiplicacion)
                 }
             }
         }

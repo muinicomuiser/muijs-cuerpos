@@ -51,7 +51,7 @@ window.addEventListener("load", ()=>{
         for(let i in atractores){
             atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Matematica.gradoARadian(-1));
             atractores[i].mover();
-            // atractores[i].rellenar(dibujante);
+            atractores[i].rellenar(dibujante);
         }
         dibujante.color = Dibujante.colorHSL(150, 100, 40);
         for(let cuerpito of cuerpos){

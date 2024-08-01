@@ -49,8 +49,8 @@ function matrices(): void{
     console.log("Matriz 3x3 ", A3X3, " multiplicada por 4: ", Matriz.productoEscalar(A3X3, 0.4));
     console.log((((3*10)*(0.4*10))/100).toString(10))
     console.log((3*0.4).toString(10))
-    console.log(Matematica.multiplicacionSegura(0.1, 0.2))
-    console.log(Matematica.sumaSegura(0.01, 0.02))
+    console.log(Matematica.multiplicacion(0.1, 0.2))
+    console.log(Matematica.suma(0.01, 0.02))
     console.log((0.1 * 0.2))
     console.log("Dimensiones: ", A3X3, " == ", C2X3, ": ", Matriz.compararDimension(A3X3, C2X3));
     console.log("Dimensiones: ", A3X3, " == ", B3X3, ": ", Matriz.compararDimension(A3X3, B3X3));
@@ -95,7 +95,7 @@ function generarAleatorio(){
     for(let i: number = 0; i < 10000; i++){
         let unidades: number = 1234567890;
         let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
-        numero = Matematica.multiplicacionSegura(numero, Matematica.PI);
+        numero = Matematica.multiplicacion(numero, Matematica.PI);
         let selector: number = (Date.now() % 10) + 1;
         unidades = unidades / (10**(selector+1));
         aleatorio += numero * unidades;

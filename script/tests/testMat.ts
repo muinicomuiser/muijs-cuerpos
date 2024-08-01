@@ -69,16 +69,16 @@ console.log("Matematica.comparar()")
 console.assert(Matematica.comparar(4, 2*2) == true);
 console.log("")
 
-//Matematica.multiplicacionSegura(numero: number, numero: number)
-console.log("Matematica.multiplicacionSegura()")
-console.assert(Matematica.multiplicacionSegura(2, 2) == 4);
-console.assert(Matematica.multiplicacionSegura(2, 2.2) == 4.4);
-console.assert(Matematica.multiplicacionSegura(2, 2.222222222) == 4.444444444);
-console.assert(Matematica.multiplicacionSegura(-2, 2) == -4);
-console.assert(Matematica.multiplicacionSegura(0.2, 2) == 0.4);
-console.assert(Matematica.multiplicacionSegura(222222222, 2) == 444444444);
-console.assert(Matematica.multiplicacionSegura(99999999, 1) == 99999999);
-console.assert(Matematica.multiplicacionSegura(0.99999999, 1) == 0.99999999);
+//Matematica.multiplicacion(numero: number, numero: number)
+console.log("Matematica.multiplicacion()")
+console.assert(Matematica.multiplicacion(2, 2) == 4);
+console.assert(Matematica.multiplicacion(2, 2.2) == 4.4);
+console.assert(Matematica.multiplicacion(2, 2.222222222) == 4.444444444);
+console.assert(Matematica.multiplicacion(-2, 2) == -4);
+console.assert(Matematica.multiplicacion(0.2, 2) == 0.4);
+console.assert(Matematica.multiplicacion(222222222, 2) == 444444444);
+console.assert(Matematica.multiplicacion(99999999, 1) == 99999999);
+console.assert(Matematica.multiplicacion(0.99999999, 1) == 0.99999999);
 console.log("")
 
 //Matematica.divisionSegura(numero1: number, numero2: number): number
@@ -88,16 +88,22 @@ console.log("")
 
 
 
-//Matematica.sumaSegura(numero1: number, numero2: number): number
-console.log("Matematica.sumaSegura()")
-console.assert(Matematica.sumaSegura(2, 2) == 4)
-console.assert(Matematica.sumaSegura(0.2, 0.2) == 0.4)
-console.assert(Matematica.sumaSegura(0.02, 0.02) == 0.04)
-console.assert(Matematica.sumaSegura(2, -2) == 0)
-console.assert(Matematica.sumaSegura(9999, 2) == 10001)
-console.assert(Matematica.sumaSegura(0, 0) == 0)
+//Matematica.suma(numero1: number, numero2: number): number
+console.log("Matematica.suma()")
+console.assert(Matematica.suma(2, 2) == 4)
+console.assert(Matematica.suma(0.2, 0.2) == 0.4)
+console.assert(Matematica.suma(0.02, 0.02) == 0.04)
+console.assert(Matematica.suma(2, -2) == 0)
+console.assert(Matematica.suma(9999, 2) == 10001)
+console.assert(Matematica.suma(0, 0) == 0)
 console.log("")
+
 //Matematica.potencia(base: number, exponente: number)
+console.log("Matematica.potencia()")
+console.assert(Matematica.potencia(4, 2) == 16)
+console.assert(Matematica.potencia(4, 0) == 1)
+console.log("")
+
 
 //Matematica.raiz(radicando: number, indice: number): number
 

@@ -70,7 +70,7 @@ export class Forma{
     set radio(nuevoRadio: number){
         this._radio = nuevoRadio;
     }
-    //REVISAR
+    //REVISARRRRRRRRRRRR
     set vertices(vertices: Vector[]){
         this._vertices = Vector.clonarConjunto(vertices);
     }
