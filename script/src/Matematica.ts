@@ -78,7 +78,6 @@ export class Matematica{
             aleatorio = Matematica.sumaSegura(aleatorio, -Matematica.parteEntera(aleatorio))
             aleatorio = Matematica.truncar(aleatorio, 15)
         } 
-        aleatorio = Matematica.truncar(aleatorio, 15)
         aleatorio = Matematica.parteDecimal(aleatorio);
         let rango: number;
         if(min < 0){
@@ -105,8 +104,8 @@ export class Matematica{
             let selector: number = Matematica.sumaSegura((Date.now() % 10), 1);
             unidades = Matematica.divisionSegura(unidades, (10**(selector)));
             aleatorio = Matematica.sumaSegura(aleatorio, Matematica.multiplicacionSegura(numero, unidades));
+            aleatorio = Matematica.truncar(aleatorio, 15)
         } 
-        aleatorio = Matematica.truncar(aleatorio, 15)
         aleatorio = Matematica.parteDecimal(aleatorio);
         let rango: number;
         if(min < 0){
@@ -121,6 +120,8 @@ export class Matematica{
         aleatorio = Matematica.multiplicacionSegura(aleatorio, rango!);
         aleatorio = Matematica.parteEntera(aleatorio);
         return Matematica.sumaSegura(aleatorio, min);
+
+        //Y si hago una reiteración cada vez que encuentre un "00000" en el número que va a retornar??
     }
 
 

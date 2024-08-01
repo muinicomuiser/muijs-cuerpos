@@ -108,7 +108,7 @@ function generarAleatorio(){
     
 /**Me gusta cómo quedó esta prueba */
 function pruebaAleatorioEnteroRango(){
-    let repeticiones: number = 50000;
+    let repeticiones: number = 500;
     let resultados: number[] = [];
     let min: number = -1;
     let max: number = 2;
@@ -144,7 +144,7 @@ function pruebaAleatorioEnteroRango(){
 
 
 function pruebaAleatorioRango(){
-    let repeticiones: number = 1;
+    let repeticiones: number = 500;
     let resultados: number[] = [];
     let min: number = 10;
     let max: number = 20;
