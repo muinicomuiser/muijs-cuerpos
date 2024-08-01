@@ -1,8 +1,8 @@
-import { Matematica } from "../src/Matematica.js";
-import { Matriz } from "../src/Matrices.js";
-import { Vector } from "../src/Vector.js";
-import { Punto } from "../src/Punto.js";
-import { Forma } from "../src/Formas.js";
+import { Matematica } from "../src/Utiles/Matematica.js";
+import { Matriz } from "../src/Utiles/Matrices.js";
+import { Vector } from "../src/GeometriaPlana/Vector.js";
+import { Punto } from "../src/GeometriaPlana/Punto.js";
+import { Forma } from "../src/GeometriaPlana/Formas.js";
 //Módulo Matemática, Aritmética
 function aritmetica(): void{
     console.log(Matematica.redondear(Matematica.PI, 3));

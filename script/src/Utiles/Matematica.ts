@@ -1,4 +1,4 @@
-import { Punto } from "./Punto.js";
+import { Punto } from "../GeometriaPlana/Punto.js";
 
 /**
  * MÓDULO MATEMÁTICO EN ESPAÑOL

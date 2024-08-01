@@ -1,4 +1,4 @@
-import { Matematica } from "./Matematica.js";
+import { Matematica } from "../Utiles/Matematica.js";
 import { Punto } from "./Punto.js";
 import { Vector } from "./Vector.js";
 import { Transformacion } from "./Transformacion.js";

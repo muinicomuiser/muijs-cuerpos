@@ -1,5 +1,5 @@
 import { Matematica } from "./Matematica.js";
-import { Punto } from "./Punto.js";
+import { Punto } from "../GeometriaPlana/Punto.js";
 /**
  *Índices de la matriz de 2X2 en el arreglo.
  * * +-        -+                       +-              -+

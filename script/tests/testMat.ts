@@ -1,4 +1,4 @@
-import { Matematica } from "../src/Matematica.js";
+import { Matematica } from "../src/Utiles/Matematica.js";
 
 console.log("======| TEST DEL MÓDULO MATEMATICA |======")
 console.log("")
@@ -89,7 +89,14 @@ console.log("")
 
 
 //Matematica.sumaSegura(numero1: number, numero2: number): number
-
+console.log("Matematica.sumaSegura()")
+console.assert(Matematica.sumaSegura(2, 2) == 4)
+console.assert(Matematica.sumaSegura(0.2, 0.2) == 0.4)
+console.assert(Matematica.sumaSegura(0.02, 0.02) == 0.04)
+console.assert(Matematica.sumaSegura(2, -2) == 0)
+console.assert(Matematica.sumaSegura(9999, 2) == 10001)
+console.assert(Matematica.sumaSegura(0, 0) == 0)
+console.log("")
 //Matematica.potencia(base: number, exponente: number)
 
 //Matematica.raiz(radicando: number, indice: number): number

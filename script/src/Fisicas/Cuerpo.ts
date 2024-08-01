@@ -1,9 +1,9 @@
-import { Forma } from "./Formas.js";
-import { Matematica } from "./Matematica.js";
-import { Vector } from "./Vector.js";
-import { Punto } from "./Punto.js";
-import { Dibujante } from "./Dibujante.js";
-import { Transformacion } from "./Transformacion.js";
+import { Forma } from "../GeometriaPlana/Formas.js";
+import { Matematica } from "../Utiles/Matematica.js";
+import { Vector } from "../GeometriaPlana/Vector.js";
+import { Punto } from "../GeometriaPlana/Punto.js";
+import { Dibujante } from "../Renderizado/Dibujante.js";
+import { Transformacion } from "../GeometriaPlana/Transformacion.js";
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
 //Buscar un modo de anclar un vértice a otro vector. Así se puede acoplar un ala a otro cuerpo. Método anclar(vector)
@@ -25,7 +25,11 @@ export class Cuerpo extends Forma{
         this._rotarSegunVelocidad = false;
     }
     ///REVISAR
-    setearRotacionVelocidad(){
+    setearRotacionSegunVelocidad(){
+        // let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
+        // let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
+        // let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - anguloVerticeCero;
+        // this._transformacion.rotacion += anguloTransformacionVelocidad;
         let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
         let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
         this._transformacion.rotacion = Vector.angulo(this._velocidad) - anguloVerticeCero;
@@ -100,9 +104,11 @@ export class Cuerpo extends Forma{
     }
     public actualizarTransformacion(): void{
         if(this._rotarSegunVelocidad == true){
+            // this.setearRotacionSegunVelocidad();
             let vectorVerticeCero: Vector = Vector.segunPuntos({x: 0, y: 0}, this._vertices[0]);
             let anguloVerticeCero: number = Vector.angulo(vectorVerticeCero);
             let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - anguloVerticeCero;
+            // let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
             this._transformacion.rotacion += anguloTransformacionVelocidad;
             super.aplicarTransformacion();
             this._transformacion.rotacion -= anguloTransformacionVelocidad;

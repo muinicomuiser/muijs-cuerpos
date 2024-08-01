@@ -1,4 +1,4 @@
-import { Matematica } from "./Matematica.js";
+import { Matematica } from "../Utiles/Matematica.js";
 import { Punto } from "./Punto.js";
 //POR REVISAR
 export class Vector{

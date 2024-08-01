@@ -1,7 +1,7 @@
-import { Forma } from "./Formas.js";
-import { Matematica } from "./Matematica.js";
-import { Punto } from "./Punto.js";
-import { Vector } from "./Vector.js";
+import { Forma } from "../GeometriaPlana/Formas.js";
+import { Matematica } from "../Utiles/Matematica.js";
+import { Punto } from "../GeometriaPlana/Punto.js";
+import { Vector } from "../GeometriaPlana/Vector.js";
 //POR INCORPORAR:
 //  Throw de errores para valores incompatibles
 //  Opacidad, letras
