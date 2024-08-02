@@ -1,4 +1,4 @@
-import { Matematica } from "../src/Utiles/Matematica.js";
+import { Matematica } from "../Fuente/Utiles/Matematica.js";
 
 console.log("======| TEST DEL MÓDULO MATEMATICA |======")
 console.log("")

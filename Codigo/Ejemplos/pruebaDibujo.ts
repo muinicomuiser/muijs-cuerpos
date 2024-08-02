@@ -1,10 +1,11 @@
-import { Forma } from "../src/GeometriaPlana/Formas.js";
-import { Matematica } from "../src/Utiles/Matematica.js";
-import { Punto } from "../src/GeometriaPlana/Punto.js";
-import { Dibujante } from "../src/Renderizado/Dibujante.js";
-import { Vector } from "../src/GeometriaPlana/Vector.js";
-import { Cuerpo } from "../src/Fisicas/Cuerpo.js";
-import { Fuerza } from "../src/Fisicas/Fuerza.js";
+import { Matematica } from "../Fuente/Utiles/Matematica.js";
+import { Matriz } from "../Fuente/Utiles/Matrices.js";
+import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
+import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
+import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
+import { Dibujante } from "../Fuente/Renderizado/Dibujante.js";
+import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
+import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
 const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
