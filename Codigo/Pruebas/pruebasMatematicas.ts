@@ -1,6 +1,6 @@
 import { Matematica } from "../Fuente/Utiles/Matematica.js";
 
-console.log("======| TEST DEL MÓDULO MATEMATICA |======")
+console.log("======| PRUEBAS DEL MÓDULO MATEMATICA |======")
 console.log("")
 
 //Matematica.parteEntera(numero: number)
@@ -87,7 +87,6 @@ console.assert(Matematica.divisionSegura(4, 2) == 2)
 console.log("")
 
 
-
 //Matematica.suma(numero1: number, numero2: number): number
 console.log("Matematica.suma()")
 console.assert(Matematica.suma(2, 2) == 4)
@@ -107,7 +106,6 @@ console.log("")
 
 //Matematica.raiz(radicando: number, indice: number): number
 
-
 // //Matematica.gradoARadian(num)
 // console.assert(Matematica.gradoARadian(0) == 0)
 // console.assert(Matematica.gradoARadian(180) == Matematica.PI);
@@ -118,18 +116,6 @@ console.log("")
 // console.assert(Matematica.radianAGrado(Matematica.PI) == 180);
 // console.assert(Matematica.radianAGrado(Matematica.DOS_PI) == 360);
 
-
-
-
-
-
-
-
-
-
-
-
-
 //Matematica.raiz(numero, raiz) ****
 // console.log(Matematica.raiz(25, 2))
-console.log("=============| FIN DEL TEST |=============")
+console.log("===============| FIN DEL TEST |===============")
