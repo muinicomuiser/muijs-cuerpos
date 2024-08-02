@@ -14,14 +14,14 @@ export class Cuerpo extends Forma{
     _aceleracion: Vector;
     _fijo: boolean;
     _rotarSegunVelocidad: boolean;
-    protected constructor(x: number, y: number, lados: number = 0, radio: number = 0, masa: number = 1, densidad: number = 1){
+    protected constructor(x: number, y: number, lados: number = 0, radio: number = 0, masa: number = 1, densidad: number = 1, fijo: boolean = false){
         super(x, y, lados, radio);
         this._masa = masa;
         this._densidad = densidad;
         this._velocidad = Vector.cero();
         this._velocidad.origen = this._transformacion.posicion;
         this._aceleracion = Vector.cero();
-        this._fijo = false;
+        this._fijo = fijo;
         this._rotarSegunVelocidad = false;
     }
     get fijo(): boolean{

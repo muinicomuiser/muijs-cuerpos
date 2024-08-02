@@ -3,6 +3,8 @@ import { Matematica } from "../Utiles/Matematica.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Punto } from "../GeometriaPlana/Punto.js";
 
+//Momento lineal, movimiento acelerado, momento angular, energía cinética y potencial.
+
 export class Cinematica{
         static rebote(cuerpo: Cuerpo, normal: Vector): Vector{
         let anguloNormal: number = Vector.angulo(normal);
