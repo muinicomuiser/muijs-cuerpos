@@ -69,22 +69,22 @@ export class Matematica{
     static aleatorio(min: number, max: number): number{
         let aleatorio: number = 0;
         for(let i: number = 0; i < 111; i++){
-            let unidades: number = 9518462378;
-            let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
-            numero = Matematica.multiplicacion(numero, Matematica.PHI);
-            let selector: number = Matematica.suma((Date.now() % 10), 1);
-            unidades = Matematica.divisionSegura(unidades, (10**(selector)));
+            let unidades: number = 7538694219;
+            let fecha: number = (new Date()).getMilliseconds();
+            fecha = (fecha % 10) + (fecha% 100 - (fecha % 10))/10 + (fecha % 1000 - (fecha % 100) - (fecha % 10)) / 100
+            let numero: number = fecha;
+            numero = Matematica.multiplicacion(numero, Matematica.PI);
+            let selector: number = Matematica.suma((fecha % 10), 1);
+            unidades = Matematica.division(unidades, (10**(selector)));
             aleatorio = Matematica.suma(aleatorio, Matematica.multiplicacion(numero, unidades));
-            aleatorio = Matematica.suma(aleatorio, -Matematica.parteEntera(aleatorio))
-            aleatorio = Matematica.truncar(aleatorio, 15)
+            aleatorio = aleatorio % 1;
         } 
-        aleatorio = Matematica.parteDecimal(aleatorio);
-        let rango: number;
+        let rango: number;;
         if(min < 0){
-            rango = Matematica.suma(max, Matematica.absoluto(min));
+            rango = Matematica.suma(max, -min);
         }
         else if(min > 0){
-            rango  = Matematica.suma(max, -min);
+            rango = Matematica.suma(max, -min);
         }        
         else if(min == 0){
             rango = max;
@@ -98,18 +98,19 @@ export class Matematica{
     static aleatorioEntero(min: number, max: number): number{
         let aleatorio: number = 0;
         for(let i: number = 0; i < 111; i++){
-            let unidades: number = 1234567891;
-            let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
+            let unidades: number = 7538694219;
+            let fecha: number = (new Date()).getMilliseconds();
+            fecha = (fecha % 10) + (fecha% 100 - (fecha % 10))/10 + (fecha % 1000 - (fecha % 100) - (fecha % 10)) / 100
+            let numero: number = fecha;
             numero = Matematica.multiplicacion(numero, Matematica.PI);
-            let selector: number = Matematica.suma((Date.now() % 10), 1);
-            unidades = Matematica.divisionSegura(unidades, (10**(selector)));
+            let selector: number = Matematica.suma((fecha % 10), 1);
+            unidades = Matematica.division(unidades, (10**(selector)));
             aleatorio = Matematica.suma(aleatorio, Matematica.multiplicacion(numero, unidades));
-            aleatorio = Matematica.truncar(aleatorio, 15)
+            aleatorio = aleatorio % 1;
         } 
-        aleatorio = Matematica.parteDecimal(aleatorio);
         let rango: number;
         if(min < 0){
-            rango = Matematica.suma(max + 1, Matematica.absoluto(min));
+            rango = Matematica.suma(max + 1, -min);
         }
         else if(min > 0){
             rango  = Matematica.suma(max + 1, -min);
@@ -118,10 +119,21 @@ export class Matematica{
             rango = max +2;
         }
         aleatorio = Matematica.multiplicacion(aleatorio, rango!);
-        aleatorio = Matematica.parteEntera(aleatorio);
-        return Matematica.suma(aleatorio, min);
-
-        //Y si hago una reiteración cada vez que encuentre un "00000" en el número que va a retornar??
+        aleatorio = Matematica.suma(aleatorio, -(aleatorio % 1))
+        aleatorio =  Matematica.suma(aleatorio, min);
+        if(Number.isInteger(aleatorio)){
+            if(aleatorio > max){
+                aleatorio -= 1;
+            }
+            return aleatorio;
+        }
+        if(aleatorio < min){
+            aleatorio += 1;
+        }
+        if(aleatorio > max){
+            aleatorio -= 1;
+        }
+        return Matematica.parteEntera(Matematica.suma(aleatorio, min))
     }
 
 
@@ -161,6 +173,8 @@ export class Matematica{
         num = parseFloat(num).toFixed(decimales);
         return parseFloat(num);
     }
+
+    
     /**Retorna el valor absoluto de cualquier número real.*/
     static absoluto(numero: number): number{
         if(numero < 0){
@@ -179,52 +193,85 @@ export class Matematica{
     }
 
 
-    /**Multiplica dos números. Evita comportamientos erráticos de javascript al multiplicar ciertos números, 
+    /**Multiplica dos números. Evita varios comportamientos erráticos de javascript al multiplicar ciertos números, 
      * como el caso típico 0.1 * 0.2 = 0.020000000000000004;
     */
     static multiplicacion(numero1: number, numero2: number): number{
         if(numero1 == 0 || numero2 == 0){
             return 0;
         }
-        if((numero1.toString().length + numero2.toString().length > (numero1 * numero2).toString.length)){
+        if(Number.isInteger(numero1) && Number.isInteger(numero2)){
             return numero1 * numero2;
-        }
-        let num1string: string = (numero1.toString());
-        let num2string: string = (numero2.toString());
-        if(num1string.split(".")[1] && num2string.split(".")[1]){
-            if((num1string.length + num2string.length) < (numero1*numero2).toString().length){
-                return ((numero1*10000000)*(numero2*10000000))/100000000000000;
+        }      
+        else if(Number.isInteger(numero2)){
+            let i: number = 1;
+            while(!Number.isInteger(numero1 * (10**i)) && i <= 16){
+                i++;
             }
+            return ((numero1 * (10**i)) * numero2) / (10**i)
         }
-        else if(num1string.split(".")[1]){
-            if((num1string.length + num2string.length) < (numero1*numero2).toString().length){
-                return ((numero1*10000000)*(numero2*10000000))/100000000000000;
+        else if(Number.isInteger(numero1)){
+            let i: number = 1;
+            while(!Number.isInteger(numero2 * (10**i)) && i <= 16){
+                i++;
             }
+            return ((numero2 * (10**i)) * numero1) / (10**i)
         }
-        else if(num2string.split(".")[1]){
-            if((num1string.length + num2string.length) < (numero1*numero2).toString().length){
-                return ((numero1*10000000)*(numero2*10000000))/100000000000000;
+        else{
+            let i: number = 1;
+            while(!Number.isInteger(numero1 * (10**i)) && i <= 16){
+                i++;
             }
+            let j: number = 1;
+            while(!Number.isInteger(numero2 * (10**j)) && j <= 16){
+                j++;
+            }
+            return ((numero1 * (10**i)) * (numero2 * (10**j))) / (10**(i+j)) 
         }
-        return numero1*numero2;
     }
 
 
-    /**Divide dos números. Evita comportamientos erráticos de javascript al dividir ciertos números, 
+    /**Divide dos números. Evita varios comportamientos erráticos de javascript al dividir ciertos números, 
      * como el caso típico 0.02 / 0.1 = 0.19999999999999998;
     */
-    static divisionSegura(numero1: number, numero2: number): number{
+    static division(numero1: number, numero2: number): number{
         if(numero1 == 0){
             return 0;
         }
         else if(numero2 == 0){
-            throw new Error("El método .divisionSegura no permite divisiones por cero");
+            throw new Error("El método .division no permite divisiones por cero");
         }
-        else if((numero1.toString().length + numero2.toString().length) < (numero1/numero2).toString().length){
-            // return (numero1*10) / (numero2*10)
-            return (Matematica.multiplicacion(numero1, 100)/(Matematica.multiplicacion(numero2, 100)));
+        if(Number.isInteger(numero1) && Number.isInteger(numero2)){
+            return numero1 / numero2;
+        }     
+        else if(Number.isInteger(numero1)){
+            let i: number = 1;
+            while(!Number.isInteger(numero2 * (10**i)) && i < 16){
+                i++;
+            }
+            return (numero1 * (10**i)) / (numero2 * (10**i))
         }
-        return numero1/numero2;
+        else if(Number.isInteger(numero2)){
+            let i: number = 1;
+            numero1 *= 10;
+            numero2 *= 10;
+            while(!Number.isInteger(numero1) && i <= 16){
+                i++;
+                numero1 *= 10;
+                numero2 *= 10;
+            }
+            return (numero1 ) / (numero2)
+        }
+        else{
+            let i: number = 1;
+            while(!Number.isInteger(numero1 * (10**i)) && i < 16){
+                i++;
+            }
+            while(!Number.isInteger(numero2 * (10**i)) && i < 16){
+                i++;
+            }
+            return (numero1 * (10**i)) / (numero2 * (10**i)) 
+        }
     }
 
 
@@ -232,29 +279,33 @@ export class Matematica{
      * como el caso típico 0.1 + 0.2 = 0.30000000000000004;
     */
     static suma(numero1: number, numero2: number): number{
-        let numUnoString: string = numero1.toPrecision(15).split('.')[0];
-        let numDosString: string = numero2.toPrecision(15).split('.')[0];
-        let entero: number = parseFloat(numUnoString) + parseFloat(numDosString);
-        if((numero1.toString().length + numero2.toString().length > (numero1 + numero2).toString.length)){
+        if(Number.isInteger(numero1) && Number.isInteger(numero2)){
             return numero1 + numero2;
+        }      
+        else if(Number.isInteger(numero2)){
+            let i: number = 1;
+            while(!Number.isInteger(numero1 * (10**i)) && i <= 16){
+                i++;
+            }
+            return ((numero1 * (10**i)) + numero2 * (10**i)) / (10**i)
         }
-        if(numero1.toPrecision(15).split('.')[1] && numero2.toPrecision(15).split('.')[1]){
-            let decimalUnoString: string = "0." + numero1.toPrecision(15).split('.')[1];
-            let decimalDosString: string = "0." + numero2.toPrecision(15).split('.')[1];
-            let decimal: number = (parseFloat(decimalUnoString)*1000000000 + parseFloat(decimalDosString)*1000000000)/1000000000;
-            return entero + decimal;
+        else if(Number.isInteger(numero1)){
+            let i: number = 1;
+            while(!Number.isInteger(numero2 * (10**i)) && i <= 16){
+                i++;
+            }
+            return ((numero1 * (10**i)) + numero2 * (10**i)) / (10**i)
         }
-        else if(numero1.toPrecision(15).split('.')[1]){
-            let decimalUnoString: string = "0." + numero1.toPrecision(15).split('.')[1];
-            let decimal: number = parseFloat(decimalUnoString);
-            return entero + decimal;
+        else{
+            let i: number = 1;
+            while(!Number.isInteger(numero1 * (10**i)) && i < 16){
+                i++;
+            }
+            while(!Number.isInteger(numero2 * (10**i)) && i < 16){
+                i++;
+            }
+            return ((numero1 * (10**i)) + (numero2 * (10**i))) / (10**i)
         }
-        else if(numero2.toPrecision(15).split('.')[1]){
-            let decimalDosString: string = "0." + numero2.toPrecision(15).split('.')[1];
-            let decimal: number = parseFloat(decimalDosString);
-            return entero + decimal;
-        }
-        return entero;
     }
 
 
@@ -275,21 +326,21 @@ export class Matematica{
         if(radicando == 0){
             return 0;
         }
-        return radicando **Matematica.divisionSegura(1, indice);
+        return radicando **Matematica.division(1, indice);
     }
 
 
     //GRADOS  
     /**Transforma grados sexagesimales a radianes.*/      
     static gradoARadian(grado: number): number{
-        return Matematica.multiplicacion(Matematica.divisionSegura(grado, 180), Matematica.PI);
+        return Matematica.multiplicacion(Matematica.division(grado, 180), Matematica.PI);
         // return (grado / 180) * this.PI;
     }
 
 
     /**Transfoma radianes a grados sexagesimales.*/
     static radianAGrado(rad: number): number{
-        return Matematica.multiplicacion(Matematica.divisionSegura(rad, Matematica.PI), 180);
+        return Matematica.multiplicacion(Matematica.division(rad, Matematica.PI), 180);
         // return (rad / this.PI)*180;
     }
 
@@ -321,8 +372,8 @@ export class Matematica{
 
     /**Retorna el punto medio entre dos puntos de un plano cartesiano.*/
     static puntoMedio(puntoUno: Punto, puntoDos: Punto): Punto{
-        let medioX: number = Matematica.suma(Matematica.divisionSegura(puntoUno.x, 2), Matematica.divisionSegura(puntoDos.x, 2));
-        let medioY: number = Matematica.suma(Matematica.divisionSegura(puntoUno.y, 2), Matematica.divisionSegura(puntoDos.y, 2));
+        let medioX: number = Matematica.suma(Matematica.division(puntoUno.x, 2), Matematica.division(puntoDos.x, 2));
+        let medioY: number = Matematica.suma(Matematica.division(puntoUno.y, 2), Matematica.division(puntoDos.y, 2));
         let puntoMedio: Punto = {x: medioX, y: medioY};
         return puntoMedio;
     }

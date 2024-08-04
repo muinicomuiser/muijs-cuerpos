@@ -101,9 +101,11 @@ export class Vector{
         return producto;
     }
     static cruz(vectorUno: Vector, vectorDos: Vector): number{
-        let magnitudes: number = Vector.magnitud(vectorUno) * Vector.magnitud(vectorDos);
-        let angulo: number = Vector.anguloVectores(vectorUno, vectorDos);
-        return magnitudes * Math.sin(angulo)
+        // return vectorUno.x * vectorDos.y - vectorUno.y * vectorDos.x
+        return Matematica.multiplicacion(vectorUno.x, vectorDos.y) - Matematica.multiplicacion(vectorUno.y, vectorDos.x)
+        // let magnitudes: number = Vector.magnitud(vectorUno) * Vector.magnitud(vectorDos);
+        // let angulo: number = Vector.anguloVectores(vectorUno, vectorDos);
+        // return magnitudes * Math.sin(angulo)
     }
     static anguloVectores(vectorUno: Vector, vectorDos: Vector): number{
         let punto: number = Vector.punto(vectorUno, vectorDos);

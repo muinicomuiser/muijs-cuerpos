@@ -6,7 +6,7 @@ import { Punto } from "../GeometriaPlana/Punto.js";
 //Momento lineal, movimiento acelerado, momento angular, energía cinética y potencial.
 
 export class Cinematica{
-        static rebote(cuerpo: Cuerpo, normal: Vector): Vector{
+    static rebote(cuerpo: Cuerpo, normal: Vector): Vector{
         let anguloNormal: number = Vector.angulo(normal);
         let anguloTangente: number = anguloNormal - (Matematica.PI/2);
         let x: number = cuerpo.velocidad.x * (Math.cos(2*anguloTangente) + Math.sin(2*anguloTangente));

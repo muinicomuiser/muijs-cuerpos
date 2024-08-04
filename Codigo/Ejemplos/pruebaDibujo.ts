@@ -6,6 +6,7 @@ import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Dibujante } from "../Fuente/Renderizado/Dibujante.js";
 import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
+import { Colision } from "../Fuente/Interaccion/Colision.js";
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
 const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
@@ -38,9 +39,11 @@ let escalita: number = 2;
 let escalador: number = 0.01;
 window.addEventListener("load", ()=>{
     let dibujante: Dibujante = new Dibujante(CONTEXT);
+    dibujante.colorFondo = "black";
     dibujante.grosorTrazo = 1;
     function prueba(){
-        CONTEXT.clearRect(0, 0, CANVAS.width, CANVAS.height);
+        dibujante.limpiarCanvas(CANVAS, 0.6);
+        // dibujante.escribir("hola", centroCanvas.x, centroCanvas.y, 50, 300, "serif", "center")
         dibujante.color = Dibujante.colorHSL(300, 100, 40);
         if(escalita > 4){
             escalador = Matematica.absoluto(escalador) * -1;
@@ -52,7 +55,7 @@ window.addEventListener("load", ()=>{
         for(let i in atractores){
             atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Matematica.gradoARadian(-1));
             atractores[i].mover();
-            atractores[i].rellenar(dibujante);
+            atractores[i].trazar(dibujante);
         }
         dibujante.color = Dibujante.colorHSL(150, 100, 40);
         for(let cuerpito of cuerpos){

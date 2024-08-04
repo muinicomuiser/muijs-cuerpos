@@ -5,6 +5,22 @@
 //Métodos particulares para determinar colisiones entre circunferencias, entre polígonos, mixtos, y quizá con rectas.
 //También con fronteras.
 
+import { Forma } from "../GeometriaPlana/Formas.js";
+import { Matematica } from "../Utiles/Matematica.js";
+
 export class Colision{
 
+    /**Detecta la intersección entre dos circunferencias.             
+     * Retorna true si hay intersección.        
+     * Retorna false si no hay intersección.        
+     * Compara la distancia entre ambos centros con la suma de sus radios.
+     */
+    static circunferencias(circunferenciaUno: Forma, circunferenciaDos: Forma){
+        let sumaRadios: number = circunferenciaUno.radio + circunferenciaDos.radio;
+        let distanciaCentros: number = Matematica.distanciaEntrePuntos(circunferenciaUno.posicion, circunferenciaDos.posicion);
+        if( distanciaCentros <= sumaRadios){
+            return true
+        }
+        return false;
+    }
 }

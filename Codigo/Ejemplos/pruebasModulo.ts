@@ -94,7 +94,7 @@ function generarAleatorio(){
     let aleatorio: number = 0;
     for(let i: number = 0; i < 10000; i++){
         let unidades: number = 1234567890;
-        let numero: number = Matematica.divisionSegura(Date.now() % 100, 100);
+        let numero: number = Matematica.division(Date.now() % 100, 100);
         numero = Matematica.multiplicacion(numero, Matematica.PI);
         let selector: number = (Date.now() % 10) + 1;
         unidades = unidades / (10**(selector+1));
@@ -110,13 +110,14 @@ function generarAleatorio(){
 function pruebaAleatorioEnteroRango(){
     let repeticiones: number = 500;
     let resultados: number[] = [];
-    let min: number = -1;
-    let max: number = 2;
+    let min: number = -2;
+    let max: number = 50;
     let a: number = 0;
     let b: number = 0;
     let c: number = 0;
     let d: number = 0;
-    console.log(new Date())
+    console.log("Inicio. Número de cálculos: ", repeticiones)
+    let inicioTiempo: number = Date.now()
     for(let i: number = 0; i < repeticiones; i++){
         let aleatorio: number = Matematica.aleatorioEntero(min, max);
         if(aleatorio == min){
@@ -136,7 +137,7 @@ function pruebaAleatorioEnteroRango(){
             console.log(aleatorio)
         }
     }
-    console.log(new Date())
+    console.log(`${Date.now() - inicioTiempo}` + " milisegundos")
     console.log(`${min}:`, a, `${min+1}:`, b, `${max-1}:`, c,  `${max}:`, d)
     console.log(resultados)
 }
@@ -146,11 +147,12 @@ function pruebaAleatorioEnteroRango(){
 function pruebaAleatorioRango(){
     let repeticiones: number = 500;
     let resultados: number[] = [];
-    let min: number = 10;
+    let min: number = -10;
     let max: number = 20;
     let a: number = 0;
     let b: number = 0;
-    console.log(new Date())
+    console.log("Inicio. Número de cálculos: ", repeticiones)
+    let inicioTiempo: number = Date.now()
     for(let i: number = 0; i < repeticiones; i++){
         let aleatorio: number = Matematica.aleatorio(min, max);
         if(aleatorio < min){
@@ -162,10 +164,70 @@ function pruebaAleatorioRango(){
         }
         resultados.push(aleatorio)
     }
-    console.log(new Date())
+    console.log(`${Date.now() - inicioTiempo}` + " milisegundos")
     console.log("Mínimo: ", min, "Máximo: ", max)
     console.log(`Menos que ${min}:`, a)
     console.log(`Más que ${max}:`, b)
     console.log(resultados)
 }
-pruebaAleatorioRango()
+// pruebaAleatorioRango()
+
+
+/**Revisar la velocidad de cálculo del método Matematica.multiplicación.        
+ * Lo compara con el operador *.
+ */
+function probarMultiplicacion(){
+    // let inicio: number = 1;
+    let repeticiones: number = 1000000;
+    let inicio: number = 1001
+    let multiplicador: number = 12033444.1;
+    let resultadosMetodo: number[] = [];
+    let resultadosJS: number[] = [];
+    console.log("Inicio. Número de cálculos: ", repeticiones);
+    let inicioTiempo: number = Date.now();
+    for(let i: number = inicio; i < repeticiones; i++){
+        resultadosMetodo.push(Matematica.multiplicacion(multiplicador, i));
+        // if(i > 2 && !Matematica.comparar(resultadosMetodo[resultadosMetodo.length - 1 ], resultadosMetodo[resultadosMetodo.length - 2 ] + 10.0000001, 0.00000001)){
+        //     (console.log("salto", resultadosMetodo[resultadosMetodo.length - 1 ], resultadosMetodo[resultadosMetodo.length - 2 ]))
+        // }    
+    }
+    console.log(resultadosMetodo) 
+    console.log("Fin método Matematica.multiplicacion()")
+    let tiempoMetodo: number = Date.now();
+    console.log((`${tiempoMetodo - inicioTiempo}` + " milisegundos"));
+    console.log("Inicio operador *")
+    for(let i: number = inicio; i < repeticiones; i++){
+        resultadosJS.push(multiplicador * i);
+    }
+    console.log(resultadosJS) 
+    console.log("Fin operador *")
+    console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");   
+}
+// probarMultiplicacion();
+
+function probarDivision(){
+    // let inicio: number = 1;
+    let repeticiones: number = 3333;
+    let inicio: number = 33
+    let divisor: number = 0.1;
+    let resultadosMetodo: number[] = [];
+    let resultadosJS: number[] = [];
+    console.log("Inicio. Número de cálculos: ", repeticiones);
+    let inicioTiempo: number = Date.now();
+    for(let i: number = inicio; i < repeticiones; i = Matematica.suma(i, 0.3)){
+        resultadosMetodo.push(i);
+        resultadosMetodo.push(Matematica.division(i, divisor));
+    }
+    console.log(resultadosMetodo) 
+    console.log("Fin método Matematica.division()")
+    let tiempoMetodo: number = Date.now();
+    console.log((`${tiempoMetodo - inicioTiempo}` + " milisegundos"));
+    console.log("Inicio operador *")
+    for(let i: number = inicio; i < repeticiones; i = Matematica.suma(i, 0.3)){
+        resultadosJS.push((i) / divisor);
+    }
+    console.log(resultadosJS) 
+    console.log("Fin operador /")
+    console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");   
+}
+// probarDivision();

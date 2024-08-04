@@ -81,9 +81,9 @@ console.assert(Matematica.multiplicacion(99999999, 1) == 99999999);
 console.assert(Matematica.multiplicacion(0.99999999, 1) == 0.99999999);
 console.log("")
 
-//Matematica.divisionSegura(numero1: number, numero2: number): number
-console.log("Matematica.divisionSegura()")
-console.assert(Matematica.divisionSegura(4, 2) == 2)
+//Matematica.division(numero1: number, numero2: number): number
+console.log("Matematica.division()")
+console.assert(Matematica.division(4, 2) == 2)
 console.log("")
 
 
