@@ -4,6 +4,15 @@ import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
 import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 //Módulo Matemática, Aritmética
+
+/**Medidor de velocidad de cálculo*/
+function contador(): void{
+    let tiempoInicio: number = Date.now();
+    let tiempoFinal: number = Date.now();
+    console.log((`${tiempoFinal - tiempoInicio}` + " milisegundos"));
+}
+
+
 function aritmetica(): void{
     console.log(Matematica.redondear(Matematica.PI, 3));
     console.log(Matematica.parteDecimal(Matematica.PI));
@@ -31,11 +40,11 @@ function matematicaConstantes(): void{
 
 
 //Módulo Matrices
-let A3X3: number[][] = [[0.2, 2, 3],[4, 5, 6],[7, 8, 9]];
-let B3X3: number[][] = [[0.1, 2, 2],[3, 3, 3],[4, 4, 4]];
-let C2X3: number[][] = [[1, 2, 3],[4, 5, 6]];
-let D3X2: number[][] = [[1, 2],[3, 4], [5, 6]];
 function matrices(): void{
+    let A3X3: number[][] = [[0.2, 2, 3],[4, 5, 6],[7, 8, 9]];
+    let B3X3: number[][] = [[0.1, 2, 2],[3, 3, 3],[4, 4, 4]];
+    let C2X3: number[][] = [[1, 2, 3],[4, 5, 6]];
+    let D3X2: number[][] = [[1, 2],[3, 4], [5, 6]];
     console.log("Módulo Matrices");
     console.log("Matriz nula 3x3: ", Matriz.nula(3, 3));
     console.log("Matriz identidad 3x3: ", Matriz.identidad(3));
@@ -231,3 +240,15 @@ function probarDivision(){
     console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");   
 }
 // probarDivision();
+
+function probarVectorNormal(): void{
+    let vectorUno: Vector = Vector.crear(1, 3);
+    let vectorDos: Vector = Vector.crear(3, 1);
+    let vectorEje: Vector = Vector.crear(2, 2);
+    let proyeccionUno: number = Vector.proyeccion(vectorUno, vectorEje)
+    let proyeccionDos: number = Vector.proyeccion(vectorDos, vectorEje)
+    console.log(proyeccionUno)
+    console.log(proyeccionDos)
+}
+probarVectorNormal();
+

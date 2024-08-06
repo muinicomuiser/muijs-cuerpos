@@ -17,7 +17,13 @@ export class Matematica{
     
     /**Retorna el doble del valor de PI usando quince decimales.*/
     static get DOS_PI(): number{
-        return Matematica.multiplicacion(this.PI, 2);
+        return 6.283185307179586;
+    }
+
+
+    /**Retorna la mitad del valor de PI usando quince decimales.*/
+    static get PI_MEDIO(): number{
+        return 1.570796326794896;
     }
     
     
@@ -239,7 +245,7 @@ export class Matematica{
             return 0;
         }
         else if(numero2 == 0){
-            throw new Error("El método .division no permite divisiones por cero");
+            throw new Error("El método .division no admite divisiones por cero");
         }
         if(Number.isInteger(numero1) && Number.isInteger(numero2)){
             return numero1 / numero2;
@@ -326,7 +332,7 @@ export class Matematica{
         if(radicando == 0){
             return 0;
         }
-        return radicando **Matematica.division(1, indice);
+        return radicando ** Matematica.division(1, indice);
     }
 
 

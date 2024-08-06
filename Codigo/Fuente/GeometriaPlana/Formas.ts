@@ -52,6 +52,23 @@ export class Forma{
     get rotacion(): number{
         return this._transformacion.rotacion;
     }
+    /**Retorna un conjunto de vectores normales de cada arista del polígono.        
+     * El orden de las aristas es en sentido horario.       
+    */
+    get normales(): Vector[]{
+        let normales: Vector[] = [];
+        for(let i: number = 0; i < this.verticesTransformados.length; i++){
+            if(i != this.verticesTransformados.length - 1){
+                let normal: Vector = Vector.normal(this.verticesTransformados[i], this.verticesTransformados[i+1]);
+                normales.push(normal)
+            }
+            else{
+                let normal: Vector = Vector.normal(this.verticesTransformados[i], this.verticesTransformados[0]);
+                normales.push(normal)
+                }
+            }
+            return normales;
+    }
     set id(nuevaId: string){
         this._id = nuevaId;
     }
