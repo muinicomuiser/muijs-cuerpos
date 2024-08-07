@@ -252,3 +252,6 @@ function probarVectorNormal(): void{
 }
 probarVectorNormal();
 
+const arreglo: string[] = []
+let arregloDos: string[] = ["sads", "gsdf"]
+arreglo.push("dnsk");

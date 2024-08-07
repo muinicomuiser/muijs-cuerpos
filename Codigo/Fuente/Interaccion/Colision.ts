@@ -1,9 +1,20 @@
+/**
+        =============================================
+                 * MÓDULO DE COLISIONES *
+        =============================================
+        Trabaja usando objetos de tipo Forma.
 
+        Usa el Teorema de ejes de separación (SAT) para detectar colisiones.
+
+ */
 
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Matematica } from "../Utiles/Matematica.js";
 
+/** MÓDULO DE COLISIONES        
+ * Trabaja usando objetos de tipo Forma.
+ */
 export class Colision{
 
     /**Detecta colisiones usando el teorema SAT entre formas de tipo circunferencia y/o polígono.      
@@ -40,6 +51,7 @@ export class Colision{
         return true;
     }
 
+
     /**Detecta la colisión entre dos polígonos.             
      * Retorna true si hay colisión.        
      * Retorna false si no hay colisión.        
@@ -60,7 +72,7 @@ export class Colision{
             }
         }
         for(let normal of poligonoDos.normales){      
-                  
+
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
             let menorUno: number = Colision.buscarMenor(poligonoUno.verticesTransformados, normal);
             let mayorUno: number = Colision.buscarMayor(poligonoUno.verticesTransformados, normal);
@@ -75,6 +87,7 @@ export class Colision{
         return true;
     }
     
+
     /**Detecta la colisión entre una circunferencia y un polígono.             
      * Retorna true si hay colisión.        
      * Retorna false si no hay colisión.        
@@ -97,7 +110,8 @@ export class Colision{
         return true;
     }
 
-    /**Retorna el valor menor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.     */
+
+    /**Retorna el valor menor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
     private static buscarMenor(vertices: Vector[], normal: Vector): number{
             let menor = Vector.proyeccion(vertices[0], normal);
         
@@ -110,7 +124,8 @@ export class Colision{
         return menor;
     }
 
-    /**Retorna el valor mayor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.     */
+
+    /**Retorna el valor mayor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
     private static buscarMayor(vertices: Vector[], normal: Vector): number{
             let mayor = Vector.proyeccion(vertices[0], normal);
         
