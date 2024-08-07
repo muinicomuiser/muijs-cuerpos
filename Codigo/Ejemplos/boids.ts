@@ -12,15 +12,15 @@ import { Colision } from "../Fuente/Interaccion/Colision.js";
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
 const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
-CANVAS.width = 850;
-CANVAS.height = 650;
+CANVAS.width = 950;
+CANVAS.height = 680;
 CANVAS.style.backgroundColor = Dibujante.colorHSL(220, 70, 0);
 let centroCanvas: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 
 window.addEventListener("load", ()=>{
     let dibu: Dibujante = new Dibujante(CONTEXT)
 
-    let numerotriangulos: number = 33;
+    let numerotriangulos: number = 60;
     /**Forma generadora de posiciones.*/
     let formaGeneradora: Forma = Forma.poligono(centroCanvas.x, centroCanvas.y, numerotriangulos, 250);
     /**Generador de círculos.*/
@@ -28,9 +28,11 @@ window.addEventListener("load", ()=>{
     let verticesTriangulos = [Vector.crear(3, 0), Vector.crear(-1, -1), Vector.crear(0, 0), Vector.crear(-1, 1)]
     for(let i: number = 0; i < numerotriangulos; i++){
         let triangulo: Cuerpo = Cuerpo.poligono(formaGeneradora.verticesTransformados[i].x, formaGeneradora.verticesTransformados[i].y, 3, 5);
+        let velocidadInicial: Vector = Vector.crear(Matematica.aleatorioEntero(-1, 1), Matematica.aleatorioEntero(-1, 1));
         triangulo.vertices = verticesTriangulos;
         // triangulo.posicion = formaGeneradora.verticesTransformados[i]
-        triangulo.escala = 4;
+        triangulo.velocidad = velocidadInicial;
+        triangulo.escala = 3;
         triangulo.rotarSegunVelocidad = true;
         triangulos.push(triangulo);
     }
@@ -61,11 +63,22 @@ window.addEventListener("load", ()=>{
         for(let i: number = 0; i < triangulos.length; i++){
             for(let j: number = 0; j < triangulos.length; j++){
                 if(i != j){
-                    if(Matematica.distanciaEntrePuntos(triangulos[i].posicion, triangulos[j].posicion) > 100){
-                        triangulos[i].aceleracion = Fuerza.atraer(triangulos[i], triangulos[j], 0.1)
+                    if(Matematica.distanciaEntrePuntos(triangulos[i].posicion, triangulos[j].posicion) > 30){
+                        // triangulos[i].aceleracion = Fuerza.atraer(triangulos[i], triangulos[j], 0.01)
                     }
                     else{
-                        triangulos[i].aceleracion = Fuerza.repeler(triangulos[i], triangulos[j], 0.1)
+                        triangulos[i].aceleracion = Fuerza.repeler(triangulos[i], triangulos[j], 0.03)
+                    }
+                }
+            }
+        }
+
+        /**Coordinación de velocidades*/
+        for(let i: number = 0; i < triangulos.length; i++){
+            for(let j: number = 0; j < triangulos.length; j++){
+                if(i != j){
+                    if(Matematica.distanciaEntrePuntos(triangulos[i].posicion, triangulos[j].posicion) < 80){
+                        triangulos[i].velocidad = Vector.suma(triangulos[i].velocidad, Vector.escalar(triangulos[j].velocidad, 0.01))
                     }
                 }
             }
@@ -74,7 +87,7 @@ window.addEventListener("load", ()=>{
         /**Dibujar círculos.*/
         for(let triangulo of triangulos){
             if(triangulo.velocidad.magnitud > 5){
-                triangulo.velocidad = Vector.escalar(triangulo.velocidad, 0.9)
+                triangulo.velocidad = Vector.escalar(triangulo.velocidad, 0.8)
             }
             triangulo.posicion = envolverBorde(triangulo);
             triangulo.color = "white";
