@@ -22,8 +22,9 @@ let cuerpos: Cuerpo[] = crearCuerpos(cuerpoDeCuerpos);
 function crearCuerpos(cuerpo: Cuerpo): Cuerpo[]{
     let cuerpitos: Cuerpo[] = [];
     for(let vertice of cuerpo.verticesTransformados){
-        let atractor: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, 10);
-        cuerpitos.push(atractor);
+        let cuerpito: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, 10);
+        cuerpitos.push(cuerpito);
+        cuerpito.color = Dibujante.colorHSL(150, 100, 40)
     }
     return cuerpitos;
 }
@@ -31,6 +32,7 @@ function crearAtractores(cuerpo: Cuerpo): Cuerpo[]{
     let atractoresEnVertices: Cuerpo[] = [];
     for(let vertice of cuerpo.verticesTransformados){
         let atractor: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, 8);
+        atractor.color = Dibujante.colorHSL(300, 100, 40);
         atractoresEnVertices.push(atractor);
     }
     return atractoresEnVertices;
@@ -44,7 +46,6 @@ window.addEventListener("load", ()=>{
     function prueba(){
         dibujante.limpiarCanvas(CANVAS, 0.6);
         // dibujante.escribir("hola", centroCanvas.x, centroCanvas.y, 50, 300, "serif", "center")
-        dibujante.color = Dibujante.colorHSL(300, 100, 40);
         if(escalita > 4){
             escalador = Matematica.absoluto(escalador) * -1;
         }
@@ -57,7 +58,6 @@ window.addEventListener("load", ()=>{
             atractores[i].mover();
             atractores[i].trazar(dibujante);
         }
-        dibujante.color = Dibujante.colorHSL(150, 100, 40);
         for(let cuerpito of cuerpos){
             cuerpito.aceleracion = Vector.cero();
             for(let atractor of atractores){
