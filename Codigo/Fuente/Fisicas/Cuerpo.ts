@@ -74,18 +74,15 @@ export class Cuerpo extends Forma{
     set rotarSegunVelocidad(opcion: boolean){
         this._rotarSegunVelocidad = opcion;
     }
-    public trazar(dibujante: Dibujante): void{
-        dibujante.trazar(this);
-    }
+
+    
     public trazarVelocidad(dibujante: Dibujante): void{
         let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
         vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
         dibujante.trazarVector(vectorVelocidad);
     }
-    public rellenar(dibujante: Dibujante): void{
-        dibujante.rellenar(this);
-    }
+
 
     /**Retorna un cuerpo geométrico regular.     
      * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/

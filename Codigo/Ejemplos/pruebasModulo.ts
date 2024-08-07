@@ -251,7 +251,3 @@ function probarVectorNormal(): void{
     console.log(proyeccionDos)
 }
 probarVectorNormal();
-
-const arreglo: string[] = []
-let arregloDos: string[] = ["sads", "gsdf"]
-arreglo.push("dnsk");

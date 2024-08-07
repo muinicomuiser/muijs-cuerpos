@@ -21,6 +21,10 @@ export class Matriz{
         }
         return true;
     }
+
+    /**Compara las dimensiones de dos matrices.     
+     * Retorna true si su dimensión es la misma y false si es distinta.
+    */
     static compararDimension(matrizUno: number[][], matrizDos: number[][]){
         if(matrizUno.length != matrizDos.length){
             return false
@@ -32,6 +36,8 @@ export class Matriz{
         }
         return true;
     }
+
+    /**Retorna una matriz nula con el número de filas y columnas ingresado.*/
     static nula(filas: number, columnas: number): number[][]{
         if(!Number.isInteger(filas) || !Number.isInteger(columnas) || filas <= 0 || columnas <= 0){
             throw new Error("El método Matriz.nula() solo admite números enteros positivos como argumentos.");
@@ -47,26 +53,30 @@ export class Matriz{
             return matrizNula;
         }
     }
-    static identidad(orden: number): number[][]{
-        if(!Number.isInteger(orden) || orden <= 0){
+
+    /**Retorna una matriz identidad de la dimensión ingresada.*/
+    static identidad(dimension: number): number[][]{
+        if(!Number.isInteger(dimension) || dimension <= 0){
             throw new Error("El método Matriz.identidad() solo admite números enteros positivos como argumento.");
         }
         else {
-            let matrizIdentidad: number[][] = this.escalar(orden, 1);            
+            let matrizIdentidad: number[][] = this.escalar(dimension, 1);            
             return matrizIdentidad;
         }
     }
-    static escalar(orden: number, escalar: number): number[][]{
-        if(!Number.isInteger(orden) || orden <= 0){
+
+    /**Retorna una matriz escalar.*/
+    static escalar(dimension: number, escalar: number): number[][]{
+        if(!Number.isInteger(dimension) || dimension <= 0){
             throw new Error("El método Matriz.escalar() solo admite números enteros positivos como argumentos.");
         }else if(escalar == 0){
             throw new Error("El valor del escalar debe ser distinto de cero.");
         }
         else {
             let matrizEscalar: number[][] = [];            
-            for(let i: number = 0; i < orden; i++){
+            for(let i: number = 0; i < dimension; i++){
                 matrizEscalar.push([]);
-                for(let j: number = 0; j < orden; j++){
+                for(let j: number = 0; j < dimension; j++){
                     if(i == j){
                         matrizEscalar[i].push(escalar);
                     }
@@ -78,6 +88,8 @@ export class Matriz{
             return matrizEscalar;
         }
     }
+
+    /**Retorna una copia traspuesta de la matriz ingresada.*/
     static traspuesta(matriz: number[][]): number[][]{
         let traspuesta: number[][] = this.nula(matriz[0].length, matriz.length);
         for(let i in traspuesta){
@@ -88,6 +100,8 @@ export class Matriz{
         } 
         return traspuesta;
     }
+
+    /**Suma dos matrices y retorna el resultado como una matriz nueva.*/
     static suma(matrizUno: number[][], matrizDos: number[][]): number[][]{
         let suma: number[][] = [];
         if(!this.compararDimension(matrizUno, matrizDos)){
@@ -102,6 +116,8 @@ export class Matriz{
         }
         return suma;
     } 
+
+    /**Resta dos matrices y retorna el resultado como una matriz nueva.*/
     static resta(matrizUno: number[][], matrizDos: number[][]): number[][]{
         let resta: number[][] = [];
         if(!this.compararDimension(matrizUno, matrizDos)){
@@ -116,6 +132,8 @@ export class Matriz{
         }
         return resta;
     }
+
+    
     static productoEscalar(matriz: number[][], escalar: number): number[][]{
         if(escalar == 0){
             throw new Error("El valor del escalar debe ser distinto de cero.")

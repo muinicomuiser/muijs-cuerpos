@@ -8,6 +8,8 @@ import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 import { Colision } from "../Fuente/Interaccion/Colision.js";
 
+/**AQUÍ EMPECÉ A PROBAR EL MÓDULO DE COLISIONES.*/
+
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
 const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
 CANVAS.width = 650;
@@ -19,37 +21,32 @@ window.addEventListener("load", ()=>{
     let cuadradoDos: Forma = Forma.rectangulo(centroCanvas.x + 150, centroCanvas.y + 150, 170, 170);
     let circunferenciaTres: Forma = Forma.circunferencia(centroCanvas.x -200, centroCanvas.y -200, 100);
     
-    let dibujanteUno: Dibujante = new Dibujante(CONTEXT)
-    let dibujanteDos: Dibujante = new Dibujante(CONTEXT)
-    let dibujanteTres: Dibujante = new Dibujante(CONTEXT);
+    let dibu: Dibujante = new Dibujante(CONTEXT)
 
-    dibujanteUno.color = "blue"
-    dibujanteDos.color = "green"
-    dibujanteTres.color = "yellow"
-    dibujanteUno.opacidad = 0.4
-    dibujanteDos.opacidad = 0.4
-    dibujanteTres.opacidad = 0.4
+    poligonoUno.color = Dibujante.colorHSL(120, 100, 50)
+    cuadradoDos.color = "purple"
+    circunferenciaTres.color = "yellow"
+    dibu.opacidad = 0.4
     
     function animar(){
-        dibujanteUno.limpiarCanvas(CANVAS)
+        dibu.limpiarCanvas(CANVAS)
         poligonoUno.rotar(Matematica.gradoARadian(1));
         cuadradoDos.rotarSegunPunto(centroCanvas, Matematica.gradoARadian(-1))
         if(Colision.detectar(poligonoUno, cuadradoDos)){
-            dibujanteDos.color = "red"
-            dibujanteUno.color = "red"
-        }
-        else if(Colision.detectar(circunferenciaTres, cuadradoDos)){
-            dibujanteDos.color = "orange"
-            dibujanteTres.color = "red"
+            cuadradoDos.color = "red"
         }
         else{
-            dibujanteTres.color = "yellow"
-            dibujanteDos.color = "green"
-            dibujanteUno.color = "blue"
+            cuadradoDos.color = "purple"
         }
-        dibujanteUno.rellenar(poligonoUno)
-        dibujanteDos.rellenar(cuadradoDos)
-        dibujanteTres.rellenar(circunferenciaTres)
+        if(Colision.detectar(circunferenciaTres, cuadradoDos)){
+            circunferenciaTres.color = "red"
+        }
+        else{
+            circunferenciaTres.color = "yellow"
+        }
+        poligonoUno.rellenar(dibu)
+        cuadradoDos.rellenar(dibu)
+        circunferenciaTres.rellenar(dibu)
 
         requestAnimationFrame(animar);
     }

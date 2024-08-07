@@ -94,6 +94,8 @@ export class Vector{
         let magnitud: number = Matematica.raiz(vector.x**2 + vector.y**2, 2);
         return new Vector(vector.x / magnitud, vector.y / magnitud);
     }
+
+
     /**Retorna el vector normal de un segmento formado por dos vectores.        
      * El ángulo de la normal va en sentido antihorario según la dirección del primer al segundo vector.       
      * (Según la inverción de ejes de las coordenadas de JS, donde los ángulos crecen en sentido horario).
@@ -102,12 +104,16 @@ export class Vector{
         let vectorSegmento: Vector = Vector.segunPuntos(vectorUno, vectorDos);
         return Vector.rotar(vectorSegmento, -Matematica.PI_MEDIO);
     }
+
+
     static punto(vectorUno: Vector, vectorDos: Vector): number{
         let productoX: number = Matematica.multiplicacion(vectorUno.x, vectorDos.x)
         let productoY: number = Matematica.multiplicacion(vectorUno.y, vectorDos.y)
         let producto: number = Matematica.suma(productoX, productoY);
         return producto;
     }
+
+
     static cruz(vectorUno: Vector, vectorDos: Vector): number{
         // return vectorUno.x * vectorDos.y - vectorUno.y * vectorDos.x
         return Matematica.multiplicacion(vectorUno.x, vectorDos.y) - Matematica.multiplicacion(vectorUno.y, vectorDos.x)
@@ -115,14 +121,20 @@ export class Vector{
         // let angulo: number = Vector.anguloVectores(vectorUno, vectorDos);
         // return magnitudes * Math.sin(angulo)
     }
+
+
     static proyeccion(vectorUno: Vector, vectorEje: Vector): number{
         return Matematica.division(Vector.punto(vectorUno, vectorEje), Vector.magnitud(vectorEje));
     }
+
+
     static anguloVectores(vectorUno: Vector, vectorDos: Vector): number{
         let punto: number = Vector.punto(vectorUno, vectorDos);
         let magnitudes: number = Matematica.multiplicacion(vectorUno.magnitud, vectorDos.magnitud);
         return Math.acos(punto / magnitudes);
     }
+
+
     static clonarConjunto(vectores: Vector[]): Vector[]{
         let conjuntoCopia: Vector[] = [];
         for(let vector of vectores){
@@ -130,6 +142,8 @@ export class Vector{
         }
         return conjuntoCopia;
     }
+
+    
     static rotar(vector: Vector, angulo: number): Vector{
         let x: number = (Math.cos(angulo) * vector.x) - (Math.sin(angulo) * vector.y);
         let y: number = (Math.sin(angulo) * vector.x) + (Math.cos(angulo) * vector.y)
