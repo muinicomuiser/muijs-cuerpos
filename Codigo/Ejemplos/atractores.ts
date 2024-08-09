@@ -1,22 +1,25 @@
 import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Matriz } from "../Fuente/Utiles/Matrices.js";
 import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
-import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Dibujante } from "../Fuente/Renderizado/Dibujante.js";
 import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 import { Colision } from "../Fuente/Interaccion/Colision.js";
+import { Geometria } from "../Fuente/Utiles/Geometria.js";
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
 const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
+
+let numeroAtractores: number = 1;
+let numeroCuerpos: number = 120;
+
 CANVAS.width = 650;
 CANVAS.height = 650;
 CANVAS.style.backgroundColor = Dibujante.colorHSL(220, 70, 0);
 let centroCanvas: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 let velocidad: Vector = Vector.crear(1, 1);
-let cuerpoDeCuerpos: Cuerpo = Cuerpo.poligono(centroCanvas.x*1.1, centroCanvas.y, 100, 20);
-let cuerpoGuia: Cuerpo = Cuerpo.poligono(centroCanvas.x, centroCanvas.y, 1, 100);
+let cuerpoDeCuerpos: Cuerpo = Cuerpo.poligono(centroCanvas.x*1.1, centroCanvas.y, numeroCuerpos, 20);
+let cuerpoGuia: Cuerpo = Cuerpo.poligono(centroCanvas.x, centroCanvas.y, numeroAtractores, 100);
 let atractores: Cuerpo[] = crearAtractores(cuerpoGuia);
 let cuerpos: Cuerpo[] = crearCuerpos(cuerpoDeCuerpos);
 function crearCuerpos(cuerpo: Cuerpo): Cuerpo[]{
@@ -54,7 +57,7 @@ window.addEventListener("load", ()=>{
         }
         escalita += escalador;
         for(let i in atractores){
-            atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Matematica.gradoARadian(-1));
+            atractores[i].rotarSegunPunto({x: centroCanvas.x, y: centroCanvas.y}, Geometria.gradoARadian(-1));
             atractores[i].mover();
             atractores[i].trazar(dibujante);
         }

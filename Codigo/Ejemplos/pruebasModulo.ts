@@ -1,8 +1,7 @@
 import { Matematica } from "../Fuente/Utiles/Matematica.js";
 import { Matriz } from "../Fuente/Utiles/Matrices.js";
-import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
-import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
+import { Geometria } from "../Fuente/Utiles/Geometria.js";
 //Módulo Matemática, Aritmética
 
 /**Medidor de velocidad de cálculo*/
@@ -16,8 +15,8 @@ function contador(): void{
 function aritmetica(): void{
     console.log(Matematica.redondear(Matematica.PI, 3));
     console.log(Matematica.parteDecimal(Matematica.PI));
-    console.log(Matematica.radianAGrado(3.1415));
-    console.log(Matematica.gradoARadian(180));
+    console.log(Geometria.radianAGrado(3.1415));
+    console.log(Geometria.gradoARadian(180));
     console.log(Matematica.absoluto(0));
     console.log(Matematica.potencia(20, 3));
     console.log(Matematica.raiz(25, 2));
@@ -79,7 +78,7 @@ function matrices(): void{
 function vectores(): void{
     let vectorTres: Vector = Vector.segunPuntos({x:2, y:2}, {x: 4, y: 4});
     console.log(vectorTres)
-    console.log(Matematica.radianAGrado(vectorTres.angulo))
+    console.log(Geometria.radianAGrado(vectorTres.angulo))
     // console.log("VectorUno")
     // console.log(vectorUno);
     // vectorUno.y = 10;

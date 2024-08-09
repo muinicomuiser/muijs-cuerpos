@@ -10,7 +10,7 @@
 
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
-import { Matematica } from "../Utiles/Matematica.js";
+import { Geometria } from "../Utiles/Geometria.js";
 
 /** MÓDULO DE COLISIONES        
  * Trabaja usando objetos de tipo Forma.
@@ -44,7 +44,7 @@ export class Colision{
      */
     static circunferencias(circunferenciaUno: Forma, circunferenciaDos: Forma): boolean{
         let sumaRadios: number = circunferenciaUno.radio + circunferenciaDos.radio;
-        let distanciaCentros: number = Matematica.distanciaEntrePuntos(circunferenciaUno.posicion, circunferenciaDos.posicion);
+        let distanciaCentros: number = Geometria.distanciaEntrePuntos(circunferenciaUno.posicion, circunferenciaDos.posicion);
         if(distanciaCentros > sumaRadios){
             return false
         }
@@ -61,10 +61,10 @@ export class Colision{
         for(let normal of poligonoUno.normales){     
 
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
-            let menorUno: number = Colision.buscarMenor(poligonoUno.verticesTransformados, normal);
-            let mayorUno: number = Colision.buscarMayor(poligonoUno.verticesTransformados, normal);
-            let menorDos: number = Colision.buscarMenor(poligonoDos.verticesTransformados, normal);
-            let mayorDos: number = Colision.buscarMayor(poligonoDos.verticesTransformados, normal);
+            let menorUno: number = Colision.proyeccionMenor(poligonoUno.verticesTransformados, normal);
+            let mayorUno: number = Colision.proyeccionMayor(poligonoUno.verticesTransformados, normal);
+            let menorDos: number = Colision.proyeccionMenor(poligonoDos.verticesTransformados, normal);
+            let mayorDos: number = Colision.proyeccionMayor(poligonoDos.verticesTransformados, normal);
 
             /**Comparación. Si se encuentra una separación, retorna false.*/
             if(menorUno > mayorDos || mayorUno < menorDos){
@@ -74,10 +74,10 @@ export class Colision{
         for(let normal of poligonoDos.normales){      
 
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
-            let menorUno: number = Colision.buscarMenor(poligonoUno.verticesTransformados, normal);
-            let mayorUno: number = Colision.buscarMayor(poligonoUno.verticesTransformados, normal);
-            let menorDos: number = Colision.buscarMenor(poligonoDos.verticesTransformados, normal);
-            let mayorDos: number = Colision.buscarMayor(poligonoDos.verticesTransformados, normal);
+            let menorUno: number = Colision.proyeccionMenor(poligonoUno.verticesTransformados, normal);
+            let mayorUno: number = Colision.proyeccionMayor(poligonoUno.verticesTransformados, normal);
+            let menorDos: number = Colision.proyeccionMenor(poligonoDos.verticesTransformados, normal);
+            let mayorDos: number = Colision.proyeccionMayor(poligonoDos.verticesTransformados, normal);
 
             /**Comparación. Si se encuentra una separación, retorna false.*/
             if(menorUno > mayorDos || mayorUno < menorDos){
@@ -97,8 +97,8 @@ export class Colision{
         for(let normal of poligono.normales){   
 
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
-            let menorPoli: number = Colision.buscarMenor(poligono.verticesTransformados, normal);
-            let mayorPoli: number = Colision.buscarMayor(poligono.verticesTransformados, normal);
+            let menorPoli: number = Colision.proyeccionMenor(poligono.verticesTransformados, normal);
+            let mayorPoli: number = Colision.proyeccionMayor(poligono.verticesTransformados, normal);
             let menorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radio;
             let mayorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radio;
 
@@ -112,7 +112,7 @@ export class Colision{
 
 
     /**Retorna el valor menor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
-    private static buscarMenor(vertices: Vector[], normal: Vector): number{
+    private static proyeccionMenor(vertices: Vector[], normal: Vector): number{
             let menor = Vector.proyeccion(vertices[0], normal);
         
             /**Búsqueda de proyecciones mínimas de los vértices del polígono uno.*/
@@ -126,7 +126,7 @@ export class Colision{
 
 
     /**Retorna el valor mayor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
-    private static buscarMayor(vertices: Vector[], normal: Vector): number{
+    private static proyeccionMayor(vertices: Vector[], normal: Vector): number{
             let mayor = Vector.proyeccion(vertices[0], normal);
         
             /**Búsqueda de proyecciones máximas de los vértices del polígono uno.*/

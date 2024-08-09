@@ -3,10 +3,12 @@ import { Punto } from "./Punto.js";
 import { Vector } from "./Vector.js";
 import { Transformacion } from "./Transformacion.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
+import { Geometria } from "../Utiles/Geometria.js";
 //POR INTEGRAR
 // Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
-// Integrar la clase Transformacion
+// Sumar formas
+
 export class Forma{
     protected _id: string;
     protected _centro: Vector;
@@ -173,7 +175,7 @@ export class Forma{
 
 
     static rectangulo(x: number, y: number, base: number, altura: number){
-        let rectangulo = new Forma(x, y, 4, Matematica.hipotenusa(base * 0.5, altura * 0.5));
+        let rectangulo = new Forma(x, y, 4, Geometria.hipotenusa(base * 0.5, altura * 0.5));
         rectangulo.id = "poligono";
         let ver1: Vector = Vector.crear(base/2, altura/2);
         let ver2: Vector = Vector.crear(-base/2, altura/2);

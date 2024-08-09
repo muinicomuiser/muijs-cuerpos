@@ -29,7 +29,8 @@ export class Vector{
         this._origen = {x: origen.x, y: origen.y};
     }
     static magnitud(vector: Vector): number{
-            return Matematica.raiz(Matematica.suma(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2)
+            // return Matematica.raiz(Matematica.suma(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2)
+            return (vector.x ** 2 + vector.y ** 2)**(1/2)
         }
         //REVISARRRRRRRRRRRRRRRR
     static angulo(vector: Vector): number{
@@ -46,7 +47,8 @@ export class Vector{
             return Matematica.DOS_PI + Math.asin(vector.y / Vector.magnitud(vector));
         }
         else if (vector.x <= 0 && vector.y < 0){
-            return Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));        }
+            return Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));        
+        }
         else{
             return 0
         }
@@ -79,20 +81,29 @@ export class Vector{
         return new Vector(x, y)
     }
     static suma(vectorUno: Vector, vectorDos: Vector): Vector{
-        let vectorSuma: Vector = new Vector(Matematica.suma(vectorUno.x, vectorDos.x), Matematica.suma(vectorUno.y, vectorDos.y));
+        let vectorSuma: Vector = new Vector((vectorUno.x + vectorDos.x), (vectorUno.y + vectorDos.y));
+        // let vectorSuma: Vector = new Vector(Matematica.suma(vectorUno.x, vectorDos.x), Matematica.suma(vectorUno.y, vectorDos.y));
         return vectorSuma;
     }
     static resta(vectorUno: Vector, vectorDos: Vector): Vector{
-        let vectorResta: Vector = new Vector(Matematica.suma(vectorUno.x, -vectorDos.x), Matematica.suma(vectorUno.y, -vectorDos.y));
+        let vectorResta: Vector = new Vector((vectorUno.x - vectorDos.x), (vectorUno.y - vectorDos.y));
+        // let vectorResta: Vector = new Vector(Matematica.suma(vectorUno.x, -vectorDos.x), Matematica.suma(vectorUno.y, -vectorDos.y));
         return vectorResta;
     }
     static escalar(vector: Vector, escalar: number): Vector{
-        let vectorEscalado: Vector = new Vector(Matematica.multiplicacion(vector.x, escalar), Matematica.multiplicacion(vector.y, escalar));
+        let vectorEscalado: Vector = new Vector((vector.x * escalar), (vector.y * escalar));
+        // let vectorEscalado: Vector = new Vector(Matematica.multiplicacion(vector.x, escalar), Matematica.multiplicacion(vector.y, escalar));
         return vectorEscalado;
     }
     static normalizar(vector: Vector){
-        let magnitud: number = Matematica.raiz(vector.x**2 + vector.y**2, 2);
-        return new Vector(vector.x / magnitud, vector.y / magnitud);
+        // let magnitud: number = Matematica.raiz(vector.x**2 + vector.y**2, 2);
+        // return new Vector(vector.x / magnitud, vector.y / magnitud);
+        return new Vector(vector.x / vector.magnitud, vector.y / vector.magnitud);
+    }
+
+    /**Retorna un vector resultante de invertir la dirección del vector ingresado.*/
+    static invertir(vector: Vector): Vector{
+        return new Vector(-vector.x, -vector.y);
     }
 
 
@@ -107,30 +118,30 @@ export class Vector{
 
 
     static punto(vectorUno: Vector, vectorDos: Vector): number{
-        let productoX: number = Matematica.multiplicacion(vectorUno.x, vectorDos.x)
-        let productoY: number = Matematica.multiplicacion(vectorUno.y, vectorDos.y)
-        let producto: number = Matematica.suma(productoX, productoY);
-        return producto;
+        return(vectorUno.x * vectorDos.x) + (vectorUno.y * vectorDos.y)
+        // let productoX: number = Matematica.multiplicacion(vectorUno.x, vectorDos.x)
+        // let productoY: number = Matematica.multiplicacion(vectorUno.y, vectorDos.y)
+        // let producto: number = Matematica.suma(productoX, productoY);
+        // return producto;
     }
 
 
     static cruz(vectorUno: Vector, vectorDos: Vector): number{
-        // return vectorUno.x * vectorDos.y - vectorUno.y * vectorDos.x
-        return Matematica.multiplicacion(vectorUno.x, vectorDos.y) - Matematica.multiplicacion(vectorUno.y, vectorDos.x)
-        // let magnitudes: number = Vector.magnitud(vectorUno) * Vector.magnitud(vectorDos);
-        // let angulo: number = Vector.anguloVectores(vectorUno, vectorDos);
-        // return magnitudes * Math.sin(angulo)
+        return vectorUno.x * vectorDos.y - vectorUno.y * vectorDos.x
+        // return Matematica.multiplicacion(vectorUno.x, vectorDos.y) - Matematica.multiplicacion(vectorUno.y, vectorDos.x)
     }
 
 
     static proyeccion(vectorUno: Vector, vectorEje: Vector): number{
-        return Matematica.division(Vector.punto(vectorUno, vectorEje), Vector.magnitud(vectorEje));
+        return (Vector.punto(vectorUno, vectorEje) / Vector.magnitud(vectorEje));
+        // return Matematica.division(Vector.punto(vectorUno, vectorEje), Vector.magnitud(vectorEje));
     }
 
 
     static anguloVectores(vectorUno: Vector, vectorDos: Vector): number{
         let punto: number = Vector.punto(vectorUno, vectorDos);
-        let magnitudes: number = Matematica.multiplicacion(vectorUno.magnitud, vectorDos.magnitud);
+        let magnitudes: number = vectorUno.magnitud * vectorDos.magnitud;
+        // let magnitudes: number = Matematica.multiplicacion(vectorUno.magnitud, vectorDos.magnitud);
         return Math.acos(punto / magnitudes);
     }
 

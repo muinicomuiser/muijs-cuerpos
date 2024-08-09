@@ -1,12 +1,10 @@
 import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Matriz } from "../Fuente/Utiles/Matrices.js";
 import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
 import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Dibujante } from "../Fuente/Renderizado/Dibujante.js";
-import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 import { Colision } from "../Fuente/Interaccion/Colision.js";
+import { Geometria } from "../Fuente/Utiles/Geometria.js";
 
 /**AQUÍ EMPECÉ A PROBAR EL MÓDULO DE COLISIONES.*/
 
@@ -30,8 +28,8 @@ window.addEventListener("load", ()=>{
     
     function animar(){
         dibu.limpiarCanvas(CANVAS)
-        poligonoUno.rotar(Matematica.gradoARadian(1));
-        cuadradoDos.rotarSegunPunto(centroCanvas, Matematica.gradoARadian(-1))
+        poligonoUno.rotar(Geometria.gradoARadian(1));
+        cuadradoDos.rotarSegunPunto(centroCanvas, Geometria.gradoARadian(-1))
         if(Colision.detectar(poligonoUno, cuadradoDos)){
             cuadradoDos.color = "red"
         }
