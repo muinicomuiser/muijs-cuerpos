@@ -14,6 +14,15 @@ export class Fuerza{
         vectorAtractor = Vector.escalar(vectorAtractor, magnitudAceleracion);
         return vectorAtractor;
     }
+    /**Retorna un vector correspondiente a la aceleración de un cuerpo atraído hacia un vector atractor.        
+     * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
+    */
+    static atraerAVector(cuerpo: Cuerpo, atractor: Vector, magnitudAceleracion: number): Vector{
+        let vectorAtractor: Vector = Vector.segunPuntos(cuerpo.posicion, atractor);
+        vectorAtractor = Vector.normalizar(vectorAtractor);
+        vectorAtractor = Vector.escalar(vectorAtractor, magnitudAceleracion);
+        return vectorAtractor;
+    }
  
     /**Retorna un vector correspondiente a la aceleración de un cuerpo repelido por un cuerpo repulsor.        
     * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
@@ -23,5 +32,15 @@ export class Fuerza{
         vectorAtractor = Vector.normalizar(vectorAtractor);
         vectorAtractor = Vector.escalar(vectorAtractor, magnitudAceleracion);
         return vectorAtractor;
+    }
+
+     /**Retorna un vector correspondiente a la aceleración de un cuerpo repelido por un vector repulsor.        
+     * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
+    */
+    static repelerDeVector(cuerpo: Cuerpo, repulsor: Vector, magnitudAceleracion: number): Vector{
+        let vectorRepulsor: Vector = Vector.segunPuntos(repulsor, cuerpo.posicion);
+        vectorRepulsor = Vector.normalizar(vectorRepulsor);
+        vectorRepulsor = Vector.escalar(vectorRepulsor, magnitudAceleracion);
+        return vectorRepulsor;
     }
 }

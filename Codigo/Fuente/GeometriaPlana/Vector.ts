@@ -5,10 +5,12 @@ export class Vector{
     private _x: number;
     private _y: number;
     private _origen: Punto;
+    private _id: number;
     constructor(x: number, y: number){
         this._x = x;
         this._y = y;
         this._origen = {x: 0, y: 0};
+        this._id = 0;
     }
     public get x(): number{
         return this._x;

@@ -7,7 +7,7 @@ import { Geometria } from "../Utiles/Geometria.js";
 //POR INTEGRAR
 // Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
-// Sumar formas
+// SUMAR FORMAS
 
 export class Forma{
     protected _id: string;
