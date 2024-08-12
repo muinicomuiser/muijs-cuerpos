@@ -3,6 +3,12 @@ import { Matematica } from "../Utiles/Matematica.js";
 //  Throw de errores para valores incompatibles
 //  Opacidad, letras
 export class Dibujante {
+    _color;
+    _colorFondo;
+    _grosorTrazo;
+    _opacidad;
+    _colorVectores;
+    _context;
     constructor(context) {
         this._context = context;
         this._color = "black";

@@ -1,6 +1,10 @@
 import { Matematica } from "../Utiles/Matematica.js";
 //POR REVISAR
 export class Vector {
+    _x;
+    _y;
+    _origen;
+    _id;
     constructor(x, y) {
         this._x = x;
         this._y = y;

@@ -7,6 +7,15 @@ import { Geometria } from "../Utiles/Geometria.js";
 // Función de escalar, reflejar
 // SUMAR FORMAS
 export class Forma {
+    _id;
+    _centro;
+    _lados;
+    _radio;
+    _vertices;
+    _verticesTransformados;
+    _transformacion;
+    _radioTransformado;
+    _color;
     constructor(x, y, lados = 0, radio = 0) {
         this._id = "";
         this._centro = Vector.cero();

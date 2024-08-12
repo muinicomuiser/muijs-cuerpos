@@ -15,6 +15,9 @@ import { Vector } from "./Vector.js";
  * Almacena en sus atributos los valores de las transformaciones que aplica.
  */
 export class Transformacion {
+    escala;
+    rotacion;
+    posicion;
     constructor(x = 0, y = 0, rotacion = 0, escala = 1) {
         this.escala = escala;
         this.rotacion = rotacion;

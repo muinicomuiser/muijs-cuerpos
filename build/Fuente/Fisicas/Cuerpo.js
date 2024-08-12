@@ -19,6 +19,12 @@ import { Vector } from "../GeometriaPlana/Vector.js";
  * Trabaja usando objetos de tipo Forma.
  */
 export class Cuerpo extends Forma {
+    _masa;
+    _densidad;
+    _velocidad;
+    _aceleracion;
+    _fijo;
+    _rotarSegunVelocidad;
     constructor(x, y, lados = 0, radio = 0, masa = 1, densidad = 1, fijo = false) {
         super(x, y, lados, radio);
         this._masa = masa;
