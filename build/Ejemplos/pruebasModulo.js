@@ -1,7 +1,9 @@
-import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Matriz } from "../Fuente/Utiles/Matrices.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const Matematica_js_1 = require("../Fuente/Utiles/Matematica.js");
+const Matrices_js_1 = require("../Fuente/Utiles/Matrices.js");
+const Vector_js_1 = require("../Fuente/GeometriaPlana/Vector.js");
+const Geometria_js_1 = require("../Fuente/Utiles/Geometria.js");
 //Módulo Matemática, Aritmética
 /**Medidor de velocidad de cálculo*/
 function contador() {
@@ -10,13 +12,13 @@ function contador() {
     console.log((`${tiempoFinal - tiempoInicio}` + " milisegundos"));
 }
 function aritmetica() {
-    console.log(Matematica.redondear(Matematica.PI, 3));
-    console.log(Matematica.parteDecimal(Matematica.PI));
-    console.log(Geometria.radianAGrado(3.1415));
-    console.log(Geometria.gradoARadian(180));
-    console.log(Matematica.absoluto(0));
-    console.log(Matematica.potencia(20, 3));
-    console.log(Matematica.raiz(25, 2));
+    console.log(Matematica_js_1.Matematica.redondear(Matematica_js_1.Matematica.PI, 3));
+    console.log(Matematica_js_1.Matematica.parteDecimal(Matematica_js_1.Matematica.PI));
+    console.log(Geometria_js_1.Geometria.radianAGrado(3.1415));
+    console.log(Geometria_js_1.Geometria.gradoARadian(180));
+    console.log(Matematica_js_1.Matematica.absoluto(0));
+    console.log(Matematica_js_1.Matematica.potencia(20, 3));
+    console.log(Matematica_js_1.Matematica.raiz(25, 2));
 }
 // aritmetica();
 // console.log(0.1 + 0.2);
@@ -25,9 +27,9 @@ function aritmetica() {
 //Módulo Matematica, Constantes
 function matematicaConstantes() {
     console.log("Módulo Matemática, constantes:");
-    console.log("PI: ", Matematica.PI);
-    console.log("DOS_PI: ", Matematica.DOS_PI);
-    console.log("PHI: ", Matematica.PHI);
+    console.log("PI: ", Matematica_js_1.Matematica.PI);
+    console.log("DOS_PI: ", Matematica_js_1.Matematica.DOS_PI);
+    console.log("PHI: ", Matematica_js_1.Matematica.PHI);
     console.log("Math.PI: ", Math.PI);
 }
 // matematicaConstantes();
@@ -38,25 +40,25 @@ function matrices() {
     let C2X3 = [[1, 2, 3], [4, 5, 6]];
     let D3X2 = [[1, 2], [3, 4], [5, 6]];
     console.log("Módulo Matrices");
-    console.log("Matriz nula 3x3: ", Matriz.nula(3, 3));
-    console.log("Matriz identidad 3x3: ", Matriz.identidad(3));
-    console.log("Matriz escalar 3x3, escalar = 4: ", Matriz.escalar(3, 0.4));
-    console.log("Matriz traspuesta 3x3 de [[1, 2, 3],[4, 5, 6,],[7, 8, 9]]: ", Matriz.traspuesta(A3X3));
-    console.log("Matriz traspuesta 3x2 de [[1, 2, 3],[4, 5, 6,]]: ", Matriz.traspuesta([[1, 2, 3], [4, 5, 6,]]));
-    console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
-    console.log("Suma de las matrices [[1, 2],[3, 4]] y [[5, 6], [7, 8]]: ", Matriz.suma([[1, 2], [3, 4]], [[5, 6], [7, 8]]));
-    console.log(`Suma de las matrices`, A3X3, "y", B3X3, ": ", Matriz.suma(A3X3, B3X3));
-    console.log(`Resta de las matrices`, A3X3, "y", B3X3, ": ", Matriz.resta(A3X3, B3X3));
-    console.log("Matriz 3x3 ", A3X3, " multiplicada por 4: ", Matriz.productoEscalar(A3X3, 0.4));
+    console.log("Matriz nula 3x3: ", Matrices_js_1.Matriz.nula(3, 3));
+    console.log("Matriz identidad 3x3: ", Matrices_js_1.Matriz.identidad(3));
+    console.log("Matriz escalar 3x3, escalar = 4: ", Matrices_js_1.Matriz.escalar(3, 0.4));
+    console.log("Matriz traspuesta 3x3 de [[1, 2, 3],[4, 5, 6,],[7, 8, 9]]: ", Matrices_js_1.Matriz.traspuesta(A3X3));
+    console.log("Matriz traspuesta 3x2 de [[1, 2, 3],[4, 5, 6,]]: ", Matrices_js_1.Matriz.traspuesta([[1, 2, 3], [4, 5, 6,]]));
+    console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matrices_js_1.Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
+    console.log("Suma de las matrices [[1, 2],[3, 4]] y [[5, 6], [7, 8]]: ", Matrices_js_1.Matriz.suma([[1, 2], [3, 4]], [[5, 6], [7, 8]]));
+    console.log(`Suma de las matrices`, A3X3, "y", B3X3, ": ", Matrices_js_1.Matriz.suma(A3X3, B3X3));
+    console.log(`Resta de las matrices`, A3X3, "y", B3X3, ": ", Matrices_js_1.Matriz.resta(A3X3, B3X3));
+    console.log("Matriz 3x3 ", A3X3, " multiplicada por 4: ", Matrices_js_1.Matriz.productoEscalar(A3X3, 0.4));
     console.log((((3 * 10) * (0.4 * 10)) / 100).toString(10));
     console.log((3 * 0.4).toString(10));
-    console.log(Matematica.multiplicacion(0.1, 0.2));
-    console.log(Matematica.suma(0.01, 0.02));
+    console.log(Matematica_js_1.Matematica.multiplicacion(0.1, 0.2));
+    console.log(Matematica_js_1.Matematica.suma(0.01, 0.02));
     console.log((0.1 * 0.2));
-    console.log("Dimensiones: ", A3X3, " == ", C2X3, ": ", Matriz.compararDimension(A3X3, C2X3));
-    console.log("Dimensiones: ", A3X3, " == ", B3X3, ": ", Matriz.compararDimension(A3X3, B3X3));
-    console.log("Poroducto entre ", C2X3, " y ", D3X2, ": ", Matriz.productoMatriz(C2X3, D3X2));
-    console.log("Poroducto entre ", D3X2, " y ", C2X3, ": ", Matriz.productoMatriz(D3X2, C2X3));
+    console.log("Dimensiones: ", A3X3, " == ", C2X3, ": ", Matrices_js_1.Matriz.compararDimension(A3X3, C2X3));
+    console.log("Dimensiones: ", A3X3, " == ", B3X3, ": ", Matrices_js_1.Matriz.compararDimension(A3X3, B3X3));
+    console.log("Poroducto entre ", C2X3, " y ", D3X2, ": ", Matrices_js_1.Matriz.productoMatriz(C2X3, D3X2));
+    console.log("Poroducto entre ", D3X2, " y ", C2X3, ": ", Matrices_js_1.Matriz.productoMatriz(D3X2, C2X3));
 }
 // matrices();
 // console.log(Matriz.productoMatriz(Matriz.identidad(2), [[2, 2], [3, 2]]));
@@ -68,9 +70,9 @@ function matrices() {
 // console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
 //VECTORES
 function vectores() {
-    let vectorTres = Vector.segunPuntos({ x: 2, y: 2 }, { x: 4, y: 4 });
+    let vectorTres = Vector_js_1.Vector.segunPuntos({ x: 2, y: 2 }, { x: 4, y: 4 });
     console.log(vectorTres);
-    console.log(Geometria.radianAGrado(vectorTres.angulo));
+    console.log(Geometria_js_1.Geometria.radianAGrado(vectorTres.angulo));
     // console.log("VectorUno")
     // console.log(vectorUno);
     // vectorUno.y = 10;
@@ -92,13 +94,13 @@ function generarAleatorio() {
     let aleatorio = 0;
     for (let i = 0; i < 10000; i++) {
         let unidades = 1234567890;
-        let numero = Matematica.division(Date.now() % 100, 100);
-        numero = Matematica.multiplicacion(numero, Matematica.PI);
+        let numero = Matematica_js_1.Matematica.division(Date.now() % 100, 100);
+        numero = Matematica_js_1.Matematica.multiplicacion(numero, Matematica_js_1.Matematica.PI);
         let selector = (Date.now() % 10) + 1;
         unidades = unidades / (10 ** (selector + 1));
         aleatorio += numero * unidades;
     }
-    aleatorio = Matematica.parteDecimal(aleatorio);
+    aleatorio = Matematica_js_1.Matematica.parteDecimal(aleatorio);
     console.log(aleatorio);
     console.log(Date.now());
 }
@@ -115,7 +117,7 @@ function pruebaAleatorioEnteroRango() {
     console.log("Inicio. Número de cálculos: ", repeticiones);
     let inicioTiempo = Date.now();
     for (let i = 0; i < repeticiones; i++) {
-        let aleatorio = Matematica.aleatorioEntero(min, max);
+        let aleatorio = Matematica_js_1.Matematica.aleatorioEntero(min, max);
         if (aleatorio == min) {
             a++;
         }
@@ -148,7 +150,7 @@ function pruebaAleatorioRango() {
     console.log("Inicio. Número de cálculos: ", repeticiones);
     let inicioTiempo = Date.now();
     for (let i = 0; i < repeticiones; i++) {
-        let aleatorio = Matematica.aleatorio(min, max);
+        let aleatorio = Matematica_js_1.Matematica.aleatorio(min, max);
         if (aleatorio < min) {
             a++;
         }
@@ -177,7 +179,7 @@ function probarMultiplicacion() {
     console.log("Inicio. Número de cálculos: ", repeticiones);
     let inicioTiempo = Date.now();
     for (let i = inicio; i < repeticiones; i++) {
-        resultadosMetodo.push(Matematica.multiplicacion(multiplicador, i));
+        resultadosMetodo.push(Matematica_js_1.Matematica.multiplicacion(multiplicador, i));
         // if(i > 2 && !Matematica.comparar(resultadosMetodo[resultadosMetodo.length - 1 ], resultadosMetodo[resultadosMetodo.length - 2 ] + 10.0000001, 0.00000001)){
         //     (console.log("salto", resultadosMetodo[resultadosMetodo.length - 1 ], resultadosMetodo[resultadosMetodo.length - 2 ]))
         // }    
@@ -204,16 +206,16 @@ function probarDivision() {
     let resultadosJS = [];
     console.log("Inicio. Número de cálculos: ", repeticiones);
     let inicioTiempo = Date.now();
-    for (let i = inicio; i < repeticiones; i = Matematica.suma(i, 0.3)) {
+    for (let i = inicio; i < repeticiones; i = Matematica_js_1.Matematica.suma(i, 0.3)) {
         resultadosMetodo.push(i);
-        resultadosMetodo.push(Matematica.division(i, divisor));
+        resultadosMetodo.push(Matematica_js_1.Matematica.division(i, divisor));
     }
     console.log(resultadosMetodo);
     console.log("Fin método Matematica.division()");
     let tiempoMetodo = Date.now();
     console.log((`${tiempoMetodo - inicioTiempo}` + " milisegundos"));
     console.log("Inicio operador *");
-    for (let i = inicio; i < repeticiones; i = Matematica.suma(i, 0.3)) {
+    for (let i = inicio; i < repeticiones; i = Matematica_js_1.Matematica.suma(i, 0.3)) {
         resultadosJS.push((i) / divisor);
     }
     console.log(resultadosJS);
@@ -222,11 +224,11 @@ function probarDivision() {
 }
 // probarDivision();
 function probarVectorNormal() {
-    let vectorUno = Vector.crear(1, 3);
-    let vectorDos = Vector.crear(3, 1);
-    let vectorEje = Vector.crear(2, 2);
-    let proyeccionUno = Vector.proyeccion(vectorUno, vectorEje);
-    let proyeccionDos = Vector.proyeccion(vectorDos, vectorEje);
+    let vectorUno = Vector_js_1.Vector.crear(1, 3);
+    let vectorDos = Vector_js_1.Vector.crear(3, 1);
+    let vectorEje = Vector_js_1.Vector.crear(2, 2);
+    let proyeccionUno = Vector_js_1.Vector.proyeccion(vectorUno, vectorEje);
+    let proyeccionDos = Vector_js_1.Vector.proyeccion(vectorDos, vectorEje);
     console.log(proyeccionUno);
     console.log(proyeccionDos);
 }

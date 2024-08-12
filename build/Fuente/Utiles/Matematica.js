@@ -1,10 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Matematica = void 0;
 /**
  * MÓDULO MATEMÁTICO EN ESPAÑOL
  *
  * Por agregar: floor, ceil, logaritmo, trigonometrías, exp, raizcuadrada, cuadrado, cubo, max, min, promedio.
  * POR CORREGIR: Reemplazar multiplicaciones por multiplicacion, y las sumas también.
  */
-export class Matematica {
+class Matematica {
     //CONSTANTES
     /**Retorna el valor de PI usando quince decimales.*/
     static get PI() {
@@ -296,3 +299,4 @@ export class Matematica {
         return radicando ** Matematica.division(1, indice);
     }
 }
+exports.Matematica = Matematica;

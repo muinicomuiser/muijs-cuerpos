@@ -1,3 +1,4 @@
+"use strict";
 /**
         =============================================
                 * MÓDULO DE TRANSFORMACIONES *
@@ -9,24 +10,26 @@
         Siempre retorna copias nuevas de los conjuntos de vectores ingresados.
 
  */
-import { Vector } from "./Vector.js";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Transformacion = void 0;
+const Vector_js_1 = require("./Vector.js");
 /**Aplica transformaciones de escala, rotación y desplazamiento sobre arreglos de vectores.
  * Siempre retorna copias nuevas de los arreglos.
  * Almacena en sus atributos los valores de las transformaciones que aplica.
  */
-export class Transformacion {
+class Transformacion {
     escala;
     rotacion;
     posicion;
     constructor(x = 0, y = 0, rotacion = 0, escala = 1) {
         this.escala = escala;
         this.rotacion = rotacion;
-        this.posicion = Vector.crear(x, y);
+        this.posicion = Vector_js_1.Vector.crear(x, y);
     }
     /**Retorna el arreglo de vectores resultante de aplicar las transformaciones de escala, rotación y desplazamiento
      * sobre un arreglo de vectores de entrada.*/
     transformarConjuntoVectores(vectores) {
-        let vectoresTransformados = Vector.clonarConjunto(vectores);
+        let vectoresTransformados = Vector_js_1.Vector.clonarConjunto(vectores);
         vectoresTransformados = this.escalarVectores(vectoresTransformados);
         vectoresTransformados = this.rotarVectores(vectoresTransformados);
         vectoresTransformados = this.desplazarVectores(vectoresTransformados);
@@ -36,7 +39,7 @@ export class Transformacion {
     escalarVectores(vectores) {
         let vectoresEscalados = [];
         for (let vector of vectores) {
-            let vectorEscalado = Vector.escalar(vector, this.escala);
+            let vectorEscalado = Vector_js_1.Vector.escalar(vector, this.escala);
             vectoresEscalados.push(vectorEscalado);
         }
         return vectoresEscalados;
@@ -47,7 +50,7 @@ export class Transformacion {
         for (let vector of vectores) {
             let x = vector.x + this.posicion.x;
             let y = vector.y + this.posicion.y;
-            vectoresDesplazados.push(Vector.crear(x, y));
+            vectoresDesplazados.push(Vector_js_1.Vector.crear(x, y));
         }
         return vectoresDesplazados;
     }
@@ -57,8 +60,9 @@ export class Transformacion {
         for (let vector of vectores) {
             let x = vector.x * Math.cos(this.rotacion) - vector.y * Math.sin(this.rotacion);
             let y = vector.x * Math.sin(this.rotacion) + vector.y * Math.cos(this.rotacion);
-            vectoresRotados.push(Vector.crear(x, y));
+            vectoresRotados.push(Vector_js_1.Vector.crear(x, y));
         }
         return vectoresRotados;
     }
 }
+exports.Transformacion = Transformacion;

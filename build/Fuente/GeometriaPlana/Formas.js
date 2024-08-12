@@ -1,12 +1,15 @@
-import { Matematica } from "../Utiles/Matematica.js";
-import { Vector } from "./Vector.js";
-import { Transformacion } from "./Transformacion.js";
-import { Geometria } from "../Utiles/Geometria.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Forma = void 0;
+const Matematica_js_1 = require("../Utiles/Matematica.js");
+const Vector_js_1 = require("./Vector.js");
+const Transformacion_js_1 = require("./Transformacion.js");
+const Geometria_js_1 = require("../Utiles/Geometria.js");
 //POR INTEGRAR
 // Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
 // SUMAR FORMAS
-export class Forma {
+class Forma {
     _id;
     _centro;
     _lados;
@@ -18,12 +21,12 @@ export class Forma {
     _color;
     constructor(x, y, lados = 0, radio = 0) {
         this._id = "";
-        this._centro = Vector.cero();
+        this._centro = Vector_js_1.Vector.cero();
         this._lados = lados;
         this._radio = radio;
         this._vertices = this.crearVertices();
         this._verticesTransformados = [];
-        this._transformacion = new Transformacion(x, y);
+        this._transformacion = new Transformacion_js_1.Transformacion(x, y);
         this.aplicarTransformacion();
         this._radioTransformado = this._radio * this._transformacion.escala;
         this._color = "blue";
@@ -36,7 +39,7 @@ export class Forma {
     }
     /**Retorna una copia del vector de la posición después de aplicar las transformaciones*/
     get posicion() {
-        let posicion = Vector.clonar(this._transformacion.posicion);
+        let posicion = Vector_js_1.Vector.clonar(this._transformacion.posicion);
         return posicion;
     }
     /**Retorna el número de lados de la figura.*/
@@ -50,15 +53,15 @@ export class Forma {
     }
     /**Retorna el arreglo de vértices sin transformaciones.*/
     get vertices() {
-        return Vector.clonarConjunto(this._vertices);
+        return Vector_js_1.Vector.clonarConjunto(this._vertices);
     }
     /**Retorna el arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento..*/
     get verticesTransformados() {
-        return Vector.clonarConjunto(this._verticesTransformados);
+        return Vector_js_1.Vector.clonarConjunto(this._verticesTransformados);
     }
     /**Retorna una copia de la transformación de la forma.*/
     get transformacion() {
-        return new Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion, this._transformacion.escala);
+        return new Transformacion_js_1.Transformacion(this._transformacion.posicion.x, this._transformacion.posicion.y, this._transformacion.rotacion, this._transformacion.escala);
     }
     /**Retorna el ángulo de rotación actual de la forma.*/
     get rotacion() {
@@ -71,11 +74,11 @@ export class Forma {
         let normales = [];
         for (let i = 0; i < this.verticesTransformados.length; i++) {
             if (i != this.verticesTransformados.length - 1) {
-                let normal = Vector.normal(this.verticesTransformados[i], this.verticesTransformados[i + 1]);
+                let normal = Vector_js_1.Vector.normal(this.verticesTransformados[i], this.verticesTransformados[i + 1]);
                 normales.push(normal);
             }
             else {
-                let normal = Vector.normal(this.verticesTransformados[i], this.verticesTransformados[0]);
+                let normal = Vector_js_1.Vector.normal(this.verticesTransformados[i], this.verticesTransformados[0]);
                 normales.push(normal);
             }
         }
@@ -88,7 +91,7 @@ export class Forma {
         this._id = nuevaId;
     }
     set posicion(nuevaPosicion) {
-        this._transformacion.posicion = Vector.clonar(nuevaPosicion);
+        this._transformacion.posicion = Vector_js_1.Vector.clonar(nuevaPosicion);
     }
     set escala(nuevaEscala) {
         this._transformacion.escala = nuevaEscala;
@@ -104,7 +107,7 @@ export class Forma {
         this._radio = nuevoRadio;
     }
     set vertices(vertices) {
-        this._vertices = Vector.clonarConjunto(vertices);
+        this._vertices = Vector_js_1.Vector.clonarConjunto(vertices);
     }
     set color(color) {
         this._color = color;
@@ -113,21 +116,21 @@ export class Forma {
         if (this._lados == 0) {
             return [];
         }
-        let theta = Matematica.DOS_PI / this._lados;
+        let theta = Matematica_js_1.Matematica.DOS_PI / this._lados;
         let offset = theta * 0.5;
         let nVertices = [];
         for (let i = 0; i < this._lados; i++) {
             let angulo = offset + (i * theta);
             let xx = Math.cos(angulo) * this._radio;
             let yy = Math.sin(angulo) * this._radio;
-            let vertice = Vector.crear(xx, yy);
+            let vertice = Vector_js_1.Vector.crear(xx, yy);
             nVertices.push(vertice);
         }
         return nVertices;
     }
     //Agregar control de errores para índices mayores al número de vértices
     moverVertice(indice, punto) {
-        this._vertices[indice] = Vector.crear(punto.x, punto.y);
+        this._vertices[indice] = Vector_js_1.Vector.crear(punto.x, punto.y);
     }
     static poligono(x, y, lados, radio) {
         let nuevoPoligono = new Forma(x, y, lados, radio);
@@ -135,7 +138,7 @@ export class Forma {
         return nuevoPoligono;
     }
     static circunferencia(x, y, radio) {
-        let lados = 10 + Matematica.truncar(radio / 10, 0);
+        let lados = 10 + Matematica_js_1.Matematica.truncar(radio / 10, 0);
         if (lados % 2 == 1) {
             lados++;
         }
@@ -147,12 +150,12 @@ export class Forma {
         return nuevaCircunferencia;
     }
     static rectangulo(x, y, base, altura) {
-        let rectangulo = new Forma(x, y, 4, Geometria.hipotenusa(base * 0.5, altura * 0.5));
+        let rectangulo = new Forma(x, y, 4, Geometria_js_1.Geometria.hipotenusa(base * 0.5, altura * 0.5));
         rectangulo.id = "poligono";
-        let ver1 = Vector.crear(base / 2, altura / 2);
-        let ver2 = Vector.crear(-base / 2, altura / 2);
-        let ver3 = Vector.crear(-base / 2, -altura / 2);
-        let ver4 = Vector.crear(base / 2, -altura / 2);
+        let ver1 = Vector_js_1.Vector.crear(base / 2, altura / 2);
+        let ver2 = Vector_js_1.Vector.crear(-base / 2, altura / 2);
+        let ver3 = Vector_js_1.Vector.crear(-base / 2, -altura / 2);
+        let ver4 = Vector_js_1.Vector.crear(base / 2, -altura / 2);
         let rectVertices = [ver1, ver2, ver3, ver4];
         rectangulo.vertices = rectVertices;
         rectangulo.aplicarTransformacion();
@@ -160,8 +163,8 @@ export class Forma {
     }
     /**Crea una recta centrada en el origen y con la posición ingresada almacenada en su registro de transformación.*/
     static recta(puntoUno, puntoDos) {
-        let centro = Vector.crear(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
-        let vertices = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
+        let centro = Vector_js_1.Vector.crear(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
+        let vertices = [Vector_js_1.Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector_js_1.Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
         let linea = new Forma(centro.x, centro.y, 1);
         linea.vertices = vertices;
         linea.aplicarTransformacion();
@@ -179,10 +182,10 @@ export class Forma {
             centro.x += vertice.x / vertices.length;
             centro.y += vertice.y / vertices.length;
         }
-        let posicion = Vector.crear(centro.x, centro.y);
+        let posicion = Vector_js_1.Vector.crear(centro.x, centro.y);
         let trazo = new Forma(centro.x, centro.y);
         for (let vertice of vertices) {
-            trazo.vertices.push(Vector.resta(vertice, posicion));
+            trazo.vertices.push(Vector_js_1.Vector.resta(vertice, posicion));
         }
         trazo.aplicarTransformacion();
         trazo.id = "linea";
@@ -199,18 +202,18 @@ export class Forma {
     }
     /**Suma el vector ingresado al vector de posición de la figura.*/
     desplazar(vector) {
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vector);
+        this._transformacion.posicion = Vector_js_1.Vector.suma(this._transformacion.posicion, vector);
         this.aplicarTransformacion();
     }
     rotarSegunOrigen(angulo) {
-        this._transformacion.posicion = Vector.rotar(this._transformacion.posicion, angulo);
+        this._transformacion.posicion = Vector_js_1.Vector.rotar(this._transformacion.posicion, angulo);
         this.aplicarTransformacion();
     }
     rotarSegunPunto(punto, angulo) {
-        let vectorAcomodador = Vector.crear(punto.x, punto.y);
-        this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
+        let vectorAcomodador = Vector_js_1.Vector.crear(punto.x, punto.y);
+        this._transformacion.posicion = Vector_js_1.Vector.resta(this._transformacion.posicion, vectorAcomodador);
         this.rotarSegunOrigen(angulo);
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
+        this._transformacion.posicion = Vector_js_1.Vector.suma(this._transformacion.posicion, vectorAcomodador);
         this.aplicarTransformacion();
     }
     escalar(escala) {
@@ -226,3 +229,4 @@ export class Forma {
         dibujante.rellenar(this);
     }
 }
+exports.Forma = Forma;

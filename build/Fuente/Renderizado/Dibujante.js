@@ -1,8 +1,11 @@
-import { Matematica } from "../Utiles/Matematica.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Dibujante = void 0;
+const Matematica_js_1 = require("../Utiles/Matematica.js");
 //POR INCORPORAR:
 //  Throw de errores para valores incompatibles
 //  Opacidad, letras
-export class Dibujante {
+class Dibujante {
     _color;
     _colorFondo;
     _grosorTrazo;
@@ -160,7 +163,7 @@ export class Dibujante {
     */
     pathCircunferencia(forma) {
         this._context.beginPath();
-        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radio, 0, Matematica.DOS_PI);
+        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radio, 0, Matematica_js_1.Matematica.DOS_PI);
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.
@@ -184,3 +187,4 @@ export class Dibujante {
         }
     }
 }
+exports.Dibujante = Dibujante;

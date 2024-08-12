@@ -1,4 +1,7 @@
-import { Matematica } from "./Matematica.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Matriz = void 0;
+const Matematica_js_1 = require("./Matematica.js");
 /**
  *Índices de la matriz de 2X2 en el arreglo.
  * * +-        -+                       +-              -+
@@ -8,7 +11,7 @@ import { Matematica } from "./Matematica.js";
  * +-          -+      a22 = [1][1]     +-              -+
  */
 //Considerar hacer un objeto Matriz con fila: number[] y columna: number[]
-export class Matriz {
+class Matriz {
     static esMatriz(matriz) {
         let numColumnas = matriz[0].length;
         for (let fila of matriz) {
@@ -103,7 +106,7 @@ export class Matriz {
             suma.push([]);
             for (let j in matrizUno[i]) {
                 // suma[i].push(matrizUno[i][j] - matrizDos[i][j]);
-                suma[i].push(Matematica.suma(matrizUno[i][j], +matrizDos[i][j]));
+                suma[i].push(Matematica_js_1.Matematica.suma(matrizUno[i][j], +matrizDos[i][j]));
             }
         }
         return suma;
@@ -118,7 +121,7 @@ export class Matriz {
             resta.push([]);
             for (let j in matrizUno[i]) {
                 // resta[i].push(matrizUno[i][j] - matrizDos[i][j]);
-                resta[i].push(Matematica.suma(matrizUno[i][j], -matrizDos[i][j]));
+                resta[i].push(Matematica_js_1.Matematica.suma(matrizUno[i][j], -matrizDos[i][j]));
             }
         }
         return resta;
@@ -134,7 +137,7 @@ export class Matriz {
         for (let i in matriz) {
             matrizEscalada.push([]);
             for (let elemento of matriz[i]) {
-                matrizEscalada[i].push(Matematica.multiplicacion(elemento, escalar));
+                matrizEscalada[i].push(Matematica_js_1.Matematica.multiplicacion(elemento, escalar));
             }
         }
         return matrizEscalada;
@@ -150,8 +153,8 @@ export class Matriz {
         for (let i in producto) {
             for (let j in producto[i]) {
                 for (let posicion = 0; posicion < matrizUno[0].length; posicion++) {
-                    let multiplicacion = Matematica.multiplicacion(matrizUno[i][posicion], matrizDos[posicion][j]);
-                    producto[i][j] = Matematica.suma(producto[i][j], multiplicacion);
+                    let multiplicacion = Matematica_js_1.Matematica.multiplicacion(matrizUno[i][posicion], matrizDos[posicion][j]);
+                    producto[i][j] = Matematica_js_1.Matematica.suma(producto[i][j], multiplicacion);
                 }
             }
         }
@@ -171,3 +174,4 @@ export class Matriz {
         return puntoTrasladado;
     }
 }
+exports.Matriz = Matriz;

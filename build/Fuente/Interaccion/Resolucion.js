@@ -1,3 +1,7 @@
+"use strict";
 //Resolución de colisiones.
-export class Resolucion {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Resolucion = void 0;
+class Resolucion {
 }
+exports.Resolucion = Resolucion;

@@ -1,3 +1,4 @@
+"use strict";
 /**
         =============================================
                  * MÓDULO DE COLISIONES *
@@ -7,12 +8,14 @@
         Usa el Teorema de ejes de separación (SAT) para detectar colisiones.
 
  */
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Geometria } from "../Utiles/Geometria.js";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Colision = void 0;
+const Vector_js_1 = require("../GeometriaPlana/Vector.js");
+const Geometria_js_1 = require("../Utiles/Geometria.js");
 /** MÓDULO DE COLISIONES
  * Trabaja usando objetos de tipo Forma.
  */
-export class Colision {
+class Colision {
     /**Detecta colisiones usando el teorema SAT entre formas de tipo circunferencia y/o polígono.
      * Retorna true si detecta una colisión.
      * Retorna false si no detecta colisión.
@@ -38,7 +41,7 @@ export class Colision {
      */
     static circunferencias(circunferenciaUno, circunferenciaDos) {
         let sumaRadios = circunferenciaUno.radio + circunferenciaDos.radio;
-        let distanciaCentros = Geometria.distanciaEntrePuntos(circunferenciaUno.posicion, circunferenciaDos.posicion);
+        let distanciaCentros = Geometria_js_1.Geometria.distanciaEntrePuntos(circunferenciaUno.posicion, circunferenciaDos.posicion);
         if (distanciaCentros > sumaRadios) {
             return false;
         }
@@ -84,8 +87,8 @@ export class Colision {
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
             let menorPoli = Colision.proyeccionMenor(poligono.verticesTransformados, normal);
             let mayorPoli = Colision.proyeccionMayor(poligono.verticesTransformados, normal);
-            let menorCirc = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radio;
-            let mayorCirc = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radio;
+            let menorCirc = Vector_js_1.Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radio;
+            let mayorCirc = Vector_js_1.Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radio;
             /**Comparación. Si se encuentra una separación, retorna false.*/
             if (menorPoli > mayorCirc || mayorPoli < menorCirc) {
                 return false;
@@ -95,24 +98,25 @@ export class Colision {
     }
     /**Retorna el valor menor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
     static proyeccionMenor(vertices, normal) {
-        let menor = Vector.proyeccion(vertices[0], normal);
+        let menor = Vector_js_1.Vector.proyeccion(vertices[0], normal);
         /**Búsqueda de proyecciones mínimas de los vértices del polígono uno.*/
         for (let vertice of vertices) {
-            if (Vector.proyeccion(vertice, normal) < menor) {
-                menor = Vector.proyeccion(vertice, normal);
+            if (Vector_js_1.Vector.proyeccion(vertice, normal) < menor) {
+                menor = Vector_js_1.Vector.proyeccion(vertice, normal);
             }
         }
         return menor;
     }
     /**Retorna el valor mayor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
     static proyeccionMayor(vertices, normal) {
-        let mayor = Vector.proyeccion(vertices[0], normal);
+        let mayor = Vector_js_1.Vector.proyeccion(vertices[0], normal);
         /**Búsqueda de proyecciones máximas de los vértices del polígono uno.*/
         for (let vertice of vertices) {
-            if (Vector.proyeccion(vertice, normal) > mayor) {
-                mayor = Vector.proyeccion(vertice, normal);
+            if (Vector_js_1.Vector.proyeccion(vertice, normal) > mayor) {
+                mayor = Vector_js_1.Vector.proyeccion(vertice, normal);
             }
         }
         return mayor;
     }
 }
+exports.Colision = Colision;

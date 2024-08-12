@@ -1,3 +1,4 @@
+"use strict";
 /**
         =============================================
                  * MÓDULO DE CUERPOS *
@@ -9,8 +10,10 @@
         Contiene métodos para mover según velocidad y aceleración.
 
  */
-import { Forma } from "../GeometriaPlana/Formas.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cuerpo = void 0;
+const Formas_js_1 = require("../GeometriaPlana/Formas.js");
+const Vector_js_1 = require("../GeometriaPlana/Vector.js");
 //TAREAS
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
@@ -18,7 +21,7 @@ import { Vector } from "../GeometriaPlana/Vector.js";
 /**MÓDULO DE CUERPOS
  * Trabaja usando objetos de tipo Forma.
  */
-export class Cuerpo extends Forma {
+class Cuerpo extends Formas_js_1.Forma {
     _masa;
     _densidad;
     _velocidad;
@@ -29,9 +32,9 @@ export class Cuerpo extends Forma {
         super(x, y, lados, radio);
         this._masa = masa;
         this._densidad = densidad;
-        this._velocidad = Vector.cero();
+        this._velocidad = Vector_js_1.Vector.cero();
         this._velocidad.origen = this._transformacion.posicion;
-        this._aceleracion = Vector.cero();
+        this._aceleracion = Vector_js_1.Vector.cero();
         this._fijo = fijo;
         this._rotarSegunVelocidad = false;
     }
@@ -45,16 +48,16 @@ export class Cuerpo extends Forma {
         return this._densidad;
     }
     get velocidad() {
-        return Vector.clonar(this._velocidad);
+        return Vector_js_1.Vector.clonar(this._velocidad);
     }
     get aceleracion() {
-        return Vector.clonar(this._aceleracion);
+        return Vector_js_1.Vector.clonar(this._aceleracion);
     }
     set velocidad(velocidad) {
-        this._velocidad = Vector.clonar(velocidad);
+        this._velocidad = Vector_js_1.Vector.clonar(velocidad);
     }
     set aceleracion(aceleracion) {
-        this._aceleracion = Vector.clonar(aceleracion);
+        this._aceleracion = Vector_js_1.Vector.clonar(aceleracion);
     }
     set fijo(fijo) {
         this._fijo = fijo;
@@ -67,8 +70,8 @@ export class Cuerpo extends Forma {
         this._rotarSegunVelocidad = opcion;
     }
     trazarVelocidad(dibujante) {
-        let vectorVelocidad = Vector.clonar(this._velocidad);
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
+        let vectorVelocidad = Vector_js_1.Vector.clonar(this._velocidad);
+        vectorVelocidad = Vector_js_1.Vector.escalar(Vector_js_1.Vector.normalizar(vectorVelocidad), this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
         dibujante.trazarVector(vectorVelocidad);
     }
@@ -98,14 +101,14 @@ export class Cuerpo extends Forma {
     }
     /**Suma la velocidad y la aceleración a la posición y aplica las transformaciones de escala, rotación y posición.*/
     mover() {
-        this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+        this._velocidad = Vector_js_1.Vector.suma(this._velocidad, this._aceleracion);
+        this._transformacion.posicion = Vector_js_1.Vector.suma(this._transformacion.posicion, this._velocidad);
         this.actualizarTransformacion();
     }
     /**Aplica las transformaciones de escala, rotación y posición.*/
     actualizarTransformacion() {
         if (this._rotarSegunVelocidad == true) {
-            let anguloTransformacionVelocidad = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            let anguloTransformacionVelocidad = Vector_js_1.Vector.angulo(this._velocidad) - Vector_js_1.Vector.angulo(this._vertices[0]);
             this._transformacion.rotacion += anguloTransformacionVelocidad;
             this.aplicarTransformacion();
             this._transformacion.rotacion -= anguloTransformacionVelocidad;
@@ -115,3 +118,4 @@ export class Cuerpo extends Forma {
         }
     }
 }
+exports.Cuerpo = Cuerpo;

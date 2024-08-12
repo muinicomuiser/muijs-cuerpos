@@ -1,15 +1,18 @@
-import { Matematica } from "./Matematica.js";
-export class Geometria {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Geometria = void 0;
+const Matematica_js_1 = require("./Matematica.js");
+class Geometria {
     //GRADOS  
     /**Transforma grados sexagesimales a radianes.*/
     static gradoARadian(grado) {
         // return Matematica.multiplicacion(Matematica.division(grado, 180), Matematica.PI);
-        return (grado / 180) * Matematica.PI;
+        return (grado / 180) * Matematica_js_1.Matematica.PI;
     }
     /**Transfoma radianes a grados sexagesimales.*/
     static radianAGrado(rad) {
         // return Matematica.multiplicacion(Matematica.division(rad, Matematica.PI), 180);
-        return (rad / Matematica.PI) * 180;
+        return (rad / Matematica_js_1.Matematica.PI) * 180;
     }
     //PITAGÓRICA
     /**Retorna la longitud de la hipotenusa según la longitud de los dos catetos ingresados.*/
@@ -42,3 +45,4 @@ export class Geometria {
         return { x: (puntoUno.x / 2 + puntoDos.x / 2), y: (puntoUno.y / 2, +puntoDos.y / 2) };
     }
 }
+exports.Geometria = Geometria;

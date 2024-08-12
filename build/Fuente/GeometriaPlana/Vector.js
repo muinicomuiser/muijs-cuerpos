@@ -1,6 +1,9 @@
-import { Matematica } from "../Utiles/Matematica.js";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Vector = void 0;
+const Matematica_js_1 = require("../Utiles/Matematica.js");
 //POR REVISAR
-export class Vector {
+class Vector {
     _x;
     _y;
     _origen;
@@ -45,10 +48,10 @@ export class Vector {
             return Math.acos(vector.x / Vector.magnitud(vector));
         }
         else if (vector.x >= 0 && vector.y < 0) {
-            return Matematica.DOS_PI + Math.asin(vector.y / Vector.magnitud(vector));
+            return Matematica_js_1.Matematica.DOS_PI + Math.asin(vector.y / Vector.magnitud(vector));
         }
         else if (vector.x <= 0 && vector.y < 0) {
-            return Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));
+            return Matematica_js_1.Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));
         }
         else {
             return 0;
@@ -111,7 +114,7 @@ export class Vector {
     */
     static normal(vectorUno, vectorDos) {
         let vectorSegmento = Vector.segunPuntos(vectorUno, vectorDos);
-        return Vector.rotar(vectorSegmento, -Matematica.PI_MEDIO);
+        return Vector.rotar(vectorSegmento, -Matematica_js_1.Matematica.PI_MEDIO);
     }
     static punto(vectorUno, vectorDos) {
         return (vectorUno.x * vectorDos.x) + (vectorUno.y * vectorDos.y);
@@ -150,3 +153,4 @@ export class Vector {
         return new Vector(x, y);
     }
 }
+exports.Vector = Vector;
