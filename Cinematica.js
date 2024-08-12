@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cinematica = void 0;
-const Matematica_js_1 = require("../Utiles/Matematica.js");
+const Matematica_js_1 = require("./build/Fuente/Utiles/Matematica.js");
 const Vector_js_1 = require("../GeometriaPlana/Vector.js");
 //Momento lineal, movimiento acelerado, momento angular, energía cinética y potencial.
 class Cinematica {

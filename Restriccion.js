@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Restriccion = void 0;
-const Vector_js_1 = require("../GeometriaPlana/Vector.js");
+const Vector_js_1 = require("./build/Fuente/GeometriaPlana/Vector.js");
 class Restriccion {
     static limitarVelocidad(cuerpo, limite) {
         let magnitudVel = cuerpo.velocidad.magnitud;

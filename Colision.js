@@ -10,8 +10,8 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Colision = void 0;
-const Vector_js_1 = require("../GeometriaPlana/Vector.js");
-const Geometria_js_1 = require("../Utiles/Geometria.js");
+const Vector_js_1 = require("./build/Fuente/GeometriaPlana/Vector.js");
+const Geometria_js_1 = require("./build/Fuente/Utiles/Geometria.js");
 /** MÓDULO DE COLISIONES
  * Trabaja usando objetos de tipo Forma.
  */

@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Matematica_js_1 = require("../Fuente/Utiles/Matematica.js");
-const Formas_js_1 = require("../Fuente/GeometriaPlana/Formas.js");
-const Vector_js_1 = require("../Fuente/GeometriaPlana/Vector.js");
-const Dibujante_js_1 = require("../Fuente/Renderizado/Dibujante.js");
-const Cuerpo_js_1 = require("../Fuente/Fisicas/Cuerpo.js");
-const Fuerza_js_1 = require("../Fuente/Fisicas/Fuerza.js");
-const Geometria_js_1 = require("../Fuente/Utiles/Geometria.js");
-const Restriccion_js_1 = require("../Fuente/Interaccion/Restriccion.js");
+const Matematica_js_1 = require("./build/Fuente/Utiles/Matematica.js");
+const Formas_js_1 = require("./build/Fuente/GeometriaPlana/Formas.js");
+const Vector_js_1 = require("./build/Fuente/GeometriaPlana/Vector.js");
+const Dibujante_js_1 = require("./build/Fuente/Renderizado/Dibujante.js");
+const Cuerpo_js_1 = require("./Cuerpo.js");
+const Fuerza_js_1 = require("./Fuerza.js");
+const Geometria_js_1 = require("./build/Fuente/Utiles/Geometria.js");
+const Restriccion_js_1 = require("./Restriccion.js");
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 const CANVAS = document.getElementById("canvas");
 const CONTEXT = CANVAS.getContext("2d");
