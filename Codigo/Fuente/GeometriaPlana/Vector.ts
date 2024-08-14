@@ -6,7 +6,7 @@ export class Vector{
     private _y: number;
     private _origen: Punto;
     private _id: number;
-    constructor(x: number, y: number){
+    private constructor(x: number, y: number){
         this._x = x;
         this._y = y;
         this._origen = {x: 0, y: 0};
