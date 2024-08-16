@@ -1,4 +1,5 @@
 import { Matematica } from "../Utiles/Matematica.js";
+import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 //POR INCORPORAR:
 //  Throw de errores para valores incompatibles
 //  Opacidad, letras
@@ -79,34 +80,22 @@ export class Dibujante {
     static colorRGBA(red, green, blue, alpha) {
         return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
-    /**Borra el contenido del canvas.
-     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorFondo y con la opacidad especificada.
-     */
-    limpiarCanvas(canvas, opacidad) {
-        if (opacidad) {
-            this._context.globalAlpha = opacidad;
-            this._context.fillStyle = this._colorFondo;
-            this._context.fillRect(0, 0, canvas.width, canvas.height);
-            this._context.globalAlpha = this._opacidad;
-            this._context.fillStyle = this._color;
-        }
-        else {
-            this._context.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    }
     /**Traza en el canvas la forma ingresada como argumento.*/
     trazar(forma) {
-        if (forma.id == "circunferencia") {
+        if (forma.tipo == TipoFormas.circunferencia) {
             this.pathCircunferencia(forma);
+            this._context.strokeStyle = forma.color;
         }
-        if (forma.id == "poligono") {
+        if (forma.tipo == TipoFormas.poligono) {
             this.pathPoligono(forma);
+            this._context.strokeStyle = forma.color;
         }
-        if (forma.id == "linea") {
+        if (forma.tipo == TipoFormas.linea) {
             this.pathLinea(forma);
+            this._context.strokeStyle = forma.color;
         }
-        this._context.strokeStyle = this._color;
-        if (forma.id == "vector") {
+        // this._context.strokeStyle = this._color;
+        if (forma.tipo == TipoFormas.vector) {
             this.pathLinea(forma);
             this._context.strokeStyle = this._colorVectores;
         }
@@ -117,16 +106,19 @@ export class Dibujante {
     }
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenar(forma) {
-        if (forma.id == "circunferencia") {
+        if (forma.tipo == TipoFormas.circunferencia) {
             this.pathCircunferencia(forma);
+            this._context.fillStyle = forma.color;
         }
-        if (forma.id == "poligono") {
+        if (forma.tipo == TipoFormas.poligono) {
             this.pathPoligono(forma);
+            this._context.fillStyle = forma.color;
         }
-        if (forma.id == "linea") {
+        if (forma.tipo == TipoFormas.linea) {
             this.pathPoligono(forma);
+            this._context.fillStyle = forma.color;
         }
-        this._context.fillStyle = this._color;
+        // this._context.fillStyle = this._color;
         this._context.globalAlpha = this._opacidad;
         this._context.fill();
     }
@@ -160,7 +152,7 @@ export class Dibujante {
     */
     pathCircunferencia(forma) {
         this._context.beginPath();
-        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radio, 0, Matematica.DOS_PI);
+        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Matematica.DOS_PI);
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.

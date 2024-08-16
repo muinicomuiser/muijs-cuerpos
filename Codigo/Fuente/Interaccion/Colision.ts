@@ -9,6 +9,7 @@
  */
 
 import { Forma } from "../GeometriaPlana/Formas.js";
+import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Geometria } from "../Utiles/Geometria.js";
 
@@ -22,13 +23,13 @@ export class Colision{
      * Retorna false si no detecta colisión.        
     */
     static detectar(formaUno: Forma, formaDos: Forma): boolean{
-        if(formaUno.id == "poligono" && formaDos.id == "poligono"){
+        if(formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.poligono){
             return Colision.poligonos(formaUno, formaDos);
         }
-        else if(formaUno.id == "circunferencia" && formaDos.id == "poligono"){
+        else if(formaUno.tipo == TipoFormas.circunferencia && formaDos.tipo == TipoFormas.poligono){
             return Colision.circunferenciaPoligono(formaUno, formaDos);
         }
-        else if(formaUno.id == "poligono" && formaDos.id == "circunferencia"){
+        else if(formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.circunferencia){
             return Colision.circunferenciaPoligono(formaDos, formaUno);
         }
         else{
@@ -43,7 +44,7 @@ export class Colision{
      * Compara la distancia entre ambos centros con la suma de sus radios.
      */
     static circunferencias(circunferenciaUno: Forma, circunferenciaDos: Forma): boolean{
-        let sumaRadios: number = circunferenciaUno.radio + circunferenciaDos.radio;
+        let sumaRadios: number = circunferenciaUno.radioTransformado + circunferenciaDos.radioTransformado;
         let distanciaCentros: number = Geometria.distanciaEntrePuntos(circunferenciaUno.posicion, circunferenciaDos.posicion);
         if(distanciaCentros > sumaRadios){
             return false
@@ -99,8 +100,8 @@ export class Colision{
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
             let menorPoli: number = Colision.proyeccionMenor(poligono.verticesTransformados, normal);
             let mayorPoli: number = Colision.proyeccionMayor(poligono.verticesTransformados, normal);
-            let menorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radio;
-            let mayorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radio;
+            let menorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radioTransformado;
+            let mayorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radioTransformado;
 
             /**Comparación. Si se encuentra una separación, retorna false.*/
             if(menorPoli > mayorCirc || mayorPoli < menorCirc){
@@ -136,5 +137,42 @@ export class Colision{
             }
         }
         return mayor;
+    }
+
+    /**Retorna un arreglo de dos vectores correspondiente a las normales de las caras de contacto entre dos formas.     
+     * El primero vector del arreglo corresponde a la normal de la primera forma.
+     * El segundo vector del arreglo corresponde a la normal de la segunda forma.
+    */
+    static normalesContacto(formaUno: Forma, formaDos: Forma): Vector[]{
+        let normales: Vector[] = [];
+        let normalUno: Vector;
+        let normalDos: Vector;
+        let vectorUnoADos: Vector = Vector.segunPuntos(formaUno.posicion, formaDos.posicion);
+        let vectorDosAUno: Vector = Vector.segunPuntos(formaDos.posicion, formaUno.posicion);
+        if(formaUno.tipo == TipoFormas.circunferencia){
+            normalUno = vectorUnoADos;
+        }
+        else{
+            normalUno = Vector.clonar(formaUno.normales[0]);
+            for(let normal of formaUno.normales){
+                if(Vector.punto(vectorUnoADos, normal) > Vector.punto(vectorUnoADos, normalUno)){
+                    normalUno = Vector.clonar(normal);
+                }
+            }
+        }
+        if(formaDos.tipo == TipoFormas.circunferencia){
+            normalDos = Vector.clonar(vectorDosAUno);
+        }
+        else{
+            normalDos = Vector.clonar(formaDos.normales[0])
+            for(let normal of formaDos.normales){
+                if(Vector.punto(vectorDosAUno, normal) > Vector.punto(vectorDosAUno, normalDos)){
+                    normalDos = Vector.clonar(normal);
+                }
+            }
+        }
+        normales.push(normalUno);
+        normales.push(normalDos);
+        return normales;
     }
 }

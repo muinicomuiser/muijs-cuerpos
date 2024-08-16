@@ -27,17 +27,18 @@ export class Transformacion{
     }
 
     /**Retorna el arreglo de vectores resultante de aplicar las transformaciones de escala, rotación y desplazamiento
-     * sobre un arreglo de vectores de entrada.*/
+     * sobre un arreglo de vectores de entrada.     
+     * Permite aumentar puntualmente la rotación en un ángulo específico sin modificar la propiedad de rotación de la transformación.*/
     transformarConjuntoVectores(vectores: Vector[]): Vector[]{
         let vectoresTransformados: Vector[] = Vector.clonarConjunto(vectores);
-        vectoresTransformados = this.escalarVectores(vectoresTransformados);
-        vectoresTransformados = this.rotarVectores(vectoresTransformados);
-        vectoresTransformados = this.desplazarVectores(vectoresTransformados);
+        vectoresTransformados = this.aplicarEscalaVectores(vectoresTransformados);
+        vectoresTransformados = this.aplicarRotacionVectores(vectoresTransformados);
+        vectoresTransformados = this.aplicarDesplazamientoVectores(vectoresTransformados);
         return vectoresTransformados;
     }
 
     /**Escala cada uno de los vectores del arreglo ingresado y los retorna en un arreglo nuevo.*/
-    escalarVectores(vectores: Vector[]): Vector[]{
+    aplicarEscalaVectores(vectores: Vector[]): Vector[]{
         let vectoresEscalados: Vector[] = [];
         for(let vector of vectores){
             let vectorEscalado: Vector = Vector.escalar(vector, this.escala);
@@ -47,7 +48,7 @@ export class Transformacion{
     }
 
     /**Desplaza cada uno de los vectores del arreglo ingresado y los retorna en un arreglo nuevo.*/
-    desplazarVectores(vectores: Vector[]): Vector[]{
+    aplicarDesplazamientoVectores(vectores: Vector[]): Vector[]{
         let vectoresDesplazados: Vector[] = [];
         for(let vector of vectores){            
             let x: number = vector.x + this.posicion.x;
@@ -57,12 +58,25 @@ export class Transformacion{
         return vectoresDesplazados;
     }
 
-    /**Rota cada uno de los vectores del arreglo ingresado y los retorna en un arreglo nuevo.*/
-    rotarVectores(vectores: Vector[]): Vector[]{
+    /**Rota cada uno de los vectores del arreglo ingresado según el ángulo de rotación almacenado y los retorna en un arreglo nuevo.   
+    */
+    aplicarRotacionVectores(vectores: Vector[]): Vector[]{
         let vectoresRotados: Vector[] = [];
         for(let vector of vectores){            
             let x: number = vector.x*Math.cos(this.rotacion) - vector.y*Math.sin(this.rotacion);
             let y: number = vector.x*Math.sin(this.rotacion) + vector.y*Math.cos(this.rotacion);
+            vectoresRotados.push(Vector.crear(x, y));
+        }
+        return vectoresRotados;
+    }
+
+    /**Rota cada uno de los vectores de un arreglo según el ángulo ingresado y los retorna en un arreglo nuevo.   
+    */
+    static rotarVectores(vectores: Vector[], angulo: number): Vector[]{
+        let vectoresRotados: Vector[] = [];
+        for(let vector of vectores){            
+            let x: number = vector.x*Math.cos(angulo) - vector.y*Math.sin(angulo);
+            let y: number = vector.x*Math.sin(angulo) + vector.y*Math.cos(angulo);
             vectoresRotados.push(Vector.crear(x, y));
         }
         return vectoresRotados;

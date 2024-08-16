@@ -2,11 +2,12 @@ import { Matematica } from "../Fuente/Utiles/Matematica.js";
 import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
 import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Dibujante } from "../Fuente/Renderizado/Dibujante.js";
+import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
 import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 import { Geometria } from "../Fuente/Utiles/Geometria.js";
 import { Restriccion } from "../Fuente/Interaccion/Restriccion.js";
+import { Entorno } from "../Fuente/Interaccion/Entorno.js";
 
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 
@@ -30,8 +31,8 @@ const FUERZAREPELER: number = 20;
 const DISTANCIACOORDINAR: number = 60;
 const FACTORCOORDINACION: number = 0.4;
 
-const COLORBOID: string = Dibujante.colorHSL(220, 0, 100);
-const COLORFONDO: string = Dibujante.colorHSL(220, 100, 2);
+const COLORBOID: string = Renderizado.colorHSL(220, 0, 100);
+const COLORFONDO: string = Renderizado.colorHSL(220, 100, 2);
 
 const DETECTARMOUSE: boolean = true;
 const ATRACCIONMOUSE: number = 0.2;
@@ -44,8 +45,9 @@ CANVAS.style.backgroundColor = COLORFONDO;
     
 window.addEventListener("load", ()=>{
     
-    let dibu: Dibujante = new Dibujante(CONTEXT)
+    let dibu: Renderizado = new Renderizado(CANVAS)
     dibu.colorFondo = COLORFONDO;
+    let entorno: Entorno = new Entorno(CANVAS);
 
     /**Forma generadora de posiciones.*/
     let formaGeneradora: Forma = Forma.poligono(CENTROCANVAS.x, CENTROCANVAS.y, NUMEROBOIDS, 320);
@@ -65,24 +67,24 @@ window.addEventListener("load", ()=>{
         boids.push(boid);
     }
 
-    /**Límites infinitos.*/
-    function envolverBorde(vector: Vector): Vector{
-        let x: number = vector.x;
-        let y: number = vector.y;
-        if(x > CANVAS.width){
-            x -= CANVAS.width
-        }
-        if(x < 0){
-            x += CANVAS.width
-        }
-        if(y > CANVAS.height){
-            y -= CANVAS.height
-        }
-        if(y < 0){
-            y += CANVAS.height
-        }
-        return Vector.crear(x, y)
-    }
+    // /**Límites infinitos.*/
+    // function envolverBorde(vector: Vector): Vector{
+    //     let x: number = vector.x;
+    //     let y: number = vector.y;
+    //     if(x > CANVAS.width){
+    //         x -= CANVAS.width
+    //     }
+    //     if(x < 0){
+    //         x += CANVAS.width
+    //     }
+    //     if(y > CANVAS.height){
+    //         y -= CANVAS.height
+    //     }
+    //     if(y < 0){
+    //         y += CANVAS.height
+    //     }
+    //     return Vector.crear(x, y)
+    // }
     
     /**Prueba de tiempo.*/
     function tiempoProceso(): void{
@@ -114,7 +116,7 @@ window.addEventListener("load", ()=>{
 
         /**Dibujar boids.*/
         for(let boid of boids){
-            boid.posicion = envolverBorde(boid.posicion);
+            boid.posicion = entorno.envolverBorde(boid.posicion);
             boid.aceleracion = Restriccion.limitarAceleracionSegunVelocidad(boid, VELMAXIMA);
             boid.velocidad = Restriccion.limitarVelocidad(boid, VELMAXIMA);
             boid.mover()
@@ -124,11 +126,11 @@ window.addEventListener("load", ()=>{
         console.log((`${tiempoFinal - tiempoInicio}` + " milisegundos"));
     }
     tiempoProceso();
-    boids[10].color = Dibujante.colorHSL(50, 100, 50)
-    boids[20].color = Dibujante.colorHSL(50, 100, 50)
-    boids[30].color = Dibujante.colorHSL(50, 100, 50)
+    boids[10].color = Renderizado.colorHSL(50, 100, 50)
+    boids[20].color = Renderizado.colorHSL(50, 100, 50)
+    boids[30].color = Renderizado.colorHSL(50, 100, 50)
     function animar(){
-        dibu.limpiarCanvas(CANVAS)
+        dibu.limpiarCanvas()
         
         for(let i: number = 0; i < boids.length-1; i++){
             for(let j: number = i+1; j < boids.length; j++){
@@ -157,7 +159,7 @@ window.addEventListener("load", ()=>{
 
         /**Dibujar boids.*/
         for(let boid of boids){
-            boid.posicion = envolverBorde(boid.posicion);
+            boid.posicion = entorno.envolverBorde(boid.posicion);
             boid.aceleracion = Restriccion.limitarAceleracionSegunVelocidad(boid, VELMAXIMA);
             boid.velocidad = Restriccion.limitarVelocidad(boid, VELMAXIMA);
             boid.mover()
