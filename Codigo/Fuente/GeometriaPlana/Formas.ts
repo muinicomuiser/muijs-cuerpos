@@ -11,16 +11,13 @@ import { TipoFormas } from "./TipoFormas.js";
 // SUMAR FORMAS
 
 export class Forma{
-    _centro: Vector = Vector.cero();
-    _lados: number = 0;
-    _radio: number = 0;
-    _color: string = "";
-    _vertices: Vector[] = [];
-    _posicion: Vector = Vector.cero();
-    _escala: number = 1;
-    _rotacion: number = 0;
-    _tipo: TipoFormas = TipoFormas.poligono;
-    _transformacion: Transformacion = new Transformacion();
+    protected _centro: Vector = Vector.cero();
+    protected _lados: number = 0;
+    protected _radio: number = 0;
+    protected _color: string = "";
+    protected _vertices: Vector[] = [];
+    protected _tipo: TipoFormas = TipoFormas.poligono;
+    protected _transformacion: Transformacion = new Transformacion();
 
     protected constructor(){}
 

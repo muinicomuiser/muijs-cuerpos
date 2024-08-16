@@ -70,6 +70,8 @@ export class Vector{
     static derecha(): Vector{
         return new Vector(1, 0);
     }
+
+    /**Retorna un vector nuevo correspondiente a las componentes x e y ingresadas.*/
     static crear(x: number, y: number): Vector{
         return new Vector(x, y);
     }
@@ -92,11 +94,15 @@ export class Vector{
         // let vectorResta: Vector = new Vector(Matematica.suma(vectorUno.x, -vectorDos.x), Matematica.suma(vectorUno.y, -vectorDos.y));
         return vectorResta;
     }
+
+    /**Retorna un vector nuevo resultante de multiplicar las componentes de un vector por un escalar.*/
     static escalar(vector: Vector, escalar: number): Vector{
         let vectorEscalado: Vector = new Vector((vector.x * escalar), (vector.y * escalar));
         // let vectorEscalado: Vector = new Vector(Matematica.multiplicacion(vector.x, escalar), Matematica.multiplicacion(vector.y, escalar));
         return vectorEscalado;
     }
+
+    /**Retorna una copia del vector ingresado con magnitud 1.*/
     static normalizar(vector: Vector){
         // let magnitud: number = Matematica.raiz(vector.x**2 + vector.y**2, 2);
         // return new Vector(vector.x / magnitud, vector.y / magnitud);
@@ -133,7 +139,7 @@ export class Vector{
         // return Matematica.multiplicacion(vectorUno.x, vectorDos.y) - Matematica.multiplicacion(vectorUno.y, vectorDos.x)
     }
 
-
+    /**Retorna el valor de la proyección de un vector sobre un eje representado por otro vector.*/
     static proyeccion(vectorUno: Vector, vectorEje: Vector): number{
         return (Vector.punto(vectorUno, vectorEje) / Vector.magnitud(vectorEje));
         // return Matematica.division(Vector.punto(vectorUno, vectorEje), Vector.magnitud(vectorEje));

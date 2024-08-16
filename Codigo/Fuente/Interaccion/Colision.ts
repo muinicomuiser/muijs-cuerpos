@@ -138,4 +138,41 @@ export class Colision{
         }
         return mayor;
     }
+
+    /**Retorna un arreglo de dos vectores correspondiente a las normales de las caras de contacto entre dos formas.     
+     * El primero vector del arreglo corresponde a la normal de la primera forma.
+     * El segundo vector del arreglo corresponde a la normal de la segunda forma.
+    */
+    static normalesContacto(formaUno: Forma, formaDos: Forma): Vector[]{
+        let normales: Vector[] = [];
+        let normalUno: Vector;
+        let normalDos: Vector;
+        let vectorUnoADos: Vector = Vector.segunPuntos(formaUno.posicion, formaDos.posicion);
+        let vectorDosAUno: Vector = Vector.segunPuntos(formaDos.posicion, formaUno.posicion);
+        if(formaUno.tipo == TipoFormas.circunferencia){
+            normalUno = vectorUnoADos;
+        }
+        else{
+            normalUno = Vector.clonar(formaUno.normales[0]);
+            for(let normal of formaUno.normales){
+                if(Vector.punto(vectorUnoADos, normal) > Vector.punto(vectorUnoADos, normalUno)){
+                    normalUno = Vector.clonar(normal);
+                }
+            }
+        }
+        if(formaDos.tipo == TipoFormas.circunferencia){
+            normalDos = Vector.clonar(vectorDosAUno);
+        }
+        else{
+            normalDos = Vector.clonar(formaDos.normales[0])
+            for(let normal of formaDos.normales){
+                if(Vector.punto(vectorDosAUno, normal) > Vector.punto(vectorDosAUno, normalDos)){
+                    normalDos = Vector.clonar(normal);
+                }
+            }
+        }
+        normales.push(normalUno);
+        normales.push(normalDos);
+        return normales;
+    }
 }

@@ -7,11 +7,11 @@ import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 //  Throw de errores para valores incompatibles
 //  Opacidad, letras
 export class Dibujante{
-    _color: string;
-    _colorFondo: string;
-    _grosorTrazo: number;
-    _opacidad: number;
-    _colorVectores: string;
+    protected _color: string;
+    protected _colorFondo: string;
+    protected _grosorTrazo: number;
+    protected _opacidad: number;
+    protected _colorVectores: string;
     protected _context: CanvasRenderingContext2D;
     constructor(context: CanvasRenderingContext2D){
         this._context = context;
@@ -84,22 +84,6 @@ export class Dibujante{
         return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
 
-
-    /**Borra el contenido del canvas.       
-     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorFondo y con la opacidad especificada.
-     */
-    limpiarCanvas(canvas: HTMLCanvasElement, opacidad?: number): void{
-        if(opacidad){
-            this._context.globalAlpha = opacidad;
-            this._context.fillStyle = this._colorFondo;
-            this._context.fillRect(0, 0, canvas.width, canvas.height);
-            this._context.globalAlpha = this._opacidad;
-            this._context.fillStyle = this._color;
-        }
-        else{
-            this._context.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    }
 
     /**Traza en el canvas la forma ingresada como argumento.*/
     trazar(forma: Forma): void{

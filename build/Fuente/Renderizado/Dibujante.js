@@ -80,21 +80,6 @@ export class Dibujante {
     static colorRGBA(red, green, blue, alpha) {
         return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
-    /**Borra el contenido del canvas.
-     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorFondo y con la opacidad especificada.
-     */
-    limpiarCanvas(canvas, opacidad) {
-        if (opacidad) {
-            this._context.globalAlpha = opacidad;
-            this._context.fillStyle = this._colorFondo;
-            this._context.fillRect(0, 0, canvas.width, canvas.height);
-            this._context.globalAlpha = this._opacidad;
-            this._context.fillStyle = this._color;
-        }
-        else {
-            this._context.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    }
     /**Traza en el canvas la forma ingresada como argumento.*/
     trazar(forma) {
         if (forma.tipo == TipoFormas.circunferencia) {

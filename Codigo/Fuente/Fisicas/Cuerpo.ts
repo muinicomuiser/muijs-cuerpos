@@ -11,6 +11,7 @@
  */
 
 import { Forma } from "../GeometriaPlana/Formas.js";
+import { Transformacion } from "../GeometriaPlana/Transformacion.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 
@@ -24,12 +25,12 @@ import { Dibujante } from "../Renderizado/Dibujante.js";
  * Trabaja usando objetos de tipo Forma.
  */
 export class Cuerpo extends Forma{
-    _velocidad: Vector = Vector.cero();
-    _aceleracion: Vector = Vector.cero()
-    _rotarSegunVelocidad: boolean = false;
-    _fijo: boolean = false;
-    _masa: number = 1;
-    _densidad: number = 1;
+    protected _velocidad: Vector = Vector.cero();
+    protected _aceleracion: Vector = Vector.cero()
+    protected _rotarSegunVelocidad: boolean = false;
+    protected _fijo: boolean = false;
+    protected _masa: number = 1;
+    protected _densidad: number = 1;
     private constructor(){
         super();
     }
@@ -50,9 +51,7 @@ export class Cuerpo extends Forma{
     }
     get verticesTransformados(): Vector[]{
         if(this._rotarSegunVelocidad == true){
-            let anguloTransformacionVelocidad: number = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
-            let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices, anguloTransformacionVelocidad);
-            return verticesTransformados;
+            this._transformacion.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
         }
         let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
         return verticesTransformados;
