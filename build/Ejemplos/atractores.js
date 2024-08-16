@@ -2,6 +2,7 @@ import { Matematica } from "../Fuente/Utiles/Matematica.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Dibujante } from "../Fuente/Renderizado/Dibujante.js";
 import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
+import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 import { Geometria } from "../Fuente/Utiles/Geometria.js";
 const CANVAS = document.getElementById("canvas");
 const CONTEXT = CANVAS.getContext("2d");
@@ -20,8 +21,8 @@ function crearCuerpos(cuerpo) {
     let cuerpitos = [];
     for (let vertice of cuerpo.verticesTransformados) {
         let cuerpito = Cuerpo.circunferencia(vertice.x, vertice.y, 10);
-        cuerpitos.push(cuerpito);
         cuerpito.color = Dibujante.colorHSL(150, 100, 40);
+        cuerpitos.push(cuerpito);
     }
     return cuerpitos;
 }
@@ -58,11 +59,10 @@ window.addEventListener("load", () => {
         for (let cuerpito of cuerpos) {
             cuerpito.aceleracion = Vector.cero();
             for (let atractor of atractores) {
-                let vectorAtraccion = Vector.segunPuntos(cuerpito.posicion, atractor.posicion);
-                vectorAtraccion = Vector.escalar(Vector.normalizar(vectorAtraccion), 0.2);
+                let vectorAtraccion = Fuerza.atraer(cuerpito, atractor, 0.2);
                 cuerpito.aceleracion = Vector.suma(vectorAtraccion, cuerpito.aceleracion);
             }
-            cuerpito.escalar(escalita);
+            cuerpito.escala = escalita;
             cuerpito.mover();
             cuerpito.trazar(dibujante);
         }

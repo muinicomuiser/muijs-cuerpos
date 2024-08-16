@@ -27,11 +27,12 @@ export class Transformacion{
     }
 
     /**Retorna el arreglo de vectores resultante de aplicar las transformaciones de escala, rotación y desplazamiento
-     * sobre un arreglo de vectores de entrada.*/
-    transformarConjuntoVectores(vectores: Vector[]): Vector[]{
+     * sobre un arreglo de vectores de entrada.     
+     * Permite aumentar puntualmente la rotación en un ángulo específico sin modificar la propiedad de rotación de la transformación.*/
+    transformarConjuntoVectores(vectores: Vector[], anguloExtra: number = 0): Vector[]{
         let vectoresTransformados: Vector[] = Vector.clonarConjunto(vectores);
         vectoresTransformados = this.escalarVectores(vectoresTransformados);
-        vectoresTransformados = this.rotarVectores(vectoresTransformados);
+        vectoresTransformados = this.rotarVectores(vectoresTransformados, anguloExtra);
         vectoresTransformados = this.desplazarVectores(vectoresTransformados);
         return vectoresTransformados;
     }
@@ -57,12 +58,14 @@ export class Transformacion{
         return vectoresDesplazados;
     }
 
-    /**Rota cada uno de los vectores del arreglo ingresado y los retorna en un arreglo nuevo.*/
-    rotarVectores(vectores: Vector[]): Vector[]{
+    /**Rota cada uno de los vectores del arreglo ingresado y los retorna en un arreglo nuevo.           
+     * Permite aumentar puntualmente la rotación en un ángulo específico sin modificar la propiedad de rotación de la transformación.   
+    */
+    rotarVectores(vectores: Vector[], anguloExtra: number = 0): Vector[]{
         let vectoresRotados: Vector[] = [];
         for(let vector of vectores){            
-            let x: number = vector.x*Math.cos(this.rotacion) - vector.y*Math.sin(this.rotacion);
-            let y: number = vector.x*Math.sin(this.rotacion) + vector.y*Math.cos(this.rotacion);
+            let x: number = vector.x*Math.cos(this.rotacion + anguloExtra) - vector.y*Math.sin(this.rotacion + anguloExtra);
+            let y: number = vector.x*Math.sin(this.rotacion + anguloExtra) + vector.y*Math.cos(this.rotacion + anguloExtra);
             vectoresRotados.push(Vector.crear(x, y));
         }
         return vectoresRotados;

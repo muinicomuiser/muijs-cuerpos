@@ -19,11 +19,10 @@ window.addEventListener("load", ()=>{
     dibujante.colorVectores = Dibujante.colorHSL(0, 70, 50);
     dibujante.grosorTrazo = 2;
     triangulo.rotarSegunVelocidad = true;
-    triangulo.velocidad = new Vector(2, -2)
+    triangulo.velocidad = Vector.crear(2, -2)
     triangulo.escala = 0.7;
-    let atractor = new Vector(centroCanvas.x, centroCanvas.y)    
+    let atractor = Vector.crear(centroCanvas.x, centroCanvas.y)    
     // triangulo.rotacion = 1;
-    triangulo.actualizarTransformacion()
     console.log(triangulo);
     // triangulo.trazar(dibujante);
     // triangulo.trazarVelocidad(dibujante);
