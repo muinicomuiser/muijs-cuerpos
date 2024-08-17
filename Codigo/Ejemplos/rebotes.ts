@@ -27,7 +27,6 @@ const NUMEROCUERPOS: number = 300;
 const RADIOENTORNO: number = 300;
 const LADOSENTORNO: number = 7;
 const RADIOCUERPO: number = 14;
-// const ESCALA: number = 2;
 
 let COLORCUERPO: string = Renderizado.colorHSL(220, 0, 100);
 let COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
@@ -55,28 +54,7 @@ window.addEventListener("load", ()=>{
     let cuerpoEntorno: Cuerpo = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, LADOSENTORNO, RADIOENTORNO);
     entorno.cuerpo = cuerpoEntorno;
     entorno.cuerpo.color = "white"
-    // console.log("normales entorno", entorno.normales)
 
-    // console.log("abajo")
-    // cuerpos[0].posicion = Vector.crear(300, 650)    //abajo
-    
-    // console.log("izquierda")
-    // cuerpos[1].posicion = Vector.crear(0, 300)      //izquierda
-    
-    // console.log("arriba")
-    // cuerpos[2].posicion = Vector.crear(300, 0)      //arriba
-    
-    // console.log("derecha")
-    // cuerpos[3].posicion = Vector.crear(1100, 300)   //derecha
-    
-    dibu.limpiarCanvas()
-    // for(let cuerpito of cuerpos){
-    //     cuerpito.posicion = entorno.envolverBorde(cuerpito.posicion);
-    // }
-    cuerpos = entorno.rebotarConBorde(cuerpos)
-    cuerpos = Composicion.actualizarMovimientoCuerpos(cuerpos);
-    cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
-    dibu.trazarFormas(cuerpos)
     requestAnimationFrame(animar);
     function animar(){
         dibu.limpiarCanvas()
