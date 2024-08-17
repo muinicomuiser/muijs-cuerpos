@@ -104,6 +104,17 @@ export class Cuerpo extends Forma{
         return poligono; 
     }
 
+    
+    /**Retorna un cuerpo geométrico regular.     
+     * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
+    static poligonoSegunVertices(vertices: Vector[], masa: number = 1, densidad: number = 1){
+        let poliForma: Forma = super.poligonoSegunVertices(vertices);
+        let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
+        poligono.masa = masa;
+        poligono.densidad = densidad;
+        poligono.fijo = false;
+        return poligono; 
+    }
 
     /**Retorna un cuerpo rectangular.*/
     static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number = 1){

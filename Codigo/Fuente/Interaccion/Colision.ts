@@ -175,4 +175,45 @@ export class Colision{
         normales.push(normalDos);
         return normales;
     }
+
+    /**Detecta la colisión entre una circunferencia y su entorno que la contiene.             
+     * Retorna el valor de solapamiento.        
+     * Retorna null si no hay colisión.        
+     * Usa el teorema SAT. Proyecta los vértices del entorno y dos puntos de la circunferencia sobre las normales de las caras del polígono
+     * y verifica si hay proyecciones de la circunferencia mayores a la de los vértices del entorno. 
+     */
+    static circunferenciaEntorno(circunferencia: Forma, entorno: Forma): number | null{
+        for(let normal of entorno.normales){   
+            /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
+            let menorPoli: number = Colision.proyeccionMenor(entorno.verticesTransformados, normal);
+            let mayorPoli: number = Colision.proyeccionMayor(entorno.verticesTransformados, normal);
+            let menorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radioTransformado;
+            let mayorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radioTransformado;
+
+            /**Comparación. Si se encuentra una separación, retorna true.*/
+            if(menorPoli > menorCirc){
+                return menorPoli - menorCirc;                    
+            }
+            if(mayorPoli < mayorCirc){
+                return mayorCirc - mayorPoli;                    
+            }
+        }
+        return null;
+    }
+    
+
+    /**Retorna la normal del borde del entorno contra el que ha colisionado una forma.*/
+    static normalContactoConEntorno(forma: Forma, entorno: Forma): Vector{
+        let numeroVertices: number = entorno.verticesTransformados.length;
+        let normalEntorno: Vector = entorno.normales[numeroVertices-1];
+        let vectorCentroAForma: Vector = Vector.segunPuntos(entorno.posicion, forma.posicion);
+        for(let i: number = 0; i < numeroVertices - 1; i++){
+            let vectorCentroAVerticeUno: Vector = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i]);
+            let vectorCentroAVerticeDos: Vector = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i+1]);
+            if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo &&  vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo){
+                normalEntorno = entorno.normales[i];
+            }
+        }
+        return normalEntorno;;
+    }
 }

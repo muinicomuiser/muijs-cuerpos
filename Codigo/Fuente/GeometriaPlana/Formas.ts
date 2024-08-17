@@ -209,16 +209,40 @@ export class Forma{
     static trazo(vertices: Vector[]): Forma{
         let centro: Vector = Vector.crear(0, 0)
         let trazo: Forma = new Forma();
+        let verticesTrazo: Vector[] = []
         trazo.lados = vertices.length - 1;
         for(let vertice of vertices){
             centro = Vector.suma(centro, Vector.escalar(vertice, 1/vertices.length))
         }
         for(let vertice of vertices){
-            trazo.vertices.push(Vector.resta(vertice, centro));
+            verticesTrazo.push(Vector.resta(vertice, centro));
         }
+        trazo.vertices = verticesTrazo;
         trazo.tipo = TipoFormas.linea;
         trazo.iniciarTransformacion(centro.x, centro.y);
         return trazo;
+    }
+
+    /**
+     * Crea un polígono a partir de un grupo de vértices.
+     * Calcula el centro de los vértices, centra la forma en el origen y almacena
+     * el centro en el registro de transformación.
+     */
+    static poligonoSegunVertices(vertices: Vector[]): Forma{
+        let centro: Vector = Vector.crear(0, 0)
+        let poligono: Forma = new Forma();
+        let verticesPoligono: Vector[] = []
+        poligono.lados = vertices.length - 1;
+        for(let vertice of vertices){
+            centro = Vector.suma(centro, Vector.escalar(vertice, 1/vertices.length))
+        }
+        for(let vertice of vertices){
+            verticesPoligono.push(Vector.resta(vertice, centro));
+        }
+        poligono.vertices = verticesPoligono;
+        poligono.tipo = TipoFormas.poligono;
+        poligono.iniciarTransformacion(centro.x, centro.y);
+        return poligono;
     }
 
     iniciarTransformacion(x: number, y: number): void{

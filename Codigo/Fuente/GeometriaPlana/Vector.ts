@@ -31,28 +31,50 @@ export class Vector{
         this._origen = {x: origen.x, y: origen.y};
     }
     static magnitud(vector: Vector): number{
-            // return Matematica.raiz(Matematica.suma(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2)
-            return (vector.x ** 2 + vector.y ** 2)**(1/2)
-        }
-        //REVISARRRRRRRRRRRRRRRR
+        // return Matematica.raiz(Matematica.suma(Matematica.potencia(vector.x, 2), Matematica.potencia(vector.y, 2)), 2)
+        return (vector.x ** 2 + vector.y ** 2)**(1/2)
+    }
+
+    //REVISARRRRRRRRRRRRRRRR
     static angulo(vector: Vector): number{
+        // if(vector.x == 0 && vector.y == 0){
+        //     return 0;
+        // }
+        // if(vector.x > 0 && vector.y >= 0){
+        //     return Math.acos(vector.x / Vector.magnitud(vector));
+        // }
+        // else if (vector.x <= 0 && vector.y >= 0){
+        //     return Math.acos(vector.x / Vector.magnitud(vector));
+        // }
+        // else if (vector.x >= 0 && vector.y < 0){
+        //     return Matematica.DOS_PI + Math.asin(vector.y / Vector.magnitud(vector));
+        // }
+        // else if (vector.x <= 0 && vector.y < 0){
+        //     return Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));        
+        // }
+        // else{
+        //     return 0
+        // }
         if(vector.x == 0 && vector.y == 0){
             return 0;
         }
-        if(vector.x > 0 && vector.y >= 0){
-            return Math.acos(vector.x / Vector.magnitud(vector));
+        else if(vector.y > 0 && vector.x == 0){
+            return Matematica.PI_MEDIO;
         }
-        else if (vector.x <= 0 && vector.y >= 0){
-            return  Math.acos(vector.x / Vector.magnitud(vector));
-        }
-        else if (vector.x >= 0 && vector.y < 0){
-            return Matematica.DOS_PI + Math.asin(vector.y / Vector.magnitud(vector));
-        }
-        else if (vector.x <= 0 && vector.y < 0){
-            return Matematica.PI - Math.asin(vector.y / Vector.magnitud(vector));        
+        else if(vector.y < 0 && vector.x == 0){
+            return (3/2)*Matematica.PI;
         }
         else{
-            return 0
+            if(vector.y > 0 && vector.x > 0){
+                return Math.atan(vector.y/vector.x);
+            }
+            else if(vector.y > 0 && vector.x < 0){
+                return Math.acos(vector.x / Vector.magnitud(vector));
+            }
+            else if(vector.y < 0 && vector.x < 0){
+                return Matematica.PI -Math.asin(vector.y / Vector.magnitud(vector));
+            }
+                return Matematica.DOS_PI - Math.acos(vector.x / Vector.magnitud(vector));;
         }
     }
     static cero(): Vector{
@@ -145,7 +167,8 @@ export class Vector{
         // return Matematica.division(Vector.punto(vectorUno, vectorEje), Vector.magnitud(vectorEje));
     }
 
-
+    //O DEBERÍA ENTREGAR LA RESTA DEL MAYOR CON EL MENOR??? 
+    /**Retorna el valor del ángulo entre dos vectores.*/
     static anguloVectores(vectorUno: Vector, vectorDos: Vector): number{
         let punto: number = Vector.punto(vectorUno, vectorDos);
         let magnitudes: number = vectorUno.magnitud * vectorDos.magnitud;

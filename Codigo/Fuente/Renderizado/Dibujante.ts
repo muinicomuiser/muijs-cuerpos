@@ -9,6 +9,7 @@ import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 export class Dibujante{
     protected _color: string;
     protected _colorFondo: string;
+    protected _colorTexto: string;
     protected _grosorTrazo: number;
     protected _opacidad: number;
     protected _colorVectores: string;
@@ -17,6 +18,7 @@ export class Dibujante{
         this._context = context;
         this._color = "black";
         this._colorFondo = "white";
+        this._colorTexto = "white";
         this._grosorTrazo = 1;
         this._opacidad = 1;
         this._colorVectores = "red"
@@ -26,6 +28,9 @@ export class Dibujante{
     }
     get colorFondo(): string{
         return this._colorFondo;
+    }
+    get colorTexto(): string{
+        return this._colorTexto;
     }
     get colorVectores(): string{
         return this._colorVectores;
@@ -41,6 +46,9 @@ export class Dibujante{
     }
     set colorFondo(color: string){
         this._colorFondo = color;
+    }
+    set colorTexto(color: string){
+        this._colorTexto = color;
     }
     set colorVectores(color: string){
         this._colorVectores = color;
@@ -153,7 +161,7 @@ export class Dibujante{
         this._context.textAlign = alineacion;
         this._context.font = `${grosor} ${tamano}px ${fuente}`;
         this._context.globalAlpha = this._opacidad;
-        this._context.fillStyle = this._color;
+        this._context.fillStyle = this._colorTexto;
         this._context.fillText(texto, posicionX, posocionY);
     }
 
