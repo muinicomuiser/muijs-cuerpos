@@ -20,22 +20,22 @@ CANVAS.height = 680;
 const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 
 const NUMEROBOIDS: number = 200;
-const ESCALA: number = 2;
-const VELMAXIMA: number = 3;
+const ESCALA: number = 1.5;
+const VELMAXIMA: number = 2;
 
 const ROTARSEGUNVELOCIDAD: boolean = true;
     
-const DISTANCIAREPELER: number = 10;
-const FUERZAREPELER: number = 20;
+const DISTANCIAREPELER: number = 20;
+const FUERZAREPELER: number = 1.5;
     
-const DISTANCIACOORDINAR: number = 60;
-const FACTORCOORDINACION: number = 0.4;
+const DISTANCIACOORDINAR: number = 40;
+const FACTORCOORDINACION: number = 0.5;
 
 const COLORBOID: string = Renderizado.colorHSL(220, 0, 100);
-const COLORFONDO: string = Renderizado.colorHSL(220, 100, 2);
+const COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
 
 const DETECTARMOUSE: boolean = true;
-const ATRACCIONMOUSE: number = 0.2;
+const ATRACCIONMOUSE: number = 0.05;
 
 ////////////////
 
@@ -67,25 +67,6 @@ window.addEventListener("load", ()=>{
         boids.push(boid);
     }
 
-    // /**Límites infinitos.*/
-    // function envolverBorde(vector: Vector): Vector{
-    //     let x: number = vector.x;
-    //     let y: number = vector.y;
-    //     if(x > CANVAS.width){
-    //         x -= CANVAS.width
-    //     }
-    //     if(x < 0){
-    //         x += CANVAS.width
-    //     }
-    //     if(y > CANVAS.height){
-    //         y -= CANVAS.height
-    //     }
-    //     if(y < 0){
-    //         y += CANVAS.height
-    //     }
-    //     return Vector.crear(x, y)
-    // }
-    
     /**Prueba de tiempo.*/
     function tiempoProceso(): void{
         let tiempoInicio: number = Date.now();
@@ -126,9 +107,6 @@ window.addEventListener("load", ()=>{
         console.log((`${tiempoFinal - tiempoInicio}` + " milisegundos"));
     }
     tiempoProceso();
-    boids[10].color = Renderizado.colorHSL(50, 100, 50)
-    boids[20].color = Renderizado.colorHSL(50, 100, 50)
-    boids[30].color = Renderizado.colorHSL(50, 100, 50)
     function animar(){
         dibu.limpiarCanvas()
         
@@ -181,8 +159,8 @@ if(DETECTARMOUSE){
         }
     })
     CANVAS.addEventListener("mousemove", (event)=>{
-        let mouseX: number = event.pageX;
-        let mouseY: number = event.pageY;
+        let mouseX: number = event.pageX - CANVAS.offsetLeft;
+        let mouseY: number = event.pageY - CANVAS.offsetTop
         vectorMouse = Vector.crear(mouseX, mouseY);
     })
 }

@@ -23,10 +23,12 @@ CANVAS.height = 680;
 const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 
 const RADIOFORMAGENERADORA: number = 100;
+
+const RADIOENTORNO: number = 200;
+const LADOSENTORNO: number = 10;
+
 const NUMEROCUERPOS: number = 300;
-const RADIOENTORNO: number = 300;
-const LADOSENTORNO: number = 7;
-const RADIOCUERPO: number = 14;
+const RADIOCUERPO: number = 5;
 
 let COLORCUERPO: string = Renderizado.colorHSL(220, 0, 100);
 let COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
@@ -54,26 +56,32 @@ window.addEventListener("load", ()=>{
     let cuerpoEntorno: Cuerpo = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, LADOSENTORNO, RADIOENTORNO);
     entorno.cuerpo = cuerpoEntorno;
     entorno.cuerpo.color = "white"
-
+    
     requestAnimationFrame(animar);
     function animar(){
-        dibu.limpiarCanvas()
-        // for(let cuerpito of cuerpos){
-        //     cuerpito.posicion = entorno.envolverBorde(cuerpito.posicion);
-        // }
-        cuerpos = entorno.rebotarConBorde(cuerpos)
-        cuerpos = Composicion.actualizarMovimientoCuerpos(cuerpos);
-        cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
-        for(let cuerpito of cuerpos){
-            // cuerpito.aceleracion = Fuerza.atraerAVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02)
-            // cuerpito.aceleracion = Fuerza.repelerDeVector(cuerpito, Vector.crear(CENTROCANVAS.x, -1000), 0.02);
-            cuerpito.velocidad = Vector.escalar(cuerpito.velocidad, 0.995)
-            if(cuerpito.velocidad.magnitud < 0.005){
-                cuerpito.velocidad = Vector.cero()
+        function contador(): void{
+            let tiempoInicio: number = Date.now();
+            dibu.limpiarCanvas()
+            // for(let cuerpito of cuerpos){
+            //     cuerpito.posicion = entorno.envolverBorde(cuerpito.posicion);
+            // }
+            cuerpos = entorno.rebotarConBorde(cuerpos)
+            cuerpos = Composicion.actualizarMovimientoCuerpos(cuerpos);
+            cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
+            for(let cuerpito of cuerpos){
+                // cuerpito.aceleracion = Fuerza.atraerAVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02)
+                cuerpito.aceleracion = Fuerza.repelerDeVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02);
+                cuerpito.velocidad = Vector.escalar(cuerpito.velocidad, 0.995)
+                if(cuerpito.velocidad.magnitud < 0.005){
+                    cuerpito.velocidad = Vector.cero()
+                }
             }
+            dibu.trazar(entorno.cuerpo)
+            dibu.trazarFormas(cuerpos)
+            let tiempoFinal: number = Date.now();
+            dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "calibri", "left")
         }
-        dibu.trazar(entorno.cuerpo)
-        dibu.trazarFormas(cuerpos)
+        contador()
         requestAnimationFrame(animar);
     }
     animar()

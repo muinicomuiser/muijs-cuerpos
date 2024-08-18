@@ -1,7 +1,8 @@
 - Documentación
 - Estudiar y aplicar energía, conservación del momento, fuerzas, normales y transformaciones.
-- Revisar getters y setters, simplificar métodos de aplicación de transformaciones.
 - Simplificar. Que a todas las funcionalidades de trabajo con cuerpos se pueda acceder por medio de una o dos instancias y módulos.
-- Organizar en carpetas por jerarquías o utilidades.
+
+- Crear método para agrupar formas.
+- Gravedad y roce.
 
 *Propuesta de estructura

@@ -23,18 +23,22 @@ export class Colision{
      * Retorna false si no detecta colisión.        
     */
     static detectar(formaUno: Forma, formaDos: Forma): boolean{
-        if(formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.poligono){
-            return Colision.poligonos(formaUno, formaDos);
+        //Pondré acá la detección de la distancia límite de colisión
+        if(Geometria.distanciaEntrePuntos(formaUno.posicion, formaDos.posicion) < (formaUno.radio + formaDos.radio)*1.5){
+            if(formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.poligono){
+                return Colision.poligonos(formaUno, formaDos);
+            }
+            else if(formaUno.tipo == TipoFormas.circunferencia && formaDos.tipo == TipoFormas.poligono){
+                return Colision.circunferenciaPoligono(formaUno, formaDos);
+            }
+            else if(formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.circunferencia){
+                return Colision.circunferenciaPoligono(formaDos, formaUno);
+            }
+            else{
+                return Colision.circunferencias(formaUno, formaDos);
+            }
         }
-        else if(formaUno.tipo == TipoFormas.circunferencia && formaDos.tipo == TipoFormas.poligono){
-            return Colision.circunferenciaPoligono(formaUno, formaDos);
-        }
-        else if(formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.circunferencia){
-            return Colision.circunferenciaPoligono(formaDos, formaUno);
-        }
-        else{
-            return Colision.circunferencias(formaUno, formaDos);
-        }
+        return false
     }
 
 

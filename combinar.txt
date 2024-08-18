@@ -1,0 +1,2 @@
+Comando para compilar el archivo bundle.js:
+    npx rollup build/main.js --file bundle.js --format iife
