@@ -1,12 +1,12 @@
-import { Matematica } from "../Fuente/Utiles/Matematica.js";
+import { Geometria } from "../Fuente/Utiles/Geometria.js";
 import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
 import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
 import { Restriccion } from "../Fuente/Interaccion/Restriccion.js";
 import { Entorno } from "../Fuente/Interaccion/Entorno.js";
+import { Matematica } from "../Fuente/Utiles/Matematica.js";
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 const CANVAS = document.getElementById("canvas");
 const CONTEXT = CANVAS.getContext("2d");

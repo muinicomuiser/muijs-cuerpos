@@ -1,5 +1,5 @@
 import { Forma } from "../GeometriaPlana/Formas.js";
-import { Matematica } from "../Utiles/Matematica.js";
+import { Geometria } from "../Utiles/Geometria.js";
 import { Punto } from "../GeometriaPlana/Punto.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
@@ -154,15 +154,15 @@ export class Dibujante{
     }
 
     /**Rellena un texto en el canvas según los argumentos ingresados.       
-     * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), fuente como font-family y alineacion como instrucción 
-     * de CSS de text-align ("center", "left", "right").        
+     * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), alineacion como instrucción de 
+     * CSS de text-align ("center", "left", "right") y fuente como font-family.      
      */
-    escribir(texto: string, posicionX: number, posocionY: number, tamano: number, grosor: number = 500, fuente: string = "calibri", alineacion: CanvasTextAlign = "center"): void{
+    escribir(texto: string, posicionX: number, posicionY: number, tamano: number, grosor: number = 500, alineacion: CanvasTextAlign = "center", fuente: string = "calibri"): void{
         this._context.textAlign = alineacion;
         this._context.font = `${grosor} ${tamano}px ${fuente}`;
         this._context.globalAlpha = this._opacidad;
         this._context.fillStyle = this._colorTexto;
-        this._context.fillText(texto, posicionX, posocionY);
+        this._context.fillText(texto, posicionX, posicionY);
     }
 
     /**Método interno.        
@@ -170,7 +170,7 @@ export class Dibujante{
     */
     protected pathCircunferencia(forma: Forma): void{
         this._context.beginPath();
-        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Matematica.DOS_PI);
+        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
     }
 
     /**Método interno.        

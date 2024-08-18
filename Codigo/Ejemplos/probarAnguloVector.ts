@@ -39,7 +39,7 @@ window.addEventListener("load", ()=>{
         dibu.limpiarCanvas()
         vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
         dibu.colorTexto = "white";
-        dibu.escribir(`${vectorMouse.angulo}`, 20, 20, 30, 2, undefined, "left")
+        dibu.escribir(`${vectorMouse.angulo}`, 20, 20, 30, 2, "left")
         vectorMouse.origen = CENTROCANVAS
         dibu.trazarVector(vectorMouse)
         requestAnimationFrame(animar);

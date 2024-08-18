@@ -1,11 +1,10 @@
-import { Matematica } from "../Fuente/Utiles/Matematica.js";
+import { Geometria } from "../Fuente/Utiles/Geometria.js";
 import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
 import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
 import { Colision } from "../Fuente/Interaccion/Colision.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
 const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
@@ -50,10 +49,10 @@ window.addEventListener("load", ()=>{
         renderizado.limpiarCanvas(0.6);
         // Renderizado.escribir("hola", centroCanvas.x, centroCanvas.y, 50, 300, "serif", "center")
         if(escalita > 4){
-            escalador = Matematica.absoluto(escalador) * -1;
+            escalador = Math.abs(escalador) * -1;
         }
         if(escalita < 2){
-            escalador = Matematica.absoluto(escalador);
+            escalador = Math.abs(escalador);
         }
         escalita += escalador;
         for(let i in atractores){

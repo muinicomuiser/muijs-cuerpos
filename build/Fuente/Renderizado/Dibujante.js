@@ -1,4 +1,4 @@
-import { Matematica } from "../Utiles/Matematica.js";
+import { Geometria } from "../Utiles/Geometria.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 //POR INCORPORAR:
 //  Throw de errores para valores incompatibles
@@ -145,22 +145,22 @@ export class Dibujante {
         this._context.stroke();
     }
     /**Rellena un texto en el canvas según los argumentos ingresados.
-     * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), fuente como font-family y alineacion como instrucción
-     * de CSS de text-align ("center", "left", "right").
+     * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), alineacion como instrucción de
+     * CSS de text-align ("center", "left", "right") y fuente como font-family.
      */
-    escribir(texto, posicionX, posocionY, tamano, grosor = 500, fuente = "calibri", alineacion = "center") {
+    escribir(texto, posicionX, posicionY, tamano, grosor = 500, alineacion = "center", fuente = "calibri") {
         this._context.textAlign = alineacion;
         this._context.font = `${grosor} ${tamano}px ${fuente}`;
         this._context.globalAlpha = this._opacidad;
         this._context.fillStyle = this._colorTexto;
-        this._context.fillText(texto, posicionX, posocionY);
+        this._context.fillText(texto, posicionX, posicionY);
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "circunferencia", usando el método .arc de la interfaz context.
     */
     pathCircunferencia(forma) {
         this._context.beginPath();
-        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Matematica.DOS_PI);
+        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.

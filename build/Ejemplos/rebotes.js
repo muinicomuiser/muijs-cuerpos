@@ -62,7 +62,7 @@ window.addEventListener("load", () => {
             dibu.trazar(entorno.cuerpo);
             dibu.trazarFormas(cuerpos);
             let tiempoFinal = Date.now();
-            dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "calibri", "left");
+            dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "left");
         }
         contador();
         requestAnimationFrame(animar);

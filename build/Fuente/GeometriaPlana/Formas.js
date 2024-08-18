@@ -1,4 +1,3 @@
-import { Matematica } from "../Utiles/Matematica.js";
 import { Vector } from "./Vector.js";
 import { Transformacion } from "./Transformacion.js";
 import { Geometria } from "../Utiles/Geometria.js";
@@ -112,7 +111,7 @@ export class Forma {
         if (this._lados == 0) {
             return [];
         }
-        let theta = Matematica.DOS_PI / this._lados;
+        let theta = Geometria.DOS_PI / this._lados;
         let offset = theta * 0.5;
         let nVertices = [];
         for (let i = 0; i < this.lados; i++) {
@@ -141,7 +140,7 @@ export class Forma {
     static circunferencia(x, y, radio) {
         let nuevaCircunferencia = new Forma();
         nuevaCircunferencia.radio = radio;
-        let lados = 10 + Matematica.truncar(radio / 10, 0);
+        let lados = 10 + Math.trunc(radio / 10);
         if (lados % 2 == 1) {
             lados++;
         }
