@@ -21,4 +21,4 @@ Hasta el momento permite:
 - crear cuerpos atractores y repulsores     
 
 ## Proyectos creados con mui.js
-- <a href="https://muinicomuiser.github.io/boids/" target="_blank">boids</a>
+- <a href="https://muinicomuiser.github.io/boids" target="_blank">boids</a>
