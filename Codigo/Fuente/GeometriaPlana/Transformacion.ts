@@ -31,9 +31,9 @@ export class Transformacion{
      * Permite aumentar puntualmente la rotación en un ángulo específico sin modificar la propiedad de rotación de la transformación.*/
     transformarConjuntoVectores(vectores: Vector[]): Vector[]{
         let vectoresTransformados: Vector[] = Vector.clonarConjunto(vectores);
-        vectoresTransformados = this.aplicarEscalaVectores(vectoresTransformados);
-        vectoresTransformados = this.aplicarRotacionVectores(vectoresTransformados);
-        vectoresTransformados = this.aplicarDesplazamientoVectores(vectoresTransformados);
+            vectoresTransformados = this.aplicarEscalaVectores(vectoresTransformados);
+            vectoresTransformados = this.aplicarRotacionVectores(vectoresTransformados);
+            vectoresTransformados = this.aplicarDesplazamientoVectores(vectoresTransformados);
         return vectoresTransformados;
     }
 

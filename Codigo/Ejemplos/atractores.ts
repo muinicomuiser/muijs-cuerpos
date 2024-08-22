@@ -1,13 +1,6 @@
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
-import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
-import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
-import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
-import { Colision } from "../Fuente/Interaccion/Colision.js";
+import { Renderizado, Punto, Vector, Cuerpo, Geometria, Fuerza } from "../Fuente/mui.js";
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
-const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
 
 let numeroAtractores: number = 1;
 let numeroCuerpos: number = 120;

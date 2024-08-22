@@ -1,10 +1,5 @@
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
-import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
-import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
+import { Renderizado, Vector, Cuerpo, Geometria, Fuerza } from "../Fuente/mui.js";
 const CANVAS = document.getElementById("canvas");
-const CONTEXT = CANVAS.getContext("2d");
 let numeroAtractores = 1;
 let numeroCuerpos = 120;
 CANVAS.width = 650;

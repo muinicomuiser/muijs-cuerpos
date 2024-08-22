@@ -9,14 +9,19 @@ import { TipoFormas } from "./TipoFormas.js";
 // Función de escalar, reflejar
 // SUMAR FORMAS
 
+
+//Agregar propiedad de vértices transformados, normales rotadas y apotema, para no estar calculándolo en cada momento,
+//ademas de una propiedad que avise cuando haya que aplicar la transformación.
 export class Forma{
     protected _centro: Vector = Vector.cero();
     protected _lados: number = 0;
     protected _radio: number = 0;
     protected _color: string = "";
     protected _vertices: Vector[] = [];
+    protected _verticesTransformados: Vector[] = [];
     protected _tipo: TipoFormas = TipoFormas.poligono;
     protected _transformacion: Transformacion = new Transformacion();
+    protected _transformar: boolean = true;
 
     protected constructor(){}
 
@@ -64,8 +69,12 @@ export class Forma{
 
     /**Retorna el arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento..*/
     get verticesTransformados(): Vector[]{
-        let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        return verticesTransformados;
+        if(this._transformar){
+            this.transformarVertices()
+        }
+        return Vector.clonarConjunto(this._verticesTransformados)
+        // let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+        // return verticesTransformados;
     }
 
     /**Retorna un conjunto de vectores normales de cada arista del polígono.        
@@ -85,6 +94,13 @@ export class Forma{
             }
             return normales;
     }    
+    /**Retorna la distancia entre el centro del polígono y el punto más cercano de sus aristas.*/
+    get apotema(): number{
+        if(this.tipo == TipoFormas.circunferencia){
+            return this.radioTransformado;
+        }
+        return Math.cos(Math.PI / this.lados)*this.radio;
+    }
     get color(): string{
         return this._color;
     }
@@ -98,17 +114,20 @@ export class Forma{
         this._radio = nuevoRadio;
     }
     set transformacion(transformacion: Transformacion){
+        this._transformar = true;
         this._transformacion = transformacion;
     }
     set posicion(nuevaPosicion: Vector){
+        this._transformar = true;
         this._transformacion.posicion = Vector.clonar(nuevaPosicion);
     }
     /**Modifica el valor de la rotación de la figura con respecto a su forma sin transformaciones.*/
     set rotacion(rotacion: number){
+        this._transformar = true;
         this._transformacion.rotacion = rotacion;
-    }
-
+    }    
     set escala(nuevaEscala: number){
+        this._transformar = true;
         this._transformacion.escala = nuevaEscala;
     }
 
@@ -118,6 +137,7 @@ export class Forma{
     set color(color: string){
         this._color = color;
     }
+
     private crearVertices(): Vector[]{
         if(this._lados == 0){
             return [];
@@ -245,9 +265,14 @@ export class Forma{
     }
 
     iniciarTransformacion(x: number, y: number): void{
-        this.transformacion = new Transformacion(x, y);
+        this._transformacion.posicion = Vector.crear(x, y);
+        // this.transformacion = new Transformacion(x, y);
     }
 
+    protected transformarVertices(): void{
+        this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+        this._transformar = false;
+    }
 
     /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
     public rotar(angulo: number): void{

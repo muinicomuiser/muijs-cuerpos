@@ -5,4 +5,10 @@
 - Crear método para agrupar formas.
 - Gravedad y roce.
 
+- Reunir detección entre formas y forma-contenedor en un solo método que detecte el producto escalar entre las normales para determinar la posición 
+    de los cuerpos.
+- Reunir los export en un solo archivo para importar mui.js desde otros proyectos.
+
+- Resolver el solapamiento para todo tipo de cuerpos, no solo para circunferencias.
+
 *Propuesta de estructura

@@ -1,3 +1,4 @@
+import { Vector } from "../GeometriaPlana/Vector.js";
 import { Dibujante } from "./Dibujante.js";
 export class Renderizado extends Dibujante {
     _canvas;
@@ -29,5 +30,18 @@ export class Renderizado extends Dibujante {
         else {
             this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
         }
+    }
+    trazarNormales(forma) {
+        let saltoColor = 360 / forma.normales.length;
+        let color = 0;
+        forma.normales.forEach((normal) => {
+            // let normalTrazable: Vector = Vector.escalar(Vector.normalizar(normal), forma.radioTransformado);
+            let normalTrazable = normal;
+            this.colorVectores = Renderizado.colorHSL(color, 100, 50);
+            this.colorTexto = Renderizado.colorHSL(color, 100, 50);
+            normalTrazable.origen = Vector.suma(forma.posicion, Vector.escalar(Vector.normalizar(normal), forma.apotema));
+            this.trazarVector(normalTrazable);
+            color += saltoColor;
+        });
     }
 }

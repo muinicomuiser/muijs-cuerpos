@@ -7,11 +7,16 @@ export class Entorno {
     alto;
     ancho;
     cuerpo;
-    constructor(canvas) {
+    constructor(canvas, cuerpo) {
         this.canvas = canvas;
         this.alto = this.canvas.height;
         this.ancho = this.canvas.width;
-        this.cuerpo = Cuerpo.poligonoSegunVertices([Vector.crear(this.ancho, this.alto), Vector.crear(0, this.alto), Vector.crear(0, 0), Vector.crear(this.ancho, 0)]);
+        if (cuerpo) {
+            this.cuerpo = cuerpo;
+        }
+        else {
+            this.cuerpo = Cuerpo.poligonoSegunVertices([Vector.crear(this.ancho, this.alto), Vector.crear(0, this.alto), Vector.crear(0, 0), Vector.crear(this.ancho, 0)]);
+        }
         this.cuerpo.fijo = true;
     }
     get normales() {

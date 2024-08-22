@@ -11,6 +11,7 @@ export class Dibujante{
     protected _colorFondo: string;
     protected _colorTexto: string;
     protected _grosorTrazo: number;
+    protected _grosorVector: number;
     protected _opacidad: number;
     protected _colorVectores: string;
     protected _context: CanvasRenderingContext2D;
@@ -22,6 +23,7 @@ export class Dibujante{
         this._grosorTrazo = 1;
         this._opacidad = 1;
         this._colorVectores = "red"
+        this._grosorVector = 1;
     }
     get color(): string{
         return this._color;
@@ -58,6 +60,9 @@ export class Dibujante{
     }
     set opacidad(opacidad: number){
         this._opacidad = opacidad;
+    }
+    set grosorVector(grosor: number){
+        this._grosorVector = grosor;
     }
     /**
      * Retorna un string con el color en formato HSL.            
@@ -147,7 +152,7 @@ export class Dibujante{
         this._context.moveTo(origen.x, origen.y);
         this._context.lineTo(extremo.x, extremo.y);
         
-        this._context.lineWidth = this._grosorTrazo;
+        this._context.lineWidth = this._grosorVector;
         this._context.globalAlpha = this._opacidad;
         this._context.strokeStyle = this._colorVectores;
         this._context.stroke();

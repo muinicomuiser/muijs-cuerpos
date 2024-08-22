@@ -2,7 +2,6 @@
 //Debería estar acá la creación de canvas y contexto??
 
 import { Cuerpo } from "../Fisicas/Cuerpo.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
 
 export class Composicion{
     static actualizarMovimientoCuerpos(cuerpos: Cuerpo[]): Cuerpo[]{

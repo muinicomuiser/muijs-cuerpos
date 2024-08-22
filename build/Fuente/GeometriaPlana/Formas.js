@@ -6,14 +6,18 @@ import { TipoFormas } from "./TipoFormas.js";
 // Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
 // Función de escalar, reflejar
 // SUMAR FORMAS
+//Agregar propiedad de vértices transformados, normales rotadas y apotema, para no estar calculándolo en cada momento,
+//ademas de una propiedad que avise cuando haya que aplicar la transformación.
 export class Forma {
     _centro = Vector.cero();
     _lados = 0;
     _radio = 0;
     _color = "";
     _vertices = [];
+    _verticesTransformados = [];
     _tipo = TipoFormas.poligono;
     _transformacion = new Transformacion();
+    _transformar = true;
     constructor() { }
     /**Retorna un string que indica el tipo de forma geométrica.
      * "poligono", "circunferencia", "linea"
@@ -56,8 +60,12 @@ export class Forma {
     }
     /**Retorna el arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento..*/
     get verticesTransformados() {
-        let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        return verticesTransformados;
+        if (this._transformar) {
+            this.transformarVertices();
+        }
+        return Vector.clonarConjunto(this._verticesTransformados);
+        // let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+        // return verticesTransformados;
     }
     /**Retorna un conjunto de vectores normales de cada arista del polígono.
      * El orden de las aristas es en senttipoo horario.
@@ -76,6 +84,13 @@ export class Forma {
         }
         return normales;
     }
+    /**Retorna la distancia entre el centro del polígono y el punto más cercano de sus aristas.*/
+    get apotema() {
+        if (this.tipo == TipoFormas.circunferencia) {
+            return this.radioTransformado;
+        }
+        return Math.cos(Math.PI / this.lados) * this.radio;
+    }
     get color() {
         return this._color;
     }
@@ -89,16 +104,20 @@ export class Forma {
         this._radio = nuevoRadio;
     }
     set transformacion(transformacion) {
+        this._transformar = true;
         this._transformacion = transformacion;
     }
     set posicion(nuevaPosicion) {
+        this._transformar = true;
         this._transformacion.posicion = Vector.clonar(nuevaPosicion);
     }
     /**Modifica el valor de la rotación de la figura con respecto a su forma sin transformaciones.*/
     set rotacion(rotacion) {
+        this._transformar = true;
         this._transformacion.rotacion = rotacion;
     }
     set escala(nuevaEscala) {
+        this._transformar = true;
         this._transformacion.escala = nuevaEscala;
     }
     set vertices(vertices) {
@@ -222,7 +241,12 @@ export class Forma {
         return poligono;
     }
     iniciarTransformacion(x, y) {
-        this.transformacion = new Transformacion(x, y);
+        this._transformacion.posicion = Vector.crear(x, y);
+        // this.transformacion = new Transformacion(x, y);
+    }
+    transformarVertices() {
+        this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+        this._transformar = false;
     }
     /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
     rotar(angulo) {

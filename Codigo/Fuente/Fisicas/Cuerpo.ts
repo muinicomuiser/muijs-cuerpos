@@ -141,6 +141,8 @@ export class Cuerpo extends Forma{
     /**Suma la velocidad y la aceleración a la posición.*/
     public mover(): void{
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+        if(!this.fijo){
+            this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+        }
     }
 }

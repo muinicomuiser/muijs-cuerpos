@@ -13,8 +13,16 @@ export class Interaccion {
                     let normales = Colision.normalesContacto(cuerpos[i], cuerpos[j]);
                     cuerpos[i].velocidad = Cinematica.reboteSimple(cuerpos[i], normales[1]);
                     cuerpos[j].velocidad = Cinematica.reboteSimple(cuerpos[j], normales[0]);
-                    cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]));
-                    cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]));
+                    if (cuerpos[i].fijo) {
+                        cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]));
+                    }
+                    else if (cuerpos[j].fijo) {
+                        cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]));
+                    }
+                    else {
+                        cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]));
+                        cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]));
+                    }
                 }
             }
             cuerposRebotados.push(cuerpos[i]);

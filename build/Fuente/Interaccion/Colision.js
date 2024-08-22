@@ -14,13 +14,16 @@ import { Geometria } from "../Utiles/Geometria.js";
  * Trabaja usando objetos de tipo Forma.
  */
 export class Colision {
+    static get iteraciones() {
+        return 4;
+    }
     /**Detecta colisiones usando el teorema SAT entre formas de tipo circunferencia y/o polígono.
      * Retorna true si detecta una colisión.
      * Retorna false si no detecta colisión.
     */
     static detectar(formaUno, formaDos) {
         //Pondré acá la detección de la distancia límite de colisión
-        if (Geometria.distanciaEntrePuntos(formaUno.posicion, formaDos.posicion) < (formaUno.radio + formaDos.radio) * 1.5) {
+        if (Geometria.distanciaEntrePuntos(formaUno.posicion, formaDos.posicion) < (formaUno.radio + formaDos.radio) * 1.1) {
             if (formaUno.tipo == TipoFormas.poligono && formaDos.tipo == TipoFormas.poligono) {
                 return Colision.poligonos(formaUno, formaDos);
             }
@@ -163,18 +166,21 @@ export class Colision {
      * y verifica si hay proyecciones de la circunferencia mayores a la de los vértices del entorno.
      */
     static circunferenciaEntorno(circunferencia, entorno) {
-        for (let normal of entorno.normales) {
-            /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
-            let menorPoli = Colision.proyeccionMenor(entorno.verticesTransformados, normal);
-            let mayorPoli = Colision.proyeccionMayor(entorno.verticesTransformados, normal);
-            let menorCirc = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radioTransformado;
-            let mayorCirc = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radioTransformado;
-            /**Comparación. Si se encuentra una separación, retorna true.*/
-            if (menorPoli > menorCirc) {
-                return menorPoli - menorCirc;
-            }
-            if (mayorPoli < mayorCirc) {
-                return mayorCirc - mayorPoli;
+        let distanciaCicunferenciaCentro = Geometria.distanciaEntrePuntos(circunferencia.posicion, entorno.posicion);
+        if (distanciaCicunferenciaCentro + circunferencia.radio * 1.2 > entorno.apotema) {
+            for (let normal of entorno.normales) {
+                /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
+                let menorPoli = Colision.proyeccionMenor(entorno.verticesTransformados, normal);
+                let mayorPoli = Colision.proyeccionMayor(entorno.verticesTransformados, normal);
+                let menorCirc = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radioTransformado;
+                let mayorCirc = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radioTransformado;
+                /**Comparación. Si se encuentra una separación, retorna true.*/
+                if (menorPoli > menorCirc) {
+                    return menorPoli - menorCirc;
+                }
+                if (mayorPoli < mayorCirc) {
+                    return mayorCirc - mayorPoli;
+                }
             }
         }
         return null;
@@ -187,9 +193,20 @@ export class Colision {
         for (let i = 0; i < numeroVertices - 1; i++) {
             let vectorCentroAVerticeUno = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i]);
             let vectorCentroAVerticeDos = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i + 1]);
-            if (vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo) {
+            let anguloVertices = Vector.anguloVectores(vectorCentroAVerticeDos, vectorCentroAVerticeUno);
+            if (Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeUno) < anguloVertices && Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeDos) < anguloVertices) {
                 normalEntorno = entorno.normales[i];
             }
+            // if(vectorCentroAVerticeUno.angulo > vectorCentroAVerticeDos.angulo){
+            //     if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo + Geometria.DOS_PI){
+            //         normalEntorno = entorno.normales[i];
+            //         // return normalEntorno;
+            //     }
+            // }
+            // if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo){
+            //     normalEntorno = entorno.normales[i];
+            //     // return normalEntorno;;
+            // }
         }
         return normalEntorno;
         ;
