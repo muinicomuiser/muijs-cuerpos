@@ -1,25 +1,21 @@
 import { Forma, Vector, Renderizado, Cuerpo, Fuerza, Geometria, Entorno, Composicion, Interaccion } from "../Fuente/mui.js";
-// import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
-// import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
-// import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-// import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
-// import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
-// import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
-// import { Geometria } from "../Fuente/Utiles/Geometria.js";
-// import { Entorno } from "../Fuente/Interaccion/Entorno.js";
-// import { Composicion } from "../Fuente/Composicion/Composicion.js";
-// import { Interaccion } from "../Fuente/Interaccion/Interaccion.js";
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 const CANVAS = document.getElementById("canvas");
-CANVAS.width = 850;
-CANVAS.height = 680;
+// CANVAS.width = 850;
+// CANVAS.height = 680;
+CANVAS.width = window.innerWidth - 20 > 360 ? window.innerWidth - 20 : 360;
+CANVAS.height = window.innerHeight - 20;
 //CONSTANTES
 const CENTROCANVAS = { x: CANVAS.width / 2, y: CANVAS.height / 2 };
-const RADIOFORMAGENERADORA = 100;
-const RADIOENTORNO = 250;
+const BORDEMENOR = CANVAS.width < CANVAS.height ? CANVAS.width : CANVAS.height;
+let RADIOENTORNO = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
+RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
+console.log(RADIOENTORNO);
+// const RADIOENTORNO: number = 250;
 const LADOSENTORNO = 6;
-const NUMEROCUERPOS = 30;
-const RADIOCUERPO = 10;
+const RADIOFORMAGENERADORA = RADIOENTORNO / 2;
+const NUMEROCUERPOS = 40;
+const RADIOCUERPO = 8;
 let COLORCUERPO = Renderizado.colorHSL(220, 0, 100);
 let COLORFONDO = Renderizado.colorHSL(220, 100, 0);
 ////////////////
@@ -40,14 +36,13 @@ window.addEventListener("load", () => {
         // cuerpito.velocidad = Vector.crear(Matematica.aleatorio(-1, 1), Matematica.aleatorio(-1, 1));
         cuerpos.push(cuerpito);
     }
-    let circulo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * 1.2, 80);
+    let circulo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * 1.2, RADIOENTORNO / 3);
     circulo.fijo = true;
     circulo.rotacion = Geometria.PI_MEDIO;
     circulo.color = "skyblue";
     cuerpos.push(circulo);
-    let cuerpoAtractor = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * 1.9, 5);
+    let cuerpoAtractor = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 5);
     cuerpoAtractor.color = "white";
-    console.log(cuerpoEntorno.verticesTransformados);
     entorno.cuerpo.color = "skyblue";
     requestAnimationFrame(animar);
     function animar() {
