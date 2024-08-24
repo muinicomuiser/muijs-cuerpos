@@ -3,19 +3,22 @@ import { Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Geometria, Entorno, 
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
-CANVAS.width = 850;
-CANVAS.height = 680;
+
+CANVAS.width = window.innerWidth - 20 > 360 ? window.innerWidth - 20 : 360;
+CANVAS.height = window.innerHeight - 20
 
 //CONSTANTES
 const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
+const BORDEMENOR = CANVAS.width < CANVAS.height ? CANVAS.width : CANVAS.height
 
-const RADIOFORMAGENERADORA: number = 100;
-
-const RADIOENTORNO: number = 250;
 const LADOSENTORNO: number = 6;
+let RADIOENTORNO: number = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
+RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
 
-const NUMEROCUERPOS: number = 30;
-const RADIOCUERPO: number = 10;
+const RADIOFORMAGENERADORA: number = RADIOENTORNO/2;
+
+const NUMEROCUERPOS: number = 40;
+const RADIOCUERPO: number = 8;
 
 let COLORCUERPO: string = Renderizado.colorHSL(220, 0, 100);
 let COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
@@ -42,14 +45,13 @@ window.addEventListener("load", ()=>{
         // cuerpito.velocidad = Vector.crear(Matematica.aleatorio(-1, 1), Matematica.aleatorio(-1, 1));
         cuerpos.push(cuerpito);
     }
-    let circulo: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y*1.2, 80)
+    let circulo: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y*1.2, RADIOENTORNO/3)
     circulo.fijo = true;
     circulo.rotacion = Geometria.PI_MEDIO;
     circulo.color = "skyblue"
     cuerpos.push(circulo)
-    let cuerpoAtractor: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y*1.9, 5);
+    let cuerpoAtractor: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 5);
     cuerpoAtractor.color = "white"
-    console.log(cuerpoEntorno.verticesTransformados)
     entorno.cuerpo.color = "skyblue"
     requestAnimationFrame(animar);
     function animar(){
