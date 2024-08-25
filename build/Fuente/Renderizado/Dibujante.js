@@ -1,65 +1,27 @@
 import { Geometria } from "../Utiles/Geometria.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
-//POR INCORPORAR:
-//  Throw de errores para valores incompatibles
-//  Opacidad, letras
+/**MÓDULO DE DIBUJO
+ * Instancia una herramienta dibujante.
+ * Métodos para definir colores hsla y rgba, dibujar objetos tipo Forma y escribir.
+ */
 export class Dibujante {
-    _color;
-    _colorFondo;
-    _colorTexto;
-    _grosorTrazo;
-    _grosorVector;
-    _opacidad;
-    _colorVectores;
-    _context;
+    color;
+    colorFondo;
+    colorTexto;
+    grosorTrazo;
+    grosorVector;
+    opacidad;
+    colorVectores;
+    context;
     constructor(context) {
-        this._context = context;
-        this._color = "black";
-        this._colorFondo = "white";
-        this._colorTexto = "white";
-        this._grosorTrazo = 1;
-        this._opacidad = 1;
-        this._colorVectores = "red";
-        this._grosorVector = 1;
-    }
-    get color() {
-        return this._color;
-    }
-    get colorFondo() {
-        return this._colorFondo;
-    }
-    get colorTexto() {
-        return this._colorTexto;
-    }
-    get colorVectores() {
-        return this._colorVectores;
-    }
-    get grosorTrazo() {
-        return this._grosorTrazo;
-    }
-    get opacidad() {
-        return this._opacidad;
-    }
-    set color(color) {
-        this._color = color;
-    }
-    set colorFondo(color) {
-        this._colorFondo = color;
-    }
-    set colorTexto(color) {
-        this._colorTexto = color;
-    }
-    set colorVectores(color) {
-        this._colorVectores = color;
-    }
-    set grosorTrazo(grosor) {
-        this._grosorTrazo = grosor;
-    }
-    set opacidad(opacidad) {
-        this._opacidad = opacidad;
-    }
-    set grosorVector(grosor) {
-        this._grosorVector = grosor;
+        this.context = context;
+        this.color = "blue";
+        this.colorFondo = "white";
+        this.colorTexto = "blue";
+        this.grosorTrazo = 1;
+        this.opacidad = 1;
+        this.colorVectores = "red";
+        this.grosorVector = 1;
     }
     /**
      * Retorna un string con el color en formato HSL.
@@ -97,43 +59,43 @@ export class Dibujante {
     trazar(forma) {
         if (forma.tipo == TipoFormas.circunferencia) {
             this.pathCircunferencia(forma);
-            this._context.strokeStyle = forma.color;
+            this.context.strokeStyle = forma.color;
         }
         if (forma.tipo == TipoFormas.poligono) {
             this.pathPoligono(forma);
-            this._context.strokeStyle = forma.color;
+            this.context.strokeStyle = forma.color;
         }
         if (forma.tipo == TipoFormas.linea) {
             this.pathLinea(forma);
-            this._context.strokeStyle = forma.color;
+            this.context.strokeStyle = forma.color;
         }
-        // this._context.strokeStyle = this._color;
+        // this.context.strokeStyle = this.color;
         if (forma.tipo == TipoFormas.vector) {
             this.pathLinea(forma);
-            this._context.strokeStyle = this._colorVectores;
+            this.context.strokeStyle = this.colorVectores;
         }
-        this._context.lineWidth = this._grosorTrazo;
-        this._context.globalAlpha = this._opacidad;
-        this._context.stroke();
-        this._context.strokeStyle = this._color;
+        this.context.lineWidth = this.grosorTrazo;
+        this.context.globalAlpha = this.opacidad;
+        this.context.stroke();
+        this.context.strokeStyle = this.color;
     }
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenar(forma) {
         if (forma.tipo == TipoFormas.circunferencia) {
             this.pathCircunferencia(forma);
-            this._context.fillStyle = forma.color;
+            this.context.fillStyle = forma.color;
         }
         if (forma.tipo == TipoFormas.poligono) {
             this.pathPoligono(forma);
-            this._context.fillStyle = forma.color;
+            this.context.fillStyle = forma.color;
         }
         if (forma.tipo == TipoFormas.linea) {
             this.pathPoligono(forma);
-            this._context.fillStyle = forma.color;
+            this.context.fillStyle = forma.color;
         }
-        // this._context.fillStyle = this._color;
-        this._context.globalAlpha = this._opacidad;
-        this._context.fill();
+        // this.context.fillStyle = this.color;
+        this.context.globalAlpha = this.opacidad;
+        this.context.fill();
     }
     /** Traza en el canvas el vector ingresado como argumento.
      * Usa como color el atributo colorVectores.
@@ -141,51 +103,51 @@ export class Dibujante {
     trazarVector(vector) {
         let origen = vector.origen;
         let extremo = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
-        this._context.beginPath();
-        this._context.moveTo(origen.x, origen.y);
-        this._context.lineTo(extremo.x, extremo.y);
-        this._context.lineWidth = this._grosorVector;
-        this._context.globalAlpha = this._opacidad;
-        this._context.strokeStyle = this._colorVectores;
-        this._context.stroke();
+        this.context.beginPath();
+        this.context.moveTo(origen.x, origen.y);
+        this.context.lineTo(extremo.x, extremo.y);
+        this.context.lineWidth = this.grosorVector;
+        this.context.globalAlpha = this.opacidad;
+        this.context.strokeStyle = this.colorVectores;
+        this.context.stroke();
     }
     /**Rellena un texto en el canvas según los argumentos ingresados.
      * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), alineacion como instrucción de
      * CSS de text-align ("center", "left", "right") y fuente como font-family.
      */
     escribir(texto, posicionX, posicionY, tamano, grosor = 500, alineacion = "center", fuente = "calibri") {
-        this._context.textAlign = alineacion;
-        this._context.font = `${grosor} ${tamano}px ${fuente}`;
-        this._context.globalAlpha = this._opacidad;
-        this._context.fillStyle = this._colorTexto;
-        this._context.fillText(texto, posicionX, posicionY);
+        this.context.textAlign = alineacion;
+        this.context.font = `${grosor} ${tamano}px ${fuente}`;
+        this.context.globalAlpha = this.opacidad;
+        this.context.fillStyle = this.colorTexto;
+        this.context.fillText(texto, posicionX, posicionY);
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "circunferencia", usando el método .arc de la interfaz context.
     */
     pathCircunferencia(forma) {
-        this._context.beginPath();
-        this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
+        this.context.beginPath();
+        this.context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.
     */
     pathPoligono(forma) {
-        this._context.beginPath();
-        this._context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+        this.context.beginPath();
+        this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
         for (let vertice of forma.verticesTransformados) {
-            this._context.lineTo(vertice.x, vertice.y);
+            this.context.lineTo(vertice.x, vertice.y);
         }
-        this._context.closePath();
+        this.context.closePath();
     }
     /**Método interno.
     * Crea un recorrido para una forma con id "linea". Registra una línea entre los dos vértices.
     */
     pathLinea(forma) {
-        this._context.beginPath();
-        this._context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+        this.context.beginPath();
+        this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
         for (let vertice of forma.verticesTransformados) {
-            this._context.lineTo(vertice.x, vertice.y);
+            this.context.lineTo(vertice.x, vertice.y);
         }
     }
 }

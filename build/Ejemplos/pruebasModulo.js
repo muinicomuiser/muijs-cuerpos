@@ -1,6 +1,4 @@
 import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
 //Módulo Matemática, Aritmética
 /**Medidor de velocidad de cálculo*/
 function contador() {
@@ -22,20 +20,20 @@ function contador() {
 // console.log("Matriz traspuesta 3x2 de [[1, 2, 3],[4, 5, 6,]]: ", Matriz.traspuesta([[1, 2, 3],[4, 5, 6,]]));
 // console.log("Matriz traspuesta 2x3 de [[1, 4], [2, 5], [3, 6]]: ", Matriz.traspuesta([[1, 4], [2, 5], [3, 6]]));
 //VECTORES
-function vectores() {
-    let vectorTres = Vector.segunPuntos({ x: 2, y: 2 }, { x: 4, y: 4 });
-    console.log(vectorTres);
-    console.log(Geometria.radianAGrado(vectorTres.angulo));
-    // console.log("VectorUno")
-    // console.log(vectorUno);
-    // vectorUno.y = 10;
-    // console.log(vectorUno);
-    // console.log("VectorDos")
-    // console.log(vectorDos);
-    // vectorDos.angulo = 0.7;
-    // console.log(vectorDos);
-    // console.log(vectorUno.escalar(5));
-}
+// function vectores(): void{
+//     let vectorTres: Vector = Vector.segunPuntos({x:2, y:2}, {x: 4, y: 4});
+//     console.log(vectorTres)
+//     console.log(Geometria.radianAGrado(vectorTres.angulo))
+//     // console.log("VectorUno")
+//     // console.log(vectorUno);
+//     // vectorUno.y = 10;
+//     // console.log(vectorUno);
+//     // console.log("VectorDos")
+//     // console.log(vectorDos);
+// // vectorDos.angulo = 0.7;
+// // console.log(vectorDos);
+// // console.log(vectorUno.escalar(5));
+// }
 // vectores();
 // console.log(Matriz.rotarPunto2D(Vector.crear(0, 0), 2))
 // let vectorUno: Vector = Vector.crear(1, 1);
@@ -58,66 +56,66 @@ function vectores() {
 //     console.log(Date.now())
 // }
 /**Me gusta cómo quedó esta prueba */
-function pruebaAleatorioEnteroRango() {
-    let repeticiones = 500;
-    let resultados = [];
-    let min = -2;
-    let max = 50;
-    let a = 0;
-    let b = 0;
-    let c = 0;
-    let d = 0;
-    console.log("Inicio. Número de cálculos: ", repeticiones);
-    let inicioTiempo = Date.now();
-    for (let i = 0; i < repeticiones; i++) {
-        let aleatorio = Matematica.aleatorioEntero(min, max);
-        if (aleatorio == min) {
-            a++;
-        }
-        if (aleatorio == min + 1) {
-            b++;
-        }
-        if (aleatorio == max - 1) {
-            c++;
-        }
-        if (aleatorio == max) {
-            d++;
-        }
-        resultados.push(aleatorio);
-        if (aleatorio == min - 1 || aleatorio == max + 1) {
-            console.log(aleatorio);
-        }
-    }
-    console.log(`${Date.now() - inicioTiempo}` + " milisegundos");
-    console.log(`${min}:`, a, `${min + 1}:`, b, `${max - 1}:`, c, `${max}:`, d);
-    console.log(resultados);
-}
+// function pruebaAleatorioEnteroRango(){
+//     let repeticiones: number = 500;
+//     let resultados: number[] = [];
+//     let min: number = -2;
+//     let max: number = 50;
+//     let a: number = 0;
+//     let b: number = 0;
+//     let c: number = 0;
+//     let d: number = 0;
+//     console.log("Inicio. Número de cálculos: ", repeticiones)
+//     let inicioTiempo: number = Date.now()
+//     for(let i: number = 0; i < repeticiones; i++){
+//         let aleatorio: number = Matematica.aleatorioEntero(min, max);
+//         if(aleatorio == min){
+//             a++
+//         }
+//         if(aleatorio == min+1){
+//             b++
+//         }
+//         if(aleatorio == max-1){
+//             c++
+//         }
+//         if(aleatorio == max){
+//             d++
+//         }
+//         resultados.push(aleatorio)
+//         if(aleatorio == min-1 || aleatorio == max+1){
+//             console.log(aleatorio)
+//         }
+//     }
+//     console.log(`${Date.now() - inicioTiempo}` + " milisegundos")
+//     console.log(`${min}:`, a, `${min+1}:`, b, `${max-1}:`, c,  `${max}:`, d)
+//     console.log(resultados)
+// }
 // pruebaAleatorioEnteroRango()
-function pruebaAleatorioRango() {
-    let repeticiones = 500;
-    let resultados = [];
-    let min = -10;
-    let max = 20;
-    let a = 0;
-    let b = 0;
-    console.log("Inicio. Número de cálculos: ", repeticiones);
-    let inicioTiempo = Date.now();
-    for (let i = 0; i < repeticiones; i++) {
-        let aleatorio = Matematica.aleatorio(min, max);
-        if (aleatorio < min) {
-            a++;
-        }
-        if (aleatorio > max) {
-            b++;
-        }
-        resultados.push(aleatorio);
-    }
-    console.log(`${Date.now() - inicioTiempo}` + " milisegundos");
-    console.log("Mínimo: ", min, "Máximo: ", max);
-    console.log(`Menos que ${min}:`, a);
-    console.log(`Más que ${max}:`, b);
-    console.log(resultados);
-}
+// function pruebaAleatorioRango(){
+//     let repeticiones: number = 500;
+//     let resultados: number[] = [];
+//     let min: number = -10;
+//     let max: number = 20;
+//     let a: number = 0;
+//     let b: number = 0;
+//     console.log("Inicio. Número de cálculos: ", repeticiones)
+//     let inicioTiempo: number = Date.now()
+//     for(let i: number = 0; i < repeticiones; i++){
+//         let aleatorio: number = Matematica.aleatorio(min, max);
+//         if(aleatorio < min){
+//             a++
+//         }
+//         if(aleatorio > max){
+//             b++
+//         }
+//         resultados.push(aleatorio)
+//     }
+//     console.log(`${Date.now() - inicioTiempo}` + " milisegundos")
+//     console.log("Mínimo: ", min, "Máximo: ", max)
+//     console.log(`Menos que ${min}:`, a)
+//     console.log(`Más que ${max}:`, b)
+//     console.log(resultados)
+// }
 // pruebaAleatorioRango()
 /**Revisar la velocidad de cálculo del método Matematica.multiplicación.
  * Lo compara con el operador *.
@@ -176,13 +174,32 @@ function pruebaAleatorioRango() {
 //     console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");   
 // }
 // probarDivision();
-function probarVectorNormal() {
-    let vectorUno = Vector.crear(1, 3);
-    let vectorDos = Vector.crear(3, 1);
-    let vectorEje = Vector.crear(2, 2);
-    let proyeccionUno = Vector.proyeccion(vectorUno, vectorEje);
-    let proyeccionDos = Vector.proyeccion(vectorDos, vectorEje);
-    console.log(proyeccionUno);
-    console.log(proyeccionDos);
+// function probarVectorNormal(): void{
+//     let vectorUno: Vector = Vector.crear(1, 3);
+//     let vectorDos: Vector = Vector.crear(3, 1);
+//     let vectorEje: Vector = Vector.crear(2, 2);
+//     let proyeccionUno: number = Vector.proyeccion(vectorUno, vectorEje)
+//     let proyeccionDos: number = Vector.proyeccion(vectorDos, vectorEje)
+//     console.log(proyeccionUno)
+//     console.log(proyeccionDos)
+// }
+// probarVectorNormal();
+function probarNuevoAleatorioEntero() {
+    const iteraciones = 10000;
+    const rango = 5;
+    let resultados = [];
+    for (let indice = 0; indice <= rango; indice++) {
+        resultados.push(0);
+    }
+    for (let iteracion = 0; iteracion < iteraciones; iteracion++) {
+        const randomEntero = Matematica.aleatorioEntero(rango - rango, rango);
+        resultados[randomEntero]++;
+        if (randomEntero == -1 || randomEntero == 6) {
+            console.log(randomEntero);
+        }
+    }
+    for (let i = 0; i <= rango; i++) {
+        console.log(`El número ${i} apareció ${resultados[i]} veces`);
+    }
 }
-probarVectorNormal();
+probarNuevoAleatorioEntero();

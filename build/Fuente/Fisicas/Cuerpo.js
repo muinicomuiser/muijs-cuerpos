@@ -70,7 +70,7 @@ export class Cuerpo extends Forma {
     }
     trazarVelocidad(dibujante) {
         let vectorVelocidad = Vector.clonar(this._velocidad);
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
+        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
         dibujante.trazarVector(vectorVelocidad);
     }

@@ -11,7 +11,6 @@
  */
 
 import { Forma } from "../GeometriaPlana/Formas.js";
-import { Transformacion } from "../GeometriaPlana/Transformacion.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 
@@ -26,59 +25,44 @@ import { Dibujante } from "../Renderizado/Dibujante.js";
  */
 export class Cuerpo extends Forma{
     protected _velocidad: Vector = Vector.cero();
-    protected _aceleracion: Vector = Vector.cero()
-    protected _rotarSegunVelocidad: boolean = false;
-    protected _fijo: boolean = false;
-    protected _masa: number = 1;
-    protected _densidad: number = 1;
+    protected _aceleracion: Vector = Vector.cero();
+    rotarSegunVelocidad: boolean = false;
+    fijo: boolean = false;
+    masa: number = 1;
+    densidad: number = 1;
+
     private constructor(){
         super();
     }
-    get fijo(): boolean{
-        return this._fijo;
-    }
-    get masa(): number{
-        return this._masa;
-    }
-    get densidad(): number{
-        return this._densidad;
-    }
+    
     get velocidad(): Vector{
         return Vector.clonar(this._velocidad)
     }
+    
     get aceleracion(): Vector{
         return Vector.clonar(this._aceleracion);
     }
+    
+    /**Retorna el conjunto de vértices después de */
     get verticesTransformados(): Vector[]{
-        if(this._rotarSegunVelocidad == true){
+        if(this.rotarSegunVelocidad == true){
             this._transformacion.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
         }
         let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
         return verticesTransformados;
     }
+    
     set velocidad(velocidad: Vector){
         this._velocidad = Vector.clonar(velocidad);
     }
+    
     set aceleracion(aceleracion: Vector){
         this._aceleracion = Vector.clonar(aceleracion);
     }
-    set masa(masa: number){
-        this._masa = masa;
-    }
-    set densidad(densidad: number){
-        this._densidad = densidad;
-    } 
-    set fijo(fijo: boolean){
-        this._fijo = fijo;
-    }
-    set rotarSegunVelocidad(opcion: boolean){
-        this._rotarSegunVelocidad = opcion;
-    }
 
-    
     public trazarVelocidad(dibujante: Dibujante): void{
         let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
+        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
         dibujante.trazarVector(vectorVelocidad);
     }

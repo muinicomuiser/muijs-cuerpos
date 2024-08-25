@@ -3,39 +3,24 @@ import { Transformacion } from "./Transformacion.js";
 import { Geometria } from "../Utiles/Geometria.js";
 import { TipoFormas } from "./TipoFormas.js";
 //POR INTEGRAR
-// Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
+// Para una forma personalizada, ya sea abierta o cerrada, agregar un método para calcular su radio o su centro
 // Función de escalar, reflejar
 // SUMAR FORMAS
 //Agregar propiedad de vértices transformados, normales rotadas y apotema, para no estar calculándolo en cada momento,
 //ademas de una propiedad que avise cuando haya que aplicar la transformación.
 export class Forma {
-    _centro = Vector.cero();
-    _lados = 0;
-    _radio = 0;
-    _color = "";
     _vertices = [];
     _verticesTransformados = [];
-    _tipo = TipoFormas.poligono;
     _transformacion = new Transformacion();
-    _transformar = true;
+    transformar = true;
+    radio = 0;
+    lados = 0;
+    color = "";
+    tipo = TipoFormas.poligono;
     constructor() { }
-    /**Retorna un string que indica el tipo de forma geométrica.
-     * "poligono", "circunferencia", "linea"
-    */
-    get tipo() {
-        return this._tipo;
-    }
-    /**Retorna el número de lados de la figura.*/
-    get lados() {
-        return this._lados;
-    }
-    /**Retorna el valor del radio sin transformar.*/
-    get radio() {
-        return this._radio;
-    }
     /**Retorna el valor del radio con la transformación de escala aplicada.*/
     get radioTransformado() {
-        let radioTransformado = this._radio * this._transformacion.escala;
+        let radioTransformado = this.radio * this._transformacion.escala;
         return radioTransformado;
     }
     /**Retorna una copia de la transformación de la forma.*/
@@ -60,7 +45,7 @@ export class Forma {
     }
     /**Retorna el arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento..*/
     get verticesTransformados() {
-        if (this._transformar) {
+        if (this.transformar) {
             this.transformarVertices();
         }
         return Vector.clonarConjunto(this._verticesTransformados);
@@ -91,52 +76,37 @@ export class Forma {
         }
         return Math.cos(Math.PI / this.lados) * this.radio;
     }
-    get color() {
-        return this._color;
-    }
-    set tipo(nuevatipo) {
-        this._tipo = nuevatipo;
-    }
-    set lados(numeroLados) {
-        this._lados = numeroLados;
-    }
-    set radio(nuevoRadio) {
-        this._radio = nuevoRadio;
-    }
     set transformacion(transformacion) {
-        this._transformar = true;
+        this.transformar = true;
         this._transformacion = transformacion;
     }
     set posicion(nuevaPosicion) {
-        this._transformar = true;
+        this.transformar = true;
         this._transformacion.posicion = Vector.clonar(nuevaPosicion);
     }
     /**Modifica el valor de la rotación de la figura con respecto a su forma sin transformaciones.*/
     set rotacion(rotacion) {
-        this._transformar = true;
+        this.transformar = true;
         this._transformacion.rotacion = rotacion;
     }
     set escala(nuevaEscala) {
-        this._transformar = true;
+        this.transformar = true;
         this._transformacion.escala = nuevaEscala;
     }
     set vertices(vertices) {
         this._vertices = Vector.clonarConjunto(vertices);
     }
-    set color(color) {
-        this._color = color;
-    }
     crearVertices() {
-        if (this._lados == 0) {
+        if (this.lados == 0) {
             return [];
         }
-        let theta = Geometria.DOS_PI / this._lados;
+        let theta = Geometria.DOS_PI / this.lados;
         let offset = theta * 0.5;
         let nVertices = [];
         for (let i = 0; i < this.lados; i++) {
             let angulo = offset + (i * theta);
-            let xx = Math.cos(angulo) * this._radio;
-            let yy = Math.sin(angulo) * this._radio;
+            let xx = Math.cos(angulo) * this.radio;
+            let yy = Math.sin(angulo) * this.radio;
             let vertice = Vector.crear(xx, yy);
             nVertices.push(vertice);
         }
@@ -246,7 +216,7 @@ export class Forma {
     }
     transformarVertices() {
         this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        this._transformar = false;
+        this.transformar = false;
     }
     /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
     rotar(angulo) {

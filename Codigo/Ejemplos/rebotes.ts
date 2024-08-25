@@ -11,7 +11,7 @@ CANVAS.height = window.innerHeight - 20
 const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 const BORDEMENOR = CANVAS.width < CANVAS.height ? CANVAS.width : CANVAS.height
 
-const LADOSENTORNO: number = 6;
+const LADOSENTORNO: number = 10;
 let RADIOENTORNO: number = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
 RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
 
@@ -48,19 +48,20 @@ window.addEventListener("load", ()=>{
     let circulo: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y*1.2, RADIOENTORNO/3)
     circulo.fijo = true;
     circulo.rotacion = Geometria.PI_MEDIO;
-    circulo.color = "skyblue"
     cuerpos.push(circulo)
+    
     let cuerpoAtractor: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 5);
+
+    circulo.color = "skyblue"
     cuerpoAtractor.color = "white"
     entorno.cuerpo.color = "skyblue"
+
     requestAnimationFrame(animar);
     function animar(){
         animacion()
         function animacion(): void{
             dibu.limpiarCanvas()
-            // for(let cuerpito of cuerpos){
-            //     cuerpito.posicion = entorno.envolverBorde(cuerpito.posicion);
-            // }
+
             for(let cuerpito of cuerpos){
                 cuerpito.aceleracion = Fuerza.atraer(cuerpito, cuerpoAtractor, 0.05)
                 // cuerpito.aceleracion = Fuerza.repelerDeVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02);
@@ -69,23 +70,24 @@ window.addEventListener("load", ()=>{
                     cuerpito.velocidad = Vector.cero()
                 }
             }
+
             cuerpoAtractor.rotarSegunPunto(CENTROCANVAS, Geometria.gradoARadian(0.5))
 
-            let velocidades: Vector[] = []
-            cuerpos.forEach((cuerpo)=> velocidades.push(Vector.clonar(cuerpo.velocidad)))
-            let aceleraciones: Vector[] = []
-            cuerpos.forEach((cuerpo)=> aceleraciones.push(Vector.clonar(cuerpo.aceleracion)))
             // circulo.rotar(Geometria.gradoARadian(-0.4))
             cuerpos = entorno.rebotarConBorde(cuerpos)
             cuerpos = Composicion.actualizarMovimientoCuerpos(cuerpos);
             cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
-            cuerpoAtractor.rellenar(dibu)
             circulo.rotarSegunPunto(CENTROCANVAS, -0.01)
-            circulo.trazar(dibu)
             // entorno.cuerpo.rotar(Geometria.gradoARadian(-0.4));
-            dibu.trazar(entorno.cuerpo)
+
+            cuerpoAtractor.rellenar(dibu)
+
+            circulo.trazar(dibu)
+
             dibu.trazarFormas(cuerpos)
-            // dibu.trazarNormales(entorno.cuerpo);
+
+            dibu.trazar(entorno.cuerpo)
+            dibu.trazarNormales(entorno.cuerpo);
             // dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "left")
         }
         requestAnimationFrame(animar);
