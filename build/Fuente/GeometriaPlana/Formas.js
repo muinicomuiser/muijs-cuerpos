@@ -49,8 +49,6 @@ export class Forma {
             this.transformarVertices();
         }
         return Vector.clonarConjunto(this._verticesTransformados);
-        // let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        // return verticesTransformados;
     }
     /**Retorna un conjunto de vectores normales de cada arista del polígono.
      * El orden de las aristas es en senttipoo horario.
@@ -212,15 +210,16 @@ export class Forma {
     }
     iniciarTransformacion(x, y) {
         this._transformacion.posicion = Vector.crear(x, y);
-        // this.transformacion = new Transformacion(x, y);
     }
     transformarVertices() {
         this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+        console.log("transformacion");
         this.transformar = false;
     }
     /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
     rotar(angulo) {
         this._transformacion.rotacion += angulo;
+        this.transformar = true;
     }
     /**Suma el vector ingresado al vector de posición de la figura.*/
     desplazar(vector) {

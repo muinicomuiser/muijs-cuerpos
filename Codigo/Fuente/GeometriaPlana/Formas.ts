@@ -12,6 +12,7 @@ import { TipoFormas } from "./TipoFormas.js";
 
 //Agregar propiedad de vértices transformados, normales rotadas y apotema, para no estar calculándolo en cada momento,
 //ademas de una propiedad que avise cuando haya que aplicar la transformación.
+
 export class Forma{
     protected _vertices: Vector[] = [];
     protected _verticesTransformados: Vector[] = [];
@@ -58,8 +59,6 @@ export class Forma{
             this.transformarVertices()
         }
         return Vector.clonarConjunto(this._verticesTransformados)
-        // let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        // return verticesTransformados;
     }
 
     /**Retorna un conjunto de vectores normales de cada arista del polígono.        
@@ -237,17 +236,18 @@ export class Forma{
 
     iniciarTransformacion(x: number, y: number): void{
         this._transformacion.posicion = Vector.crear(x, y);
-        // this.transformacion = new Transformacion(x, y);
     }
 
     protected transformarVertices(): void{
         this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
+        console.log("transformacion")
         this.transformar = false;
     }
-
+    
     /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
     public rotar(angulo: number): void{
         this._transformacion.rotacion += angulo;
+        this.transformar = true;
     }   
 
     /**Suma el vector ingresado al vector de posición de la figura.*/

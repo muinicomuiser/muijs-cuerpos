@@ -24,6 +24,7 @@ import { Dibujante } from "../Renderizado/Dibujante.js";
  * Trabaja usando objetos de tipo Forma.
  */
 export class Cuerpo extends Forma{
+    
     protected _velocidad: Vector = Vector.cero();
     protected _aceleracion: Vector = Vector.cero();
     rotarSegunVelocidad: boolean = false;
@@ -46,36 +47,22 @@ export class Cuerpo extends Forma{
     /**Retorna el conjunto de vértices después de */
     get verticesTransformados(): Vector[]{
         if(this.rotarSegunVelocidad == true){
-            this._transformacion.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            this.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            return super.verticesTransformados;
         }
-        let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        return verticesTransformados;
+        return super.verticesTransformados;
     }
-    
+
+    /**Retorna una copia del vector velocidad.*/
     set velocidad(velocidad: Vector){
         this._velocidad = Vector.clonar(velocidad);
     }
     
+    /**Retorna una copia del vector aceleración. */
     set aceleracion(aceleracion: Vector){
         this._aceleracion = Vector.clonar(aceleracion);
     }
 
-    public trazarVelocidad(dibujante: Dibujante): void{
-        let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
-        vectorVelocidad.origen = this._transformacion.posicion;
-        dibujante.trazarVector(vectorVelocidad);
-    }
-
-    private static cuerpoSegunForma(forma: Forma): Cuerpo{
-        let cuerpo: Cuerpo = new Cuerpo();
-        cuerpo.vertices = forma.vertices;
-        cuerpo.transformacion = forma.transformacion;
-        cuerpo.lados = forma.lados;
-        cuerpo.radio = forma.radio;   
-        cuerpo.tipo = forma.tipo;  
-        return cuerpo;   
-    }
 
     /**Retorna un cuerpo geométrico regular.     
      * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
@@ -84,7 +71,6 @@ export class Cuerpo extends Forma{
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
         poligono.masa = masa;
         poligono.densidad = densidad;
-        poligono.fijo = false;
         return poligono; 
     }
 
@@ -96,7 +82,6 @@ export class Cuerpo extends Forma{
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
         poligono.masa = masa;
         poligono.densidad = densidad;
-        poligono.fijo = false;
         return poligono; 
     }
 
@@ -106,7 +91,6 @@ export class Cuerpo extends Forma{
         let rectangulo: Cuerpo = Cuerpo.cuerpoSegunForma(rectForma);
         rectangulo.masa = masa;
         rectangulo.densidad = densidad;
-        rectangulo.fijo = false;
         return rectangulo;
     }
 
@@ -117,8 +101,18 @@ export class Cuerpo extends Forma{
         let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
         circunferencia.masa = masa;
         circunferencia.densidad = densidad;
-        circunferencia.fijo = false;
         return circunferencia;
+    }
+
+    /**Método auxiliar. Crea un cuerpo base a partir de una forma.*/
+    private static cuerpoSegunForma(forma: Forma): Cuerpo{
+        let cuerpo: Cuerpo = new Cuerpo();
+        cuerpo.vertices = forma.vertices;
+        cuerpo.transformacion = forma.transformacion;
+        cuerpo.lados = forma.lados;
+        cuerpo.radio = forma.radio;   
+        cuerpo.tipo = forma.tipo;  
+        return cuerpo;   
     }
 
 
@@ -126,7 +120,15 @@ export class Cuerpo extends Forma{
     public mover(): void{
         this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
         if(!this.fijo){
-            this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+            this.posicion = Vector.suma(this.posicion, this._velocidad);
         }
+    }
+        
+    /**Traza el vector velocidad del cuerpo a partir de su centro.*/
+    public trazarVelocidad(dibujante: Dibujante): void{
+        let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
+        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
+        vectorVelocidad.origen = this._transformacion.posicion;
+        dibujante.trazarVector(vectorVelocidad);
     }
 }

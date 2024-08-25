@@ -1,5 +1,7 @@
+import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
 import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
 import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
+import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 const CANVAS = document.getElementById("canvas");
 const CONTEXT = CANVAS.getContext("2d");
@@ -15,11 +17,20 @@ let mousePresente = false;
 let mouse = Vector.cero();
 CANVAS.style.backgroundColor = COLORFONDO;
 window.addEventListener("load", () => {
+    const forma = Forma.poligono(200, 300, 5, 50);
+    const cuerpo = Cuerpo.poligono(200, 300, 5, 50);
     let dibu = new Renderizado(CANVAS);
     dibu.colorFondo = COLORFONDO;
     let vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
     function animar() {
         dibu.limpiarCanvas();
+        /////////////////////////////////
+        //Probando vértices transformados
+        // forma.trazar(dibu)
+        // forma.rotar(1)
+        cuerpo.trazar(dibu);
+        // cuerpo.rotar(1)
+        /////////////////////////////////
         vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
         dibu.colorTexto = "white";
         dibu.escribir(`${vectorMouse.angulo}`, 20, 20, 30, 2, "left");

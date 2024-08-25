@@ -31,12 +31,21 @@ let mouse: Vector = Vector.cero();
 CANVAS.style.backgroundColor = COLORFONDO;
     
 window.addEventListener("load", ()=>{
-    
+
+    const forma: Forma = Forma.poligono(200, 300, 5, 50)
+    const cuerpo: Cuerpo = Cuerpo.poligono(200, 300, 5, 50)
     let dibu: Renderizado = new Renderizado(CANVAS)
     dibu.colorFondo = COLORFONDO;
     let vectorMouse: Vector = Vector.segunPuntos(CENTROCANVAS, mouse);
     function animar(){
         dibu.limpiarCanvas()
+        /////////////////////////////////
+        //Probando vértices transformados
+        // forma.trazar(dibu)
+        // forma.rotar(1)
+        cuerpo.trazar(dibu)
+        // cuerpo.rotar(1)
+        /////////////////////////////////
         vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
         dibu.colorTexto = "white";
         dibu.escribir(`${vectorMouse.angulo}`, 20, 20, 30, 2, "left")
