@@ -1,12 +1,13 @@
 {
-  "name": "matematica",
+  "name": "mui.js",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist": "tsc && npx rollup build/Ejemplos/rebotes.js --file dist/Ejemplos/rebotesDist.js --format iife"
   },
-  "author": "",
+  "author": "Nicolás Donoso",
   "license": "ISC",
-  "description": ""
+  "description": "Módulo de simulación y gráfico de físicas 2D"
 }

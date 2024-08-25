@@ -1291,18 +1291,14 @@
 
     /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
     const CANVAS = document.getElementById("canvas");
-    // CANVAS.width = 850;
-    // CANVAS.height = 680;
     CANVAS.width = window.innerWidth - 20 > 360 ? window.innerWidth - 20 : 360;
     CANVAS.height = window.innerHeight - 20;
     //CONSTANTES
     const CENTROCANVAS = { x: CANVAS.width / 2, y: CANVAS.height / 2 };
     const BORDEMENOR = CANVAS.width < CANVAS.height ? CANVAS.width : CANVAS.height;
+    const LADOSENTORNO = 6;
     let RADIOENTORNO = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
     RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
-    console.log(RADIOENTORNO);
-    // const RADIOENTORNO: number = 250;
-    const LADOSENTORNO = 6;
     const RADIOFORMAGENERADORA = RADIOENTORNO / 2;
     const NUMEROCUERPOS = 40;
     const RADIOCUERPO = 8;
