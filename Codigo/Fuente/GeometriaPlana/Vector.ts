@@ -2,21 +2,15 @@ import { Geometria } from "../Utiles/Geometria.js";
 import { Punto } from "./Punto.js";
 //POR REVISAR
 export class Vector{
-    private _x: number;
-    private _y: number;
-    private _origen: Punto;
-    private _id: number;
+    x: number;
+    y: number;
+    origen: Punto;
+    id: number;
     private constructor(x: number, y: number){
-        this._x = x;
-        this._y = y;
-        this._origen = {x: 0, y: 0};
-        this._id = 0;
-    }
-    public get x(): number{
-        return this._x;
-    }
-    public get y(): number{
-        return this._y;
+        this.x = x;
+        this.y = y;
+        this.origen = {x: 0, y: 0};
+        this.id = 0;
     }
     public get magnitud(): number{
         return Vector.magnitud(this);
@@ -24,12 +18,7 @@ export class Vector{
     public get angulo(): number{
         return Vector.angulo(this);
     }
-    public get origen(): Punto{
-        return {x: this._origen.x, y: this._origen.y};
-    }
-    public set origen(origen: Punto){
-        this._origen = {x: origen.x, y: origen.y};
-    }
+
     static magnitud(vector: Vector): number{
         return (vector.x ** 2 + vector.y ** 2)**(1/2)
     }
@@ -74,23 +63,31 @@ export class Vector{
         return new Vector(1, 0);
     }
 
-    /**Retorna un vector nuevo correspondiente a las componentes x e y ingresadas.*/
+    /**Retorna un vector nuevo a partir de las componentes x e y ingresadas.*/
     static crear(x: number, y: number): Vector{
         return new Vector(x, y);
     }
+
+    /**Retorna un vector nuevo que va desde un punto origen a un punto extremo.*/
     static segunPuntos(origen: Punto, extremo: Punto): Vector{
         let vector: Vector = new Vector(extremo.x - origen.x, extremo.y - origen.y);
         return vector;
     }
+
+    /**Retorna una copia del vector.*/
     static clonar(vector: Vector): Vector{
         let x: number = vector.x;
         let y: number = vector.y;
         return new Vector(x, y)
     }
+
+    /**Retorna la suma de dos vectores como un vector nuevo.*/
     static suma(vectorUno: Vector, vectorDos: Vector): Vector{
         let vectorSuma: Vector = new Vector((vectorUno.x + vectorDos.x), (vectorUno.y + vectorDos.y));
         return vectorSuma;
     }
+
+    /**Retorna la resta de dos vectores como un vector nuevo.*/
     static resta(vectorUno: Vector, vectorDos: Vector): Vector{
         let vectorResta: Vector = new Vector((vectorUno.x - vectorDos.x), (vectorUno.y - vectorDos.y));
         return vectorResta;
@@ -112,7 +109,6 @@ export class Vector{
         return new Vector(-vector.x, -vector.y);
     }
 
-
     /**Retorna el vector normal de un segmento formado por dos vectores.        
      * El ángulo de la normal va en sentido antihorario según la dirección del primer al segundo vector.       
      * (Según la inverción de ejes de las coordenadas de JS, donde los ángulos crecen en sentido horario).
@@ -122,12 +118,12 @@ export class Vector{
         return Vector.rotar(vectorSegmento, -Geometria.PI_MEDIO);
     }
 
-
+    /**Retorna el producto punto, o escalar, entre dos vectore.*/
     static punto(vectorUno: Vector, vectorDos: Vector): number{
         return(vectorUno.x * vectorDos.x) + (vectorUno.y * vectorDos.y)
     }
 
-
+    /**Retorna el módulo del producto cruz, o vectorial, entre dos vectores de 2 dimensiones.*/
     static cruz(vectorUno: Vector, vectorDos: Vector): number{
         return vectorUno.x * vectorDos.y - vectorUno.y * vectorDos.x
     }
@@ -137,7 +133,6 @@ export class Vector{
         return (Vector.punto(vectorUno, vectorEje) / Vector.magnitud(vectorEje));
     }
 
-    //O DEBERÍA ENTREGAR LA RESTA DEL MAYOR CON EL MENOR??? 
     /**Retorna el valor del ángulo entre dos vectores.*/
     static anguloVectores(vectorUno: Vector, vectorDos: Vector): number{
         let punto: number = Vector.punto(vectorUno, vectorDos);
@@ -145,7 +140,7 @@ export class Vector{
         return Math.acos(punto / magnitudes);
     }
 
-
+    /**Retorna una copia de un conjunto de vectores.*/
     static clonarConjunto(vectores: Vector[]): Vector[]{
         let conjuntoCopia: Vector[] = [];
         for(let vector of vectores){
@@ -154,7 +149,7 @@ export class Vector{
         return conjuntoCopia;
     }
 
-    
+    /**Retorna un vector nuevo a partir de un vector rotado.*/
     static rotar(vector: Vector, angulo: number): Vector{
         let x: number = (Math.cos(angulo) * vector.x) - (Math.sin(angulo) * vector.y);
         let y: number = (Math.sin(angulo) * vector.x) + (Math.cos(angulo) * vector.y)

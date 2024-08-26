@@ -12,15 +12,13 @@ import { Entorno } from "../Fuente/Interaccion/Entorno.js";
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 
 const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
-const CONTEXT: CanvasRenderingContext2D = CANVAS.getContext("2d")!;
 CANVAS.width = 1150;
 CANVAS.height = 680;
 
 //CONSTANTES
 const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 
-const COLORBOID: string = Renderizado.colorHSL(220, 0, 100);
-const COLORFONDO: string = Renderizado.colorHSL(220, 100, 2);
+const COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
 
 const DETECTARMOUSE: boolean = true;
 
@@ -31,24 +29,27 @@ let mouse: Vector = Vector.cero();
 CANVAS.style.backgroundColor = COLORFONDO;
     
 window.addEventListener("load", ()=>{
-
-    const forma: Forma = Forma.poligono(200, 300, 5, 50)
+    const bordeCanvas: Forma = Forma.rectangulo(CENTROCANVAS.x, CENTROCANVAS.y, CANVAS.width, CANVAS.height);
+    bordeCanvas.color = "white"
+    const forma: Forma = Forma.poligono(500, 300, 5, 50)
     const cuerpo: Cuerpo = Cuerpo.poligono(200, 300, 5, 50)
+
     let dibu: Renderizado = new Renderizado(CANVAS)
     dibu.colorFondo = COLORFONDO;
     let vectorMouse: Vector = Vector.segunPuntos(CENTROCANVAS, mouse);
     function animar(){
         dibu.limpiarCanvas()
+        bordeCanvas.trazar(dibu)
         /////////////////////////////////
         //Probando vértices transformados
-        // forma.trazar(dibu)
+        forma.trazar(dibu)
         // forma.rotar(1)
         cuerpo.trazar(dibu)
         // cuerpo.rotar(1)
         /////////////////////////////////
         vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
         dibu.colorTexto = "white";
-        dibu.escribir(`${vectorMouse.angulo}`, 20, 20, 30, 2, "left")
+        dibu.escribir(`Ángulo vector (en rad):  ${vectorMouse.angulo}`, 30, 30, 20, 2, "left")
         vectorMouse.origen = CENTROCANVAS
         dibu.trazarVector(vectorMouse)
         requestAnimationFrame(animar);

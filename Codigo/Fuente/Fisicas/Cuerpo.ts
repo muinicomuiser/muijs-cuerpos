@@ -36,10 +36,12 @@ export class Cuerpo extends Forma{
         super();
     }
     
+    /**Retorna una copia del vector velocidad.*/
     get velocidad(): Vector{
         return Vector.clonar(this._velocidad)
     }
     
+    /**Retorna una copia del vector aceleración.*/
     get aceleracion(): Vector{
         return Vector.clonar(this._aceleracion);
     }
@@ -118,8 +120,8 @@ export class Cuerpo extends Forma{
 
     /**Suma la velocidad y la aceleración a la posición.*/
     public mover(): void{
-        this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
         if(!this.fijo){
+            this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
             this.posicion = Vector.suma(this.posicion, this._velocidad);
         }
     }

@@ -1,3 +1,8 @@
+import { Forma } from "../GeometriaPlana/Formas.js";
+import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
+import { Vector } from "../GeometriaPlana/Vector.js";
+import { Geometria } from "../Utiles/Geometria.js";
+import { Matematica } from "../Utiles/Matematica.js";
 /**
         =============================================
                  * MÓDULO DE COLISIONES *
@@ -7,16 +12,10 @@
         Usa el Teorema de ejes de separación (SAT) para detectar colisiones.
 
  */
-
-import { Forma } from "../GeometriaPlana/Formas.js";
-import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Geometria } from "../Utiles/Geometria.js";
-import { Matematica } from "../Utiles/Matematica.js";
-
-/** MÓDULO DE COLISIONES        
- * Trabaja usando objetos de tipo Forma.
- */
+/**MÓDULO DE COLISIONES         
+ * Trabaja usando objetos de tipo Forma.        
+ * Usa el Teorema de ejes de separación (SAT) para detectar colisiones.     
+*/
 export class Colision{
 
     static get iteraciones(): number{
@@ -223,19 +222,10 @@ export class Colision{
             let vectorCentroAVerticeUno: Vector = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i]);
             let vectorCentroAVerticeDos: Vector = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i+1]);
             let anguloVertices: number = Vector.anguloVectores(vectorCentroAVerticeDos, vectorCentroAVerticeUno);
-            if(Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeUno) < anguloVertices && Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeDos) < anguloVertices){
+            if(Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeUno) < anguloVertices 
+            && Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeDos) < anguloVertices){
                 normalEntorno = entorno.normales[i];
             }
-            // if(vectorCentroAVerticeUno.angulo > vectorCentroAVerticeDos.angulo){
-            //     if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo + Geometria.DOS_PI){
-            //         normalEntorno = entorno.normales[i];
-            //         // return normalEntorno;
-            //     }
-            // }
-            // if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo){
-            //     normalEntorno = entorno.normales[i];
-            //     // return normalEntorno;;
-            // }
         }
         return normalEntorno;;
     }

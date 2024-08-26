@@ -71,17 +71,17 @@ export class Dibujante{
     trazar(forma: Forma): void{
         if(forma.tipo == TipoFormas.circunferencia){
             this.pathCircunferencia(forma);
-            this.context.strokeStyle = forma.color;
         }
-        if(forma.tipo == TipoFormas.poligono){
+        else if(forma.tipo == TipoFormas.poligono){
             this.pathPoligono(forma);
+        }
+        else if(forma.tipo == TipoFormas.linea){
+            this.pathLinea(forma);
+        }        
+        this.context.strokeStyle = this.color;
+        if(forma.color){
             this.context.strokeStyle = forma.color;
         }
-        if(forma.tipo == TipoFormas.linea){
-            this.pathLinea(forma);
-            this.context.strokeStyle = forma.color;
-        }        
-        // this.context.strokeStyle = this.color;
         if(forma.tipo == TipoFormas.vector){
             this.pathLinea(forma);
             this.context.strokeStyle = this.colorVectores;
@@ -89,7 +89,6 @@ export class Dibujante{
         this.context.lineWidth = this.grosorTrazo;
         this.context.globalAlpha = this.opacidad;
         this.context.stroke();
-        this.context.strokeStyle = this.color;
     }
 
 
@@ -97,17 +96,17 @@ export class Dibujante{
     rellenar(forma: Forma): void{
         if(forma.tipo == TipoFormas.circunferencia){
             this.pathCircunferencia(forma);
-            this.context.fillStyle = forma.color;
         }
         if(forma.tipo == TipoFormas.poligono){
             this.pathPoligono(forma);
-            this.context.fillStyle = forma.color;
         }
         if(forma.tipo == TipoFormas.linea){
             this.pathPoligono(forma);
+        }
+        this.context.fillStyle = this.color;
+        if(forma.color){
             this.context.fillStyle = forma.color;
         }
-        // this.context.fillStyle = this.color;
         this.context.globalAlpha = this.opacidad;
         this.context.fill();
     }
