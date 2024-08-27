@@ -11,10 +11,9 @@
  */
 
 import { Forma } from "../GeometriaPlana/Formas.js";
-import { Transformacion } from "../GeometriaPlana/Transformacion.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
-
+import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
 //TAREAS
     //Una propiedad que defina si es necesario actualizar la posición y la rotación.
     //Un solo método para aplicar transformar y actualizar transformaciones
@@ -25,64 +24,93 @@ import { Dibujante } from "../Renderizado/Dibujante.js";
  * Trabaja usando objetos de tipo Forma.
  */
 export class Cuerpo extends Forma{
+    
     protected _velocidad: Vector = Vector.cero();
-    protected _aceleracion: Vector = Vector.cero()
-    protected _rotarSegunVelocidad: boolean = false;
-    protected _fijo: boolean = false;
-    protected _masa: number = 1;
-    protected _densidad: number = 1;
+    protected _aceleracion: Vector = Vector.cero();
+    rotarSegunVelocidad: boolean = false;
+    fijo: boolean = false;
+    masa: number = 1;
+    densidad: number = 1;
+
     private constructor(){
         super();
     }
-    get fijo(): boolean{
-        return this._fijo;
-    }
-    get masa(): number{
-        return this._masa;
-    }
-    get densidad(): number{
-        return this._densidad;
-    }
+    
+    /**Retorna una copia del vector velocidad.*/
     get velocidad(): Vector{
         return Vector.clonar(this._velocidad)
     }
+    
+    /**Retorna una copia del vector aceleración.*/
     get aceleracion(): Vector{
         return Vector.clonar(this._aceleracion);
     }
+    
+    /**Retorna el conjunto de vértices después de */
     get verticesTransformados(): Vector[]{
-        if(this._rotarSegunVelocidad == true){
-            this._transformacion.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+        if(this.rotarSegunVelocidad == true){
+            this.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            return super.verticesTransformados;
         }
-        let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-        return verticesTransformados;
+        return super.verticesTransformados;
     }
+
+    /**Retorna una copia del vector velocidad.*/
     set velocidad(velocidad: Vector){
         this._velocidad = Vector.clonar(velocidad);
     }
+    
+    /**Retorna una copia del vector aceleración. */
     set aceleracion(aceleracion: Vector){
         this._aceleracion = Vector.clonar(aceleracion);
     }
-    set masa(masa: number){
-        this._masa = masa;
-    }
-    set densidad(densidad: number){
-        this._densidad = densidad;
-    } 
-    set fijo(fijo: boolean){
-        this._fijo = fijo;
-    }
-    set rotarSegunVelocidad(opcion: boolean){
-        this._rotarSegunVelocidad = opcion;
+
+
+    /**Retorna un cuerpo geométrico regular.     
+     * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
+    static poligono(x: number, y: number, lados: number, radio: number, opciones?: OpcionesCuerpo){
+        let poliForma: Forma = super.poligono(x, y, lados, radio);
+        let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
+        if(opciones){
+            poligono.aplicarOpciones(opciones)
+        }
+        return poligono; 
     }
 
     
-    public trazarVelocidad(dibujante: Dibujante): void{
-        let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-        vectorVelocidad.origen = this._transformacion.posicion;
-        dibujante.trazarVector(vectorVelocidad);
+    /**Retorna un cuerpo geométrico regular.     
+     * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
+    static poligonoSegunVertices(vertices: Vector[], opciones?: OpcionesCuerpo){
+        let poliForma: Forma = super.poligonoSegunVertices(vertices);
+        let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
+        if(opciones){
+            poligono.aplicarOpciones(opciones)
+        }
+        return poligono; 
     }
 
+    /**Retorna un cuerpo rectangular.*/
+    static rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesCuerpo){
+        let rectForma: Forma = super.rectangulo(x, y, base, altura);
+        let rectangulo: Cuerpo = Cuerpo.cuerpoSegunForma(rectForma);
+        if(opciones){
+            rectangulo.aplicarOpciones(opciones)
+        }
+        return rectangulo;
+    }
+
+
+    /**Retorna un cuerpo con forma de circunferencia.*/
+    static circunferencia(x: number, y: number, radio: number, opciones?: OpcionesCuerpo): Cuerpo {
+        let circuloForma: Forma = super.circunferencia(x, y, radio);
+        let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
+        if(opciones){
+            circunferencia.aplicarOpciones(opciones)
+        }
+        return circunferencia;
+    }
+
+    /**Método auxiliar. Crea un cuerpo base a partir de una forma.*/
     private static cuerpoSegunForma(forma: Forma): Cuerpo{
         let cuerpo: Cuerpo = new Cuerpo();
         cuerpo.vertices = forma.vertices;
@@ -93,56 +121,42 @@ export class Cuerpo extends Forma{
         return cuerpo;   
     }
 
-    /**Retorna un cuerpo geométrico regular.     
-     * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-    static poligono(x: number, y: number, lados: number, radio: number, masa: number = 1, densidad: number = 1){
-        let poliForma: Forma = super.poligono(x, y, lados, radio);
-        let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
-        poligono.masa = masa;
-        poligono.densidad = densidad;
-        poligono.fijo = false;
-        return poligono; 
+    /**Aplicación de la opciones definidas al crear un cuerpo nuevo.*/
+    protected aplicarOpciones(opciones: OpcionesCuerpo): void{
+        super.aplicarOpciones(opciones)
+        if(opciones.masa){
+            this.masa = opciones.masa;
+        }
+        if(opciones.densidad){
+            this.densidad = opciones.densidad;
+        }
+        if(opciones.aceleracion){
+            this.aceleracion = opciones.aceleracion;
+        }
+        if(opciones.fijo != undefined){
+            this.fijo = opciones.fijo;
+        }
+        if(opciones.rotarSegunVelocidad != undefined){
+            this.rotarSegunVelocidad = opciones.rotarSegunVelocidad;
+        }
+        if(opciones.velocidad){
+            this.velocidad = opciones.velocidad;
+        }
     }
-
-    
-    /**Retorna un cuerpo geométrico regular.     
-     * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-    static poligonoSegunVertices(vertices: Vector[], masa: number = 1, densidad: number = 1){
-        let poliForma: Forma = super.poligonoSegunVertices(vertices);
-        let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
-        poligono.masa = masa;
-        poligono.densidad = densidad;
-        poligono.fijo = false;
-        return poligono; 
-    }
-
-    /**Retorna un cuerpo rectangular.*/
-    static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number = 1){
-        let rectForma: Forma = super.rectangulo(x, y, base, altura);
-        let rectangulo: Cuerpo = Cuerpo.cuerpoSegunForma(rectForma);
-        rectangulo.masa = masa;
-        rectangulo.densidad = densidad;
-        rectangulo.fijo = false;
-        return rectangulo;
-    }
-
-
-    /**Retorna un cuerpo con forma de circunferencia.*/
-    static circunferencia(x: number, y: number, radio: number, masa: number = 1, densidad: number= 1): Cuerpo {
-        let circuloForma: Forma = super.circunferencia(x, y, radio);
-        let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
-        circunferencia.masa = masa;
-        circunferencia.densidad = densidad;
-        circunferencia.fijo = false;
-        return circunferencia;
-    }
-
 
     /**Suma la velocidad y la aceleración a la posición.*/
     public mover(): void{
-        this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
         if(!this.fijo){
-            this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+            this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
+            this.posicion = Vector.suma(this.posicion, this._velocidad);
         }
+    }
+        
+    /**Traza el vector velocidad del cuerpo a partir de su centro.*/
+    public trazarVelocidad(dibujante: Dibujante): void{
+        let vectorVelocidad: Vector = Vector.clonar(this._velocidad);  
+        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
+        vectorVelocidad.origen = this._transformacion.posicion;
+        dibujante.trazarVector(vectorVelocidad);
     }
 }

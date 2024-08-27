@@ -1,5 +1,8 @@
 import { Punto } from "../GeometriaPlana/Punto.js";
-
+/**MÓDULO DE GEOMETRÍA EN ESPAÑOL               
+ * Útilitario para mui.js               
+ * Incluye métodos de conversión de grados y distancia entre puntos.
+ */
 export class Geometria{
 
     /**Retorna el doble del valor de PI.*/

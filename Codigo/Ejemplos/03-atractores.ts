@@ -18,7 +18,7 @@ function crearCuerpos(cuerpo: Cuerpo): Cuerpo[]{
     let cuerpitos: Cuerpo[] = [];
     for(let vertice of cuerpo.verticesTransformados){
         let cuerpito: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, 10);
-        cuerpito.color = Renderizado.colorHSL(150, 100, 40)
+        cuerpito.colorTrazo = Renderizado.colorHSL(150, 100, 40)
         cuerpitos.push(cuerpito);
     }
     return cuerpitos;
@@ -27,7 +27,7 @@ function crearAtractores(cuerpo: Cuerpo): Cuerpo[]{
     let atractoresEnVertices: Cuerpo[] = [];
     for(let vertice of cuerpo.verticesTransformados){
         let atractor: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, 8);
-        atractor.color = Renderizado.colorHSL(300, 100, 40);
+        atractor.colorTrazo = Renderizado.colorHSL(300, 100, 40);
         atractoresEnVertices.push(atractor);
     }
     return atractoresEnVertices;

@@ -13,14 +13,14 @@ export class Restriccion{
 
     /**Retorna un vector de aceleracion escalado de tal manera que al sumarlo a la velocidad del cuerpo, la magnitud 
      * de la velocidad no supere el límite ingresado.*/
-    static limitarAceleracionSegunVelocidad(cuerpo: Cuerpo, limite: number): Vector{
+    static limitarAceleracionSegunVelocidad(cuerpo: Cuerpo, limiteVelocidad: number): Vector{
         let magnitudVelocidad: number = cuerpo.velocidad.magnitud;
         let magnitudAceleracion: number = cuerpo.aceleracion.magnitud;
         if(magnitudAceleracion != 0 && magnitudVelocidad != 0){
-            if(magnitudVelocidad + magnitudAceleracion > limite){  
+            if(magnitudVelocidad + magnitudAceleracion > limiteVelocidad){  
                 let razonAceleracion: number = magnitudAceleracion/(magnitudAceleracion + magnitudVelocidad);
                 let aceleracionNormalizada: Vector = Vector.normalizar(cuerpo.aceleracion)
-                let aceleracionEscalada: Vector = Vector.escalar(aceleracionNormalizada, razonAceleracion*limite)
+                let aceleracionEscalada: Vector = Vector.escalar(aceleracionNormalizada, razonAceleracion*limiteVelocidad)
                 return aceleracionEscalada;
             }            
         }
