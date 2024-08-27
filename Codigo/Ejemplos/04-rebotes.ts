@@ -87,7 +87,7 @@ window.addEventListener("load", ()=>{
             dibu.trazarFormas(cuerpos)
 
             dibu.trazar(entorno.cuerpo)
-            dibu.trazarNormales(entorno.cuerpo);
+            // dibu.trazarNormales(entorno.cuerpo);
             // dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "left")
         }
         requestAnimationFrame(animar);

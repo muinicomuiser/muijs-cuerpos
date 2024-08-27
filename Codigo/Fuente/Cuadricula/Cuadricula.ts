@@ -37,7 +37,7 @@ export class Cuadricula{
         let celdasNuevas: Celda[] = [];
         for(let fila: number = 1; fila <= this.filas; fila++){
             for(let columna: number = 1; columna <= this.columnas; columna++){
-                let celda: Celda = new Celda(fila, columna, this.tamanoCelda);
+                let celda: Celda = new Celda(columna, fila, this.tamanoCelda);
                 celdasNuevas.push(celda);
             }
         }

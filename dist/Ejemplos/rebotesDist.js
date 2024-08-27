@@ -1,6 +1,10 @@
 (function () {
     'use strict';
 
+    /**MÓDULO DE GEOMETRÍA EN ESPAÑOL
+     * Útilitario para mui.js
+     * Incluye métodos de conversión de grados y distancia entre puntos.
+     */
     class Geometria {
         /**Retorna el doble del valor de PI.*/
         static get DOS_PI() {
@@ -41,33 +45,21 @@
 
     //POR REVISAR
     class Vector {
-        _x;
-        _y;
-        _origen;
-        _id;
+        x;
+        y;
+        origen;
+        id;
         constructor(x, y) {
-            this._x = x;
-            this._y = y;
-            this._origen = { x: 0, y: 0 };
-            this._id = 0;
-        }
-        get x() {
-            return this._x;
-        }
-        get y() {
-            return this._y;
+            this.x = x;
+            this.y = y;
+            this.origen = { x: 0, y: 0 };
+            this.id = 0;
         }
         get magnitud() {
             return Vector.magnitud(this);
         }
         get angulo() {
             return Vector.angulo(this);
-        }
-        get origen() {
-            return { x: this._origen.x, y: this._origen.y };
-        }
-        set origen(origen) {
-            this._origen = { x: origen.x, y: origen.y };
         }
         static magnitud(vector) {
             return (vector.x ** 2 + vector.y ** 2) ** (1 / 2);
@@ -111,23 +103,27 @@
         static derecha() {
             return new Vector(1, 0);
         }
-        /**Retorna un vector nuevo correspondiente a las componentes x e y ingresadas.*/
+        /**Retorna un vector nuevo a partir de las componentes x e y ingresadas.*/
         static crear(x, y) {
             return new Vector(x, y);
         }
+        /**Retorna un vector nuevo que va desde un punto origen a un punto extremo.*/
         static segunPuntos(origen, extremo) {
             let vector = new Vector(extremo.x - origen.x, extremo.y - origen.y);
             return vector;
         }
+        /**Retorna una copia del vector.*/
         static clonar(vector) {
             let x = vector.x;
             let y = vector.y;
             return new Vector(x, y);
         }
+        /**Retorna la suma de dos vectores como un vector nuevo.*/
         static suma(vectorUno, vectorDos) {
             let vectorSuma = new Vector((vectorUno.x + vectorDos.x), (vectorUno.y + vectorDos.y));
             return vectorSuma;
         }
+        /**Retorna la resta de dos vectores como un vector nuevo.*/
         static resta(vectorUno, vectorDos) {
             let vectorResta = new Vector((vectorUno.x - vectorDos.x), (vectorUno.y - vectorDos.y));
             return vectorResta;
@@ -153,9 +149,11 @@
             let vectorSegmento = Vector.segunPuntos(vectorUno, vectorDos);
             return Vector.rotar(vectorSegmento, -Geometria.PI_MEDIO);
         }
+        /**Retorna el producto punto, o escalar, entre dos vectore.*/
         static punto(vectorUno, vectorDos) {
             return (vectorUno.x * vectorDos.x) + (vectorUno.y * vectorDos.y);
         }
+        /**Retorna el módulo del producto cruz, o vectorial, entre dos vectores de 2 dimensiones.*/
         static cruz(vectorUno, vectorDos) {
             return vectorUno.x * vectorDos.y - vectorUno.y * vectorDos.x;
         }
@@ -163,13 +161,13 @@
         static proyeccion(vectorUno, vectorEje) {
             return (Vector.punto(vectorUno, vectorEje) / Vector.magnitud(vectorEje));
         }
-        //O DEBERÍA ENTREGAR LA RESTA DEL MAYOR CON EL MENOR??? 
         /**Retorna el valor del ángulo entre dos vectores.*/
         static anguloVectores(vectorUno, vectorDos) {
             let punto = Vector.punto(vectorUno, vectorDos);
             let magnitudes = vectorUno.magnitud * vectorDos.magnitud;
             return Math.acos(punto / magnitudes);
         }
+        /**Retorna una copia de un conjunto de vectores.*/
         static clonarConjunto(vectores) {
             let conjuntoCopia = [];
             for (let vector of vectores) {
@@ -177,6 +175,7 @@
             }
             return conjuntoCopia;
         }
+        /**Retorna un vector nuevo a partir de un vector rotado.*/
         static rotar(vector, angulo) {
             let x = (Math.cos(angulo) * vector.x) - (Math.sin(angulo) * vector.y);
             let y = (Math.sin(angulo) * vector.x) + (Math.cos(angulo) * vector.y);
@@ -270,39 +269,33 @@
     })(TipoFormas || (TipoFormas = {}));
 
     //POR INTEGRAR
-    // Para una forma personalizada, ya sea abierta o cerrada, agragar un método para calcular su radio o su centro
-    // Función de escalar, reflejar
+    // Para una forma personalizada, ya sea abierta o cerrada, agregar un método para calcular su radio o su centro
+    // Función de reflejar
     // SUMAR FORMAS
     //Agregar propiedad de vértices transformados, normales rotadas y apotema, para no estar calculándolo en cada momento,
     //ademas de una propiedad que avise cuando haya que aplicar la transformación.
+    /**MÓDULO FORMA
+     * Instancias de formas geométricas.
+     * Permite cambiar su posición, rotar, escalar, crear formas básicas y personalizadas, y dibujarlas.
+     */
     class Forma {
-        _centro = Vector.cero();
-        _lados = 0;
-        _radio = 0;
-        _color = "";
         _vertices = [];
         _verticesTransformados = [];
-        _tipo = TipoFormas.poligono;
         _transformacion = new Transformacion();
-        _transformar = true;
+        transformar = true;
+        radio = 0;
+        lados = 0;
+        colorTrazo = "";
+        colorRelleno = "";
+        /**Determina si la forma debe ser trazada.*/
+        trazada = true;
+        /**Determina si la forma debe ser rellenada.*/
+        rellenada = true;
+        tipo = TipoFormas.poligono;
         constructor() { }
-        /**Retorna un string que indica el tipo de forma geométrica.
-         * "poligono", "circunferencia", "linea"
-        */
-        get tipo() {
-            return this._tipo;
-        }
-        /**Retorna el número de lados de la figura.*/
-        get lados() {
-            return this._lados;
-        }
-        /**Retorna el valor del radio sin transformar.*/
-        get radio() {
-            return this._radio;
-        }
         /**Retorna el valor del radio con la transformación de escala aplicada.*/
         get radioTransformado() {
-            let radioTransformado = this._radio * this._transformacion.escala;
+            let radioTransformado = this.radio * this._transformacion.escala;
             return radioTransformado;
         }
         /**Retorna una copia de la transformación de la forma.*/
@@ -327,12 +320,10 @@
         }
         /**Retorna el arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento..*/
         get verticesTransformados() {
-            if (this._transformar) {
+            if (this.transformar) {
                 this.transformarVertices();
             }
             return Vector.clonarConjunto(this._verticesTransformados);
-            // let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-            // return verticesTransformados;
         }
         /**Retorna un conjunto de vectores normales de cada arista del polígono.
          * El orden de las aristas es en senttipoo horario.
@@ -358,52 +349,42 @@
             }
             return Math.cos(Math.PI / this.lados) * this.radio;
         }
-        get color() {
-            return this._color;
-        }
-        set tipo(nuevatipo) {
-            this._tipo = nuevatipo;
-        }
-        set lados(numeroLados) {
-            this._lados = numeroLados;
-        }
-        set radio(nuevoRadio) {
-            this._radio = nuevoRadio;
-        }
+        /**Reemplaza la transformación de la forma.*/
         set transformacion(transformacion) {
-            this._transformar = true;
+            this.transformar = true;
             this._transformacion = transformacion;
         }
+        /**Reemplaza el vector posición de la forma.*/
         set posicion(nuevaPosicion) {
-            this._transformar = true;
+            this.transformar = true;
             this._transformacion.posicion = Vector.clonar(nuevaPosicion);
         }
         /**Modifica el valor de la rotación de la figura con respecto a su forma sin transformaciones.*/
         set rotacion(rotacion) {
-            this._transformar = true;
+            this.transformar = true;
             this._transformacion.rotacion = rotacion;
         }
+        /**Reemplaza el valor de la rotación de la forma.*/
         set escala(nuevaEscala) {
-            this._transformar = true;
+            this.transformar = true;
             this._transformacion.escala = nuevaEscala;
         }
+        /**Reemplaza el conjunto de vértices base de la forma.*/
         set vertices(vertices) {
             this._vertices = Vector.clonarConjunto(vertices);
         }
-        set color(color) {
-            this._color = color;
-        }
+        /**Inicia los vértices de la forma creada.*/
         crearVertices() {
-            if (this._lados == 0) {
+            if (this.lados == 0) {
                 return [];
             }
-            let theta = Geometria.DOS_PI / this._lados;
+            let theta = Geometria.DOS_PI / this.lados;
             let offset = theta * 0.5;
             let nVertices = [];
             for (let i = 0; i < this.lados; i++) {
                 let angulo = offset + (i * theta);
-                let xx = Math.cos(angulo) * this._radio;
-                let yy = Math.sin(angulo) * this._radio;
+                let xx = Math.cos(angulo) * this.radio;
+                let yy = Math.sin(angulo) * this.radio;
                 let vertice = Vector.crear(xx, yy);
                 nVertices.push(vertice);
             }
@@ -413,17 +394,21 @@
         moverVertice(indice, punto) {
             this._vertices[indice] = Vector.crear(punto.x, punto.y);
         }
-        //--
-        static poligono(x, y, lados, radio) {
+        /**Retorna una forma de tipo polígono. El radio es el valor entre el centro y cualquiera de sus vértices.*/
+        static poligono(x, y, lados, radio, opciones) {
             let nuevoPoligono = new Forma();
             nuevoPoligono.lados = lados;
             nuevoPoligono.radio = radio;
             nuevoPoligono.vertices = nuevoPoligono.crearVertices();
             nuevoPoligono.tipo = TipoFormas.poligono;
+            if (opciones) {
+                nuevoPoligono.aplicarOpciones(opciones);
+            }
             nuevoPoligono.iniciarTransformacion(x, y);
             return nuevoPoligono;
         }
-        static circunferencia(x, y, radio) {
+        /**Retorna una forma de tipo circunferencia. */
+        static circunferencia(x, y, radio, opciones) {
             let nuevaCircunferencia = new Forma();
             nuevaCircunferencia.radio = radio;
             let lados = 10 + Math.trunc(radio / 10);
@@ -436,10 +421,14 @@
             nuevaCircunferencia.lados = lados;
             nuevaCircunferencia.vertices = nuevaCircunferencia.crearVertices();
             nuevaCircunferencia.tipo = TipoFormas.circunferencia;
+            if (opciones) {
+                nuevaCircunferencia.aplicarOpciones(opciones);
+            }
             nuevaCircunferencia.iniciarTransformacion(x, y);
             return nuevaCircunferencia;
         }
-        static rectangulo(x, y, base, altura) {
+        /**Retorna una forma de tipo rectángulo. */
+        static rectangulo(x, y, base, altura, opciones) {
             let rectangulo = new Forma();
             rectangulo.lados = 4;
             rectangulo.radio = Geometria.hipotenusa(base * 0.5, altura * 0.5);
@@ -450,11 +439,14 @@
             let rectVertices = [ver1, ver2, ver3, ver4];
             rectangulo.vertices = rectVertices;
             rectangulo.tipo = TipoFormas.poligono;
+            if (opciones) {
+                rectangulo.aplicarOpciones(opciones);
+            }
             rectangulo.iniciarTransformacion(x, y);
             return rectangulo;
         }
         /**Crea una recta centrada en el origen y con la posición ingresada almacenada en su registro de transformación.*/
-        static recta(puntoUno, puntoDos) {
+        static recta(puntoUno, puntoDos, opciones) {
             let linea = new Forma();
             linea.lados = 1;
             linea.radio = Geometria.distanciaEntrePuntos(puntoUno, puntoDos) / 2;
@@ -462,6 +454,9 @@
             let vertices = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
             linea.vertices = vertices;
             linea.tipo = TipoFormas.linea;
+            if (opciones) {
+                linea.aplicarOpciones(opciones);
+            }
             linea.iniciarTransformacion(centro.x, centro.y);
             return linea;
         }
@@ -470,7 +465,7 @@
          * Calcula el centro de los vértices, centra la forma en el origen y almacena
          * el centro en el registro de transformación.
          */
-        static trazo(vertices) {
+        static trazo(vertices, opciones) {
             let centro = Vector.crear(0, 0);
             let trazo = new Forma();
             let verticesTrazo = [];
@@ -483,6 +478,9 @@
             }
             trazo.vertices = verticesTrazo;
             trazo.tipo = TipoFormas.linea;
+            if (opciones) {
+                trazo.aplicarOpciones(opciones);
+            }
             trazo.iniciarTransformacion(centro.x, centro.y);
             return trazo;
         }
@@ -491,7 +489,7 @@
          * Calcula el centro de los vértices, centra la forma en el origen y almacena
          * el centro en el registro de transformación.
          */
-        static poligonoSegunVertices(vertices) {
+        static poligonoSegunVertices(vertices, opciones) {
             let centro = Vector.crear(0, 0);
             let poligono = new Forma();
             let verticesPoligono = [];
@@ -504,37 +502,67 @@
             }
             poligono.vertices = verticesPoligono;
             poligono.tipo = TipoFormas.poligono;
+            if (opciones) {
+                poligono.aplicarOpciones(opciones);
+            }
             poligono.iniciarTransformacion(centro.x, centro.y);
             return poligono;
         }
+        /**Crea una transformación nueva para formas nuevas, con la posición ingresada.*/
         iniciarTransformacion(x, y) {
             this._transformacion.posicion = Vector.crear(x, y);
-            // this.transformacion = new Transformacion(x, y);
         }
+        /**Aplicación de la opciones definidas al crear una forma nueva.*/
+        aplicarOpciones(opciones) {
+            if (opciones.colorTrazo) {
+                this.colorTrazo = opciones.colorTrazo;
+            }
+            if (opciones.colorRelleno) {
+                this.colorRelleno = opciones.colorRelleno;
+            }
+            if (opciones.trazada != undefined) {
+                this.trazada = opciones.trazada;
+            }
+            if (opciones.rellenada != undefined) {
+                this.rellenada = opciones.rellenada;
+            }
+            if (opciones.escala) {
+                this.escala = opciones.escala;
+            }
+            if (opciones.rotacion) {
+                this.rotacion = opciones.rotacion;
+            }
+        }
+        /**Actualiza el conjunto de vectores transformados.*/
         transformarVertices() {
             this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-            this._transformar = false;
+            this.transformar = false;
         }
         /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
         rotar(angulo) {
             this._transformacion.rotacion += angulo;
+            this.transformar = true;
         }
         /**Suma el vector ingresado al vector de posición de la figura.*/
         desplazar(vector) {
             this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vector);
         }
+        /**Rota la forma alrededor del punto (0, 0)*/
         rotarSegunOrigen(angulo) {
             this._transformacion.posicion = Vector.rotar(this._transformacion.posicion, angulo);
         }
+        /**rota la forma alrededor del punto ingresado.*/
         rotarSegunPunto(punto, angulo) {
             let vectorAcomodador = Vector.crear(punto.x, punto.y);
             this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
             this.rotarSegunOrigen(angulo);
             this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
         }
+        /**Traza el contorno de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
         trazar(dibujante) {
             dibujante.trazar(this);
         }
+        /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
         rellenar(dibujante) {
             dibujante.rellenar(this);
         }
@@ -549,9 +577,10 @@
             Usa el Teorema de ejes de separación (SAT) para detectar colisiones.
 
      */
-    /** MÓDULO DE COLISIONES
+    /**MÓDULO DE COLISIONES
      * Trabaja usando objetos de tipo Forma.
-     */
+     * Usa el Teorema de ejes de separación (SAT) para detectar colisiones.
+    */
     class Colision {
         static get iteraciones() {
             return 4;
@@ -733,19 +762,10 @@
                 let vectorCentroAVerticeUno = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i]);
                 let vectorCentroAVerticeDos = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i + 1]);
                 let anguloVertices = Vector.anguloVectores(vectorCentroAVerticeDos, vectorCentroAVerticeUno);
-                if (Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeUno) < anguloVertices && Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeDos) < anguloVertices) {
+                if (Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeUno) < anguloVertices
+                    && Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeDos) < anguloVertices) {
                     normalEntorno = entorno.normales[i];
                 }
-                // if(vectorCentroAVerticeUno.angulo > vectorCentroAVerticeDos.angulo){
-                //     if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo + Geometria.DOS_PI){
-                //         normalEntorno = entorno.normales[i];
-                //         // return normalEntorno;
-                //     }
-                // }
-                // if(vectorCentroAForma.angulo > vectorCentroAVerticeUno.angulo && vectorCentroAForma.angulo < vectorCentroAVerticeDos.angulo){
-                //     normalEntorno = entorno.normales[i];
-                //     // return normalEntorno;;
-                // }
             }
             return normalEntorno;
         }
@@ -772,59 +792,76 @@
     class Cuerpo extends Forma {
         _velocidad = Vector.cero();
         _aceleracion = Vector.cero();
-        _rotarSegunVelocidad = false;
-        _fijo = false;
-        _masa = 1;
-        _densidad = 1;
+        rotarSegunVelocidad = false;
+        fijo = false;
+        masa = 1;
+        densidad = 1;
         constructor() {
             super();
         }
-        get fijo() {
-            return this._fijo;
-        }
-        get masa() {
-            return this._masa;
-        }
-        get densidad() {
-            return this._densidad;
-        }
+        /**Retorna una copia del vector velocidad.*/
         get velocidad() {
             return Vector.clonar(this._velocidad);
         }
+        /**Retorna una copia del vector aceleración.*/
         get aceleracion() {
             return Vector.clonar(this._aceleracion);
         }
+        /**Retorna el conjunto de vértices después de */
         get verticesTransformados() {
-            if (this._rotarSegunVelocidad == true) {
-                this._transformacion.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            if (this.rotarSegunVelocidad == true) {
+                this.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+                return super.verticesTransformados;
             }
-            let verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
-            return verticesTransformados;
+            return super.verticesTransformados;
         }
+        /**Retorna una copia del vector velocidad.*/
         set velocidad(velocidad) {
             this._velocidad = Vector.clonar(velocidad);
         }
+        /**Retorna una copia del vector aceleración. */
         set aceleracion(aceleracion) {
             this._aceleracion = Vector.clonar(aceleracion);
         }
-        set masa(masa) {
-            this._masa = masa;
+        /**Retorna un cuerpo geométrico regular.
+         * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
+        static poligono(x, y, lados, radio, opciones) {
+            let poliForma = super.poligono(x, y, lados, radio);
+            let poligono = Cuerpo.cuerpoSegunForma(poliForma);
+            if (opciones) {
+                poligono.aplicarOpciones(opciones);
+            }
+            return poligono;
         }
-        set densidad(densidad) {
-            this._densidad = densidad;
+        /**Retorna un cuerpo geométrico regular.
+         * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
+        static poligonoSegunVertices(vertices, opciones) {
+            let poliForma = super.poligonoSegunVertices(vertices);
+            let poligono = Cuerpo.cuerpoSegunForma(poliForma);
+            if (opciones) {
+                poligono.aplicarOpciones(opciones);
+            }
+            return poligono;
         }
-        set fijo(fijo) {
-            this._fijo = fijo;
+        /**Retorna un cuerpo rectangular.*/
+        static rectangulo(x, y, base, altura, opciones) {
+            let rectForma = super.rectangulo(x, y, base, altura);
+            let rectangulo = Cuerpo.cuerpoSegunForma(rectForma);
+            if (opciones) {
+                rectangulo.aplicarOpciones(opciones);
+            }
+            return rectangulo;
         }
-        set rotarSegunVelocidad(opcion) {
-            this._rotarSegunVelocidad = opcion;
+        /**Retorna un cuerpo con forma de circunferencia.*/
+        static circunferencia(x, y, radio, opciones) {
+            let circuloForma = super.circunferencia(x, y, radio);
+            let circunferencia = Cuerpo.cuerpoSegunForma(circuloForma);
+            if (opciones) {
+                circunferencia.aplicarOpciones(opciones);
+            }
+            return circunferencia;
         }
-        trazarVelocidad(dibujante) {
-            let vectorVelocidad = Vector.clonar(this._velocidad);
-            vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this._radio);
-            vectorVelocidad.origen = this._transformacion.posicion;
-            dibujante.trazarVector(vectorVelocidad);
-        }
+        /**Método auxiliar. Crea un cuerpo base a partir de una forma.*/
         static cuerpoSegunForma(forma) {
             let cuerpo = new Cuerpo();
             cuerpo.vertices = forma.vertices;
@@ -834,50 +871,41 @@
             cuerpo.tipo = forma.tipo;
             return cuerpo;
         }
-        /**Retorna un cuerpo geométrico regular.
-         * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-        static poligono(x, y, lados, radio, masa = 1, densidad = 1) {
-            let poliForma = super.poligono(x, y, lados, radio);
-            let poligono = Cuerpo.cuerpoSegunForma(poliForma);
-            poligono.masa = masa;
-            poligono.densidad = densidad;
-            poligono.fijo = false;
-            return poligono;
-        }
-        /**Retorna un cuerpo geométrico regular.
-         * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-        static poligonoSegunVertices(vertices, masa = 1, densidad = 1) {
-            let poliForma = super.poligonoSegunVertices(vertices);
-            let poligono = Cuerpo.cuerpoSegunForma(poliForma);
-            poligono.masa = masa;
-            poligono.densidad = densidad;
-            poligono.fijo = false;
-            return poligono;
-        }
-        /**Retorna un cuerpo rectangular.*/
-        static rectangulo(x, y, base, altura, masa = 1, densidad = 1) {
-            let rectForma = super.rectangulo(x, y, base, altura);
-            let rectangulo = Cuerpo.cuerpoSegunForma(rectForma);
-            rectangulo.masa = masa;
-            rectangulo.densidad = densidad;
-            rectangulo.fijo = false;
-            return rectangulo;
-        }
-        /**Retorna un cuerpo con forma de circunferencia.*/
-        static circunferencia(x, y, radio, masa = 1, densidad = 1) {
-            let circuloForma = super.circunferencia(x, y, radio);
-            let circunferencia = Cuerpo.cuerpoSegunForma(circuloForma);
-            circunferencia.masa = masa;
-            circunferencia.densidad = densidad;
-            circunferencia.fijo = false;
-            return circunferencia;
+        /**Aplicación de la opciones definidas al crear un cuerpo nuevo.*/
+        aplicarOpciones(opciones) {
+            super.aplicarOpciones(opciones);
+            if (opciones.masa) {
+                this.masa = opciones.masa;
+            }
+            if (opciones.densidad) {
+                this.densidad = opciones.densidad;
+            }
+            if (opciones.aceleracion) {
+                this.aceleracion = opciones.aceleracion;
+            }
+            if (opciones.fijo != undefined) {
+                this.fijo = opciones.fijo;
+            }
+            if (opciones.rotarSegunVelocidad != undefined) {
+                this.rotarSegunVelocidad = opciones.rotarSegunVelocidad;
+            }
+            if (opciones.velocidad) {
+                this.velocidad = opciones.velocidad;
+            }
         }
         /**Suma la velocidad y la aceleración a la posición.*/
         mover() {
-            this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
             if (!this.fijo) {
-                this._transformacion.posicion = Vector.suma(this._transformacion.posicion, this._velocidad);
+                this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
+                this.posicion = Vector.suma(this.posicion, this._velocidad);
             }
+        }
+        /**Traza el vector velocidad del cuerpo a partir de su centro.*/
+        trazarVelocidad(dibujante) {
+            let vectorVelocidad = Vector.clonar(this._velocidad);
+            vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
+            vectorVelocidad.origen = this._transformacion.posicion;
+            dibujante.trazarVector(vectorVelocidad);
         }
     }
 
@@ -885,13 +913,11 @@
     class Cinematica {
         /**Retorna un vector velocidad de un cuerpo que colisiona con una superficie.*/
         static reboteSimple(cuerpo, normal) {
-            let anguloNormal = Vector.angulo(normal);
-            let vectorRebotado = Vector.clonar(cuerpo.velocidad);
+            let vectorRebotado = cuerpo.velocidad;
             if (Vector.anguloVectores(vectorRebotado, normal) > Geometria.PI_MEDIO) {
                 vectorRebotado = Vector.invertir(vectorRebotado);
             }
-            vectorRebotado = Vector.rotar(vectorRebotado, (anguloNormal - Vector.angulo(vectorRebotado)) * 2);
-            return vectorRebotado;
+            return Vector.rotar(vectorRebotado, (Vector.angulo(normal) - Vector.angulo(vectorRebotado)) * 2);
         }
     }
 
@@ -1044,66 +1070,33 @@
         }
     }
 
-    //POR INCORPORAR:
-    //  Throw de errores para valores incompatibles
-    //  Opacidad, letras
+    /**MÓDULO DE DIBUJO
+     * Instancia una herramienta dibujante.
+     * Métodos para definir colores hsla y rgba, dibujar objetos tipo Forma y escribir.
+     */
     class Dibujante {
-        _color;
-        _colorFondo;
-        _colorTexto;
-        _grosorTrazo;
-        _grosorVector;
-        _opacidad;
-        _colorVectores;
-        _context;
+        colorTrazo;
+        colorRelleno;
+        colorCelda;
+        colorFondo;
+        colorTexto;
+        grosorTrazo;
+        grosorVector;
+        opacidad;
+        colorVectores;
+        context;
+        opcionesTexto = { color: "blue", grosor: 500, tamano: 10, fuente: "calibri", opacidad: 1, alineacion: "right" };
         constructor(context) {
-            this._context = context;
-            this._color = "black";
-            this._colorFondo = "white";
-            this._colorTexto = "white";
-            this._grosorTrazo = 1;
-            this._opacidad = 1;
-            this._colorVectores = "red";
-            this._grosorVector = 1;
-        }
-        get color() {
-            return this._color;
-        }
-        get colorFondo() {
-            return this._colorFondo;
-        }
-        get colorTexto() {
-            return this._colorTexto;
-        }
-        get colorVectores() {
-            return this._colorVectores;
-        }
-        get grosorTrazo() {
-            return this._grosorTrazo;
-        }
-        get opacidad() {
-            return this._opacidad;
-        }
-        set color(color) {
-            this._color = color;
-        }
-        set colorFondo(color) {
-            this._colorFondo = color;
-        }
-        set colorTexto(color) {
-            this._colorTexto = color;
-        }
-        set colorVectores(color) {
-            this._colorVectores = color;
-        }
-        set grosorTrazo(grosor) {
-            this._grosorTrazo = grosor;
-        }
-        set opacidad(opacidad) {
-            this._opacidad = opacidad;
-        }
-        set grosorVector(grosor) {
-            this._grosorVector = grosor;
+            this.context = context;
+            this.colorTrazo = "blue";
+            this.colorRelleno = "skyblue";
+            this.colorCelda = "blue";
+            this.colorFondo = "white";
+            this.colorTexto = "blue";
+            this.grosorTrazo = 1;
+            this.opacidad = 1;
+            this.colorVectores = "red";
+            this.grosorVector = 1;
         }
         /**
          * Retorna un string con el color en formato HSL.
@@ -1141,43 +1134,53 @@
         trazar(forma) {
             if (forma.tipo == TipoFormas.circunferencia) {
                 this.pathCircunferencia(forma);
-                this._context.strokeStyle = forma.color;
             }
-            if (forma.tipo == TipoFormas.poligono) {
+            else if (forma.tipo == TipoFormas.poligono) {
                 this.pathPoligono(forma);
-                this._context.strokeStyle = forma.color;
             }
-            if (forma.tipo == TipoFormas.linea) {
+            else if (forma.tipo == TipoFormas.linea) {
                 this.pathLinea(forma);
-                this._context.strokeStyle = forma.color;
             }
-            // this._context.strokeStyle = this._color;
+            this.context.strokeStyle = this.colorTrazo;
+            if (forma.colorTrazo) {
+                this.context.strokeStyle = forma.colorTrazo;
+            }
             if (forma.tipo == TipoFormas.vector) {
                 this.pathLinea(forma);
-                this._context.strokeStyle = this._colorVectores;
+                this.context.strokeStyle = this.colorVectores;
             }
-            this._context.lineWidth = this._grosorTrazo;
-            this._context.globalAlpha = this._opacidad;
-            this._context.stroke();
-            this._context.strokeStyle = this._color;
+            this.context.lineWidth = this.grosorTrazo;
+            this.context.globalAlpha = this.opacidad;
+            this.context.stroke();
         }
         /**Rellena en el canvas la forma ingresada como argumento.*/
         rellenar(forma) {
             if (forma.tipo == TipoFormas.circunferencia) {
                 this.pathCircunferencia(forma);
-                this._context.fillStyle = forma.color;
             }
             if (forma.tipo == TipoFormas.poligono) {
                 this.pathPoligono(forma);
-                this._context.fillStyle = forma.color;
             }
             if (forma.tipo == TipoFormas.linea) {
                 this.pathPoligono(forma);
-                this._context.fillStyle = forma.color;
             }
-            // this._context.fillStyle = this._color;
-            this._context.globalAlpha = this._opacidad;
-            this._context.fill();
+            this.context.fillStyle = this.colorRelleno;
+            if (forma.colorRelleno) {
+                this.context.fillStyle = forma.colorRelleno;
+            }
+            this.context.globalAlpha = this.opacidad;
+            this.context.fill();
+        }
+        /**Rellena en el canvas la forma ingresada como argumento.*/
+        rellenarCelda(celda) {
+            this.context.beginPath();
+            this.context.globalAlpha = this.opacidad;
+            this.context.fillStyle = this.colorCelda;
+            if (celda.color) {
+                this.context.fillStyle = celda.color;
+            }
+            this.context.fillRect((celda.x - 1) * celda.tamano, (celda.y - 1) * celda.tamano, celda.tamano, celda.tamano);
+            this.context.globalAlpha = 1;
         }
         /** Traza en el canvas el vector ingresado como argumento.
          * Usa como color el atributo colorVectores.
@@ -1185,69 +1188,87 @@
         trazarVector(vector) {
             let origen = vector.origen;
             let extremo = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
-            this._context.beginPath();
-            this._context.moveTo(origen.x, origen.y);
-            this._context.lineTo(extremo.x, extremo.y);
-            this._context.lineWidth = this._grosorVector;
-            this._context.globalAlpha = this._opacidad;
-            this._context.strokeStyle = this._colorVectores;
-            this._context.stroke();
+            this.context.beginPath();
+            this.context.moveTo(origen.x, origen.y);
+            this.context.lineTo(extremo.x, extremo.y);
+            this.context.lineWidth = this.grosorVector;
+            this.context.globalAlpha = this.opacidad;
+            this.context.strokeStyle = this.colorVectores;
+            this.context.stroke();
         }
         /**Rellena un texto en el canvas según los argumentos ingresados.
          * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), alineacion como instrucción de
          * CSS de text-align ("center", "left", "right") y fuente como font-family.
          */
-        escribir(texto, posicionX, posicionY, tamano, grosor = 500, alineacion = "center", fuente = "calibri") {
-            this._context.textAlign = alineacion;
-            this._context.font = `${grosor} ${tamano}px ${fuente}`;
-            this._context.globalAlpha = this._opacidad;
-            this._context.fillStyle = this._colorTexto;
-            this._context.fillText(texto, posicionX, posicionY);
+        escribir(texto, posicionX, posicionY) {
+            this.context.textAlign = this.opcionesTexto.alineacion;
+            this.context.font = `${this.opcionesTexto.grosor} ${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
+            this.context.globalAlpha = this.opcionesTexto.opacidad;
+            this.context.fillStyle = this.opcionesTexto.color;
+            this.context.fillText(texto, posicionX, posicionY);
         }
         /**Método interno.
         * Crea un recorrido para una forma con id "circunferencia", usando el método .arc de la interfaz context.
         */
         pathCircunferencia(forma) {
-            this._context.beginPath();
-            this._context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
+            this.context.beginPath();
+            this.context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
         }
         /**Método interno.
         * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.
         */
         pathPoligono(forma) {
-            this._context.beginPath();
-            this._context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+            this.context.beginPath();
+            this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
             for (let vertice of forma.verticesTransformados) {
-                this._context.lineTo(vertice.x, vertice.y);
+                this.context.lineTo(vertice.x, vertice.y);
             }
-            this._context.closePath();
+            this.context.closePath();
         }
         /**Método interno.
         * Crea un recorrido para una forma con id "linea". Registra una línea entre los dos vértices.
         */
         pathLinea(forma) {
-            this._context.beginPath();
-            this._context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+            this.context.beginPath();
+            this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
             for (let vertice of forma.verticesTransformados) {
-                this._context.lineTo(vertice.x, vertice.y);
+                this.context.lineTo(vertice.x, vertice.y);
             }
         }
     }
 
+    /**MÓDULO DE RENDERIZADO
+     * Extiende las funciones de Dibujante.
+     * Permite trabajar con conjuntos de formas y sobre el canvas.
+     * Se instancia usando el canvas.
+     */
     class Renderizado extends Dibujante {
-        _canvas;
+        canvas;
         constructor(canvas) {
             super(canvas.getContext("2d"));
-            this._canvas = canvas;
+            this.canvas = canvas;
         }
+        /**Traza un conjunto de formas.*/
         trazarFormas(formas) {
             for (let forma of formas) {
                 forma.trazar(this);
             }
         }
+        /**Rellena un conjunto de formas.*/
         rellenarFormas(formas) {
             for (let forma of formas) {
                 forma.rellenar(this);
+            }
+        }
+        /**Rellena y/o traza, según el caso, un conjunto de formas.*/
+        renderizarFormas(formas) {
+            for (let forma of formas) {
+                if (forma.trazada) {
+                    forma.trazar(this);
+                }
+                if (forma.rellenada) {
+                    forma.rellenar(this);
+                }
             }
         }
         /**Borra el contenido del canvas.
@@ -1255,27 +1276,21 @@
          */
         limpiarCanvas(opacidad) {
             if (opacidad) {
-                this._context.globalAlpha = opacidad;
-                this._context.fillStyle = this._colorFondo;
-                this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
-                this._context.globalAlpha = this._opacidad;
-                this._context.fillStyle = this._color;
+                this.context.globalAlpha = opacidad;
+                this.context.fillStyle = this.colorFondo;
+                this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                this.context.globalAlpha = this.opacidad;
             }
             else {
-                this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
         }
+        /**Traza las normales de una forma geométrica.*/
         trazarNormales(forma) {
-            let saltoColor = 360 / forma.normales.length;
-            let color = 0;
             forma.normales.forEach((normal) => {
-                // let normalTrazable: Vector = Vector.escalar(Vector.normalizar(normal), forma.radioTransformado);
-                let normalTrazable = normal;
-                this.colorVectores = Renderizado.colorHSL(color, 100, 50);
-                this.colorTexto = Renderizado.colorHSL(color, 100, 50);
+                let normalTrazable = Vector.clonar(normal);
                 normalTrazable.origen = Vector.suma(forma.posicion, Vector.escalar(Vector.normalizar(normal), forma.apotema));
                 this.trazarVector(normalTrazable);
-                color += saltoColor;
             });
         }
     }
@@ -1296,7 +1311,7 @@
     //CONSTANTES
     const CENTROCANVAS = { x: CANVAS.width / 2, y: CANVAS.height / 2 };
     const BORDEMENOR = CANVAS.width < CANVAS.height ? CANVAS.width : CANVAS.height;
-    const LADOSENTORNO = 6;
+    const LADOSENTORNO = 10;
     let RADIOENTORNO = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
     RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
     const RADIOFORMAGENERADORA = RADIOENTORNO / 2;
@@ -1318,26 +1333,23 @@
         let cuerpos = [];
         for (let i = 0; i < NUMEROCUERPOS; i++) {
             let cuerpito = Cuerpo.circunferencia(formaGeneradora.verticesTransformados[i].x, formaGeneradora.verticesTransformados[i].y, RADIOCUERPO);
-            cuerpito.color = COLORCUERPO;
+            cuerpito.colorTrazo = COLORCUERPO;
             // cuerpito.velocidad = Vector.crear(Matematica.aleatorio(-1, 1), Matematica.aleatorio(-1, 1));
             cuerpos.push(cuerpito);
         }
         let circulo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * 1.2, RADIOENTORNO / 3);
         circulo.fijo = true;
         circulo.rotacion = Geometria.PI_MEDIO;
-        circulo.color = "skyblue";
         cuerpos.push(circulo);
         let cuerpoAtractor = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 5);
-        cuerpoAtractor.color = "white";
-        entorno.cuerpo.color = "skyblue";
+        circulo.colorTrazo = "skyblue";
+        cuerpoAtractor.colorTrazo = "white";
+        entorno.cuerpo.colorTrazo = "skyblue";
         requestAnimationFrame(animar);
         function animar() {
             animacion();
             function animacion() {
                 dibu.limpiarCanvas();
-                // for(let cuerpito of cuerpos){
-                //     cuerpito.posicion = entorno.envolverBorde(cuerpito.posicion);
-                // }
                 for (let cuerpito of cuerpos) {
                     cuerpito.aceleracion = Fuerza.atraer(cuerpito, cuerpoAtractor, 0.05);
                     // cuerpito.aceleracion = Fuerza.repelerDeVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02);
@@ -1347,20 +1359,16 @@
                     }
                 }
                 cuerpoAtractor.rotarSegunPunto(CENTROCANVAS, Geometria.gradoARadian(0.5));
-                let velocidades = [];
-                cuerpos.forEach((cuerpo) => velocidades.push(Vector.clonar(cuerpo.velocidad)));
-                let aceleraciones = [];
-                cuerpos.forEach((cuerpo) => aceleraciones.push(Vector.clonar(cuerpo.aceleracion)));
                 // circulo.rotar(Geometria.gradoARadian(-0.4))
                 cuerpos = entorno.rebotarConBorde(cuerpos);
                 cuerpos = Composicion.actualizarMovimientoCuerpos(cuerpos);
                 cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
-                cuerpoAtractor.rellenar(dibu);
                 circulo.rotarSegunPunto(CENTROCANVAS, -0.01);
-                circulo.trazar(dibu);
                 // entorno.cuerpo.rotar(Geometria.gradoARadian(-0.4));
-                dibu.trazar(entorno.cuerpo);
+                cuerpoAtractor.rellenar(dibu);
+                circulo.trazar(dibu);
                 dibu.trazarFormas(cuerpos);
+                dibu.trazar(entorno.cuerpo);
                 // dibu.trazarNormales(entorno.cuerpo);
                 // dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "left")
             }
