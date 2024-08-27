@@ -18,7 +18,12 @@ Hasta el momento permite:
 - crear cuerpos con formas geométricas      
 - mover y acelerar cuerpos      
 - detectar colisiones entre cuerpos y con cuerpos contenedores      
-- crear cuerpos atractores y repulsores     
+- crear cuerpos atractores y repulsores    
+- crear cuadrículas y pintar sus celdas según su estado 
+
+## Demostración
+
+<a href="https://muinicomuiser.github.io/mui-js/" target="_blank">Figuras geométricas y colisiones</a>
 
 ## Proyectos creados con mui.js
 - <a href="https://muinicomuiser.github.io/boids" target="_blank">boids</a>
