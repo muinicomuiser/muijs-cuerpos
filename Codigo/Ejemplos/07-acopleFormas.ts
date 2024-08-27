@@ -11,10 +11,12 @@ CANVAS.height = 600;
 const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 CANVAS.style.backgroundColor = COLORFONDO;
 DIBU.colorFondo = COLORFONDO;
-DIBU.color = "yellow"
+DIBU.colorTrazo = "yellow"
 
 //Crear objetos
-let triangulo: Cuerpo = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, 3, 100);
+let triangulo: Cuerpo = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, 3, 100, {colorTrazo: "red", escala: 1.5, rellenada: true});
+let trianguloAcoplado: Cuerpo = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, 3, 30, {rellenada: false});
+console.log(trianguloAcoplado)
 let circulitoAcoplado: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y*1.5, 30)
 
 /**Mueve el cuerpo a un vértice y retorna un cuerpo*/
@@ -30,11 +32,15 @@ window.addEventListener("load", ()=>{
         
         //Prueba acople.
         triangulo.rotar(0.02);
-        circulitoAcoplado = acoplar(circulitoAcoplado, triangulo.verticesTransformados[1]);
+        triangulo.mover()
+        trianguloAcoplado = acoplar(trianguloAcoplado, triangulo.verticesTransformados[1]);
+        trianguloAcoplado.rotacion = Vector.angulo(Vector.segunPuntos(triangulo.posicion, trianguloAcoplado.posicion))
+
         
         //Dibujo
-        triangulo.trazar(DIBU);
-        circulitoAcoplado.trazar(DIBU)
+        DIBU.renderizarFormas([triangulo, trianguloAcoplado])
+        // triangulo.trazar(DIBU);
+        // trianguloAcoplado.trazar(DIBU)
 
         requestAnimationFrame(animar);
     }

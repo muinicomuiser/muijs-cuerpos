@@ -1,3 +1,4 @@
+import { Celda } from "../Cuadricula/Celda.js";
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Dibujante } from "./Dibujante.js";
@@ -9,10 +10,10 @@ import { Dibujante } from "./Dibujante.js";
  */
 
 export class Renderizado extends Dibujante{
-    private _canvas: HTMLCanvasElement;
+    private canvas: HTMLCanvasElement;
     constructor(canvas: HTMLCanvasElement){
         super(canvas.getContext("2d")!);
-        this._canvas = canvas;
+        this.canvas = canvas;
     }
 
     /**Traza un conjunto de formas.*/
@@ -29,6 +30,18 @@ export class Renderizado extends Dibujante{
         }
     }   
 
+    /**Rellena y/o traza, según el caso, un conjunto de formas.*/
+    renderizarFormas(formas: Forma[]): void{
+        for(let forma of formas){
+            if(forma.trazada){
+                forma.trazar(this);
+            }
+            if(forma.rellenada){
+                forma.rellenar(this);
+            }
+        }
+    }
+
     /**Borra el contenido del canvas.       
      * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorFondo y con la opacidad especificada.
      */
@@ -36,12 +49,11 @@ export class Renderizado extends Dibujante{
         if(opacidad){
             this.context.globalAlpha = opacidad;
             this.context.fillStyle = this.colorFondo;
-            this.context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+            this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
             this.context.globalAlpha = this.opacidad;
-            this.context.fillStyle = this.color;
         }
         else{
-            this.context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         }
     }
 

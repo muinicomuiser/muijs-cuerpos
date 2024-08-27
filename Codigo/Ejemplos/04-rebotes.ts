@@ -41,7 +41,7 @@ window.addEventListener("load", ()=>{
     let cuerpos: Cuerpo[] = [];
     for(let i:number = 0; i < NUMEROCUERPOS; i++){
         let cuerpito: Cuerpo = Cuerpo.circunferencia(formaGeneradora.verticesTransformados[i].x, formaGeneradora.verticesTransformados[i].y, RADIOCUERPO);
-        cuerpito.color = COLORCUERPO;
+        cuerpito.colorTrazo = COLORCUERPO;
         // cuerpito.velocidad = Vector.crear(Matematica.aleatorio(-1, 1), Matematica.aleatorio(-1, 1));
         cuerpos.push(cuerpito);
     }
@@ -52,9 +52,9 @@ window.addEventListener("load", ()=>{
     
     let cuerpoAtractor: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 5);
 
-    circulo.color = "skyblue"
-    cuerpoAtractor.color = "white"
-    entorno.cuerpo.color = "skyblue"
+    circulo.colorTrazo = "skyblue"
+    cuerpoAtractor.colorTrazo = "white"
+    entorno.cuerpo.colorTrazo = "skyblue"
 
     requestAnimationFrame(animar);
     function animar(){

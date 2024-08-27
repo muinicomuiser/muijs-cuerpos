@@ -30,11 +30,12 @@ CANVAS.style.backgroundColor = COLORFONDO;
     
 window.addEventListener("load", ()=>{
     const bordeCanvas: Forma = Forma.rectangulo(CENTROCANVAS.x, CENTROCANVAS.y, CANVAS.width, CANVAS.height);
-    bordeCanvas.color = "white"
+    bordeCanvas.colorTrazo = "white"
     const forma: Forma = Forma.poligono(500, 300, 5, 50)
     const cuerpo: Cuerpo = Cuerpo.poligono(200, 300, 5, 50)
 
     let dibu: Renderizado = new Renderizado(CANVAS)
+    dibu.opcionesTexto = {tamano: 20, grosor: 5, alineacion: "left"};
     dibu.colorFondo = COLORFONDO;
     let vectorMouse: Vector = Vector.segunPuntos(CENTROCANVAS, mouse);
     function animar(){
@@ -49,7 +50,7 @@ window.addEventListener("load", ()=>{
         /////////////////////////////////
         vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
         dibu.colorTexto = "white";
-        dibu.escribir(`Ángulo vector (en rad):  ${vectorMouse.angulo}`, 30, 30, 20, 2, "left")
+        dibu.escribir(`Ángulo vector (en rad):  ${vectorMouse.angulo}`, 30, 30)
         vectorMouse.origen = CENTROCANVAS
         dibu.trazarVector(vectorMouse)
         requestAnimationFrame(animar);

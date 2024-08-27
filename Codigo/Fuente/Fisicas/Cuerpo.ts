@@ -13,7 +13,7 @@
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
-
+import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
 //TAREAS
     //Una propiedad que defina si es necesario actualizar la posición y la rotación.
     //Un solo método para aplicar transformar y actualizar transformaciones
@@ -68,41 +68,45 @@ export class Cuerpo extends Forma{
 
     /**Retorna un cuerpo geométrico regular.     
      * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-    static poligono(x: number, y: number, lados: number, radio: number, masa: number = 1, densidad: number = 1){
+    static poligono(x: number, y: number, lados: number, radio: number, opciones?: OpcionesCuerpo){
         let poliForma: Forma = super.poligono(x, y, lados, radio);
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
-        poligono.masa = masa;
-        poligono.densidad = densidad;
+        if(opciones){
+            poligono.aplicarOpciones(opciones)
+        }
         return poligono; 
     }
 
     
     /**Retorna un cuerpo geométrico regular.     
      * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-    static poligonoSegunVertices(vertices: Vector[], masa: number = 1, densidad: number = 1){
+    static poligonoSegunVertices(vertices: Vector[], opciones?: OpcionesCuerpo){
         let poliForma: Forma = super.poligonoSegunVertices(vertices);
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
-        poligono.masa = masa;
-        poligono.densidad = densidad;
+        if(opciones){
+            poligono.aplicarOpciones(opciones)
+        }
         return poligono; 
     }
 
     /**Retorna un cuerpo rectangular.*/
-    static rectangulo(x: number, y: number, base: number, altura: number, masa: number = 1, densidad: number = 1){
+    static rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesCuerpo){
         let rectForma: Forma = super.rectangulo(x, y, base, altura);
         let rectangulo: Cuerpo = Cuerpo.cuerpoSegunForma(rectForma);
-        rectangulo.masa = masa;
-        rectangulo.densidad = densidad;
+        if(opciones){
+            rectangulo.aplicarOpciones(opciones)
+        }
         return rectangulo;
     }
 
 
     /**Retorna un cuerpo con forma de circunferencia.*/
-    static circunferencia(x: number, y: number, radio: number, masa: number = 1, densidad: number= 1): Cuerpo {
+    static circunferencia(x: number, y: number, radio: number, opciones?: OpcionesCuerpo): Cuerpo {
         let circuloForma: Forma = super.circunferencia(x, y, radio);
         let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
-        circunferencia.masa = masa;
-        circunferencia.densidad = densidad;
+        if(opciones){
+            circunferencia.aplicarOpciones(opciones)
+        }
         return circunferencia;
     }
 
@@ -117,6 +121,28 @@ export class Cuerpo extends Forma{
         return cuerpo;   
     }
 
+    /**Aplicación de la opciones definidas al crear un cuerpo nuevo.*/
+    protected aplicarOpciones(opciones: OpcionesCuerpo): void{
+        super.aplicarOpciones(opciones)
+        if(opciones.masa){
+            this.masa = opciones.masa;
+        }
+        if(opciones.densidad){
+            this.densidad = opciones.densidad;
+        }
+        if(opciones.aceleracion){
+            this.aceleracion = opciones.aceleracion;
+        }
+        if(opciones.fijo != undefined){
+            this.fijo = opciones.fijo;
+        }
+        if(opciones.rotarSegunVelocidad != undefined){
+            this.rotarSegunVelocidad = opciones.rotarSegunVelocidad;
+        }
+        if(opciones.velocidad){
+            this.velocidad = opciones.velocidad;
+        }
+    }
 
     /**Suma la velocidad y la aceleración a la posición.*/
     public mover(): void{

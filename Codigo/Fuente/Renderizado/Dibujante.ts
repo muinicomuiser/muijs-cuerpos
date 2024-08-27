@@ -3,6 +3,8 @@ import { Geometria } from "../Utiles/Geometria.js";
 import { Punto } from "../GeometriaPlana/Punto.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
+import { OpcionesTexto } from "./OpcionesTexto.js";
+import { Celda } from "../Cuadricula/Celda.js";
 /**MÓDULO DE DIBUJO         
  * Instancia una herramienta dibujante.         
  * Métodos para definir colores hsla y rgba, dibujar objetos tipo Forma y escribir.         
@@ -10,7 +12,9 @@ import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 
 export class Dibujante{
     
-    color: string;
+    colorTrazo: string;
+    colorRelleno: string;
+    colorCelda: string;
     colorFondo: string;
     colorTexto: string;
     grosorTrazo: number;
@@ -18,10 +22,13 @@ export class Dibujante{
     opacidad: number;
     colorVectores: string;
     context: CanvasRenderingContext2D;
+    opcionesTexto: OpcionesTexto = {color: "blue", grosor: 500, tamano: 10, fuente: "calibri", opacidad: 1, alineacion: "right"};
 
     constructor(context: CanvasRenderingContext2D){
         this.context = context;
-        this.color = "blue";
+        this.colorTrazo = "blue";
+        this.colorRelleno = "skyblue";
+        this.colorCelda = "blue"
         this.colorFondo = "white";
         this.colorTexto = "blue";
         this.grosorTrazo = 1;
@@ -78,9 +85,9 @@ export class Dibujante{
         else if(forma.tipo == TipoFormas.linea){
             this.pathLinea(forma);
         }        
-        this.context.strokeStyle = this.color;
-        if(forma.color){
-            this.context.strokeStyle = forma.color;
+        this.context.strokeStyle = this.colorTrazo;
+        if(forma.colorTrazo){
+            this.context.strokeStyle = forma.colorTrazo;
         }
         if(forma.tipo == TipoFormas.vector){
             this.pathLinea(forma);
@@ -103,14 +110,25 @@ export class Dibujante{
         if(forma.tipo == TipoFormas.linea){
             this.pathPoligono(forma);
         }
-        this.context.fillStyle = this.color;
-        if(forma.color){
-            this.context.fillStyle = forma.color;
+        this.context.fillStyle = this.colorRelleno;
+        if(forma.colorRelleno){
+            this.context.fillStyle = forma.colorRelleno;
         }
         this.context.globalAlpha = this.opacidad;
         this.context.fill();
     }
 
+    /**Rellena en el canvas la forma ingresada como argumento.*/
+    rellenarCelda(celda: Celda): void{
+        this.context.beginPath();
+        this.context.globalAlpha = this.opacidad;
+        this.context.fillStyle = this.colorCelda;
+        if(celda.color){
+            this.context.fillStyle = celda.color;
+        }
+        this.context.fillRect((celda.x - 1 ) * celda.tamano, ( celda.y - 1 ) * celda.tamano, celda.tamano, celda.tamano);
+        this.context.globalAlpha = 1;
+    }
 
     /** Traza en el canvas el vector ingresado como argumento.      
      * Usa como color el atributo colorVectores.
@@ -133,13 +151,13 @@ export class Dibujante{
      * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), alineacion como instrucción de 
      * CSS de text-align ("center", "left", "right") y fuente como font-family.      
      */
-    escribir(texto: string, posicionX: number, posicionY: number, tamano: number, grosor: number = 500, alineacion: CanvasTextAlign = "center", fuente: string = "calibri"): void{
-        this.context.textAlign = alineacion;
-        this.context.font = `${grosor} ${tamano}px ${fuente}`;
-        this.context.globalAlpha = this.opacidad;
-        this.context.fillStyle = this.colorTexto;
+    escribir(texto: string, posicionX: number, posicionY: number): void{
+        this.context.textAlign = this.opcionesTexto.alineacion!;
+        this.context.font = `${this.opcionesTexto.grosor} ${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
+        this.context.globalAlpha = this.opcionesTexto.opacidad!;
+        this.context.fillStyle = this.opcionesTexto.color!;
         this.context.fillText(texto, posicionX, posicionY);
-    }
+    } 
 
 
     /**Método interno.        

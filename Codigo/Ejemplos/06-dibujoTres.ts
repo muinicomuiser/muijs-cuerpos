@@ -21,9 +21,9 @@ window.addEventListener("load", ()=>{
     
     let dibu: Renderizado = new Renderizado(CANVAS)
 
-    poligonoUno.color = Renderizado.colorHSL(120, 100, 50)
-    cuadradoDos.color = "purple"
-    circunferenciaTres.color = "yellow"
+    poligonoUno.colorRelleno = Renderizado.colorHSL(120, 100, 50)
+    cuadradoDos.colorRelleno = "purple"
+    circunferenciaTres.colorRelleno = "yellow"
     dibu.opacidad = 0.4
     
     function animar(){
@@ -31,16 +31,16 @@ window.addEventListener("load", ()=>{
         poligonoUno.rotar(Geometria.gradoARadian(1));
         cuadradoDos.rotarSegunPunto(centroCanvas, Geometria.gradoARadian(-1))
         if(Colision.detectar(poligonoUno, cuadradoDos)){
-            cuadradoDos.color = "red"
+            cuadradoDos.colorRelleno = "red"
         }
         else{
-            cuadradoDos.color = "purple"
+            cuadradoDos.colorRelleno = "purple"
         }
         if(Colision.detectar(circunferenciaTres, cuadradoDos)){
-            circunferenciaTres.color = "red"
+            circunferenciaTres.colorRelleno = "red"
         }
         else{
-            circunferenciaTres.color = "yellow"
+            circunferenciaTres.colorRelleno = "yellow"
         }
         poligonoUno.rellenar(dibu)
         cuadradoDos.rellenar(dibu)

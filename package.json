@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dist": "tsc && npx rollup build/Ejemplos/rebotes.js --file dist/Ejemplos/rebotesDist.js --format iife",
-    "ejemplos": "rm -r build/Ejemplos && tsc"
+    "ejemplos": "rm -r build/Ejemplos && tsc",
+    "build": "rm -r build && tsc"
   },
   "author": "Nicolás Donoso",
   "license": "ISC",

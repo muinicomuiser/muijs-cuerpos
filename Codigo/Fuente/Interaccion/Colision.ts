@@ -2,7 +2,6 @@ import { Forma } from "../GeometriaPlana/Formas.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Geometria } from "../Utiles/Geometria.js";
-import { Matematica } from "../Utiles/Matematica.js";
 /**
         =============================================
                  * MÓDULO DE COLISIONES *

@@ -54,7 +54,7 @@ window.addEventListener("load", ()=>{
         boid.velocidad = velocidadInicial;
         boid.escala = ESCALA;
         boid.rotarSegunVelocidad = ROTARSEGUNVELOCIDAD;
-        boid.color = COLORBOID;
+        boid.colorTrazo = COLORBOID;
         boids.push(boid);
     }
 
