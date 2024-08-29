@@ -1,10 +1,4 @@
-import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
-import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
-import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
-import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
-import { Colision } from "../Fuente/Interaccion/Colision.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
+import { Matematica, Punto, Forma, Renderizado, Fuerza, Colision, Geometria } from "../Fuente/mui.js";
 
 /**AQUÍ EMPECÉ A PROBAR EL MÓDULO DE COLISIONES.*/
 
