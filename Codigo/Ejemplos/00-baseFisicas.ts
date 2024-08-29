@@ -3,17 +3,15 @@ import { Geometria, Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Restricci
 //Archivo estandar para iniciar pruebas del módulo
 
 //CONSTANTES
-const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
-const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
 const COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
-const DIBU: Renderizado = new Renderizado(CANVAS)
-CANVAS.width = 800;
-CANVAS.height = 600;
-CANVAS.style.backgroundColor = COLORFONDO;
+const DIBU: Renderizado = Renderizado.crearPorIdCanvas('canvas')
+DIBU.anchoCanvas = 800;
+DIBU.altoCanvas = 600;
 DIBU.colorFondo = COLORFONDO;
+const CENTROCANVAS: Punto = { x: DIBU.anchoCanvas / 2, y: DIBU.altoCanvas / 2 };
 
-window.addEventListener("load", ()=>{
-    function animar(){
+window.addEventListener("load", () => {
+    function animar() {
         DIBU.limpiarCanvas()
         requestAnimationFrame(animar);
     }
@@ -25,19 +23,19 @@ eventosMouse(DETECTARMOUSE);
 /**Detección de ingreso, movimiento y salida del mouse del canvas.      
  * Funciona con una variable boolean de activación
 */
-function eventosMouse(detectar: boolean): void{
-    if(detectar){
-        CANVAS.addEventListener("mouseenter", (event)=>{
-            if(event){
+function eventosMouse(detectar: boolean): void {
+    if (detectar) {
+        DIBU.canvas.addEventListener("mouseenter", (event) => {
+            if (event) {
             }
         })
-        CANVAS.addEventListener("mouseleave", (event)=>{
-            if(event){
+        DIBU.canvas.addEventListener("mouseleave", (event) => {
+            if (event) {
             }
         })
-        CANVAS.addEventListener("mousemove", (event)=>{
-            let mouseX: number = event.pageX - CANVAS.offsetLeft;
-            let mouseY: number = event.pageY - CANVAS.offsetTop
+        DIBU.canvas.addEventListener("mousemove", (event) => {
+            let mouseX: number = event.pageX - DIBU.canvas.offsetLeft;
+            let mouseY: number = event.pageY - DIBU.canvas.offsetTop
         })
     }
 }

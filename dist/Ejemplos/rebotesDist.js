@@ -1078,21 +1078,19 @@
         colorTrazo;
         colorRelleno;
         colorCelda;
-        colorFondo;
-        colorTexto;
+        _colorFondo;
         grosorTrazo;
         grosorVector;
         opacidad;
         colorVectores;
         context;
-        opcionesTexto = { color: "blue", grosor: 500, tamano: 10, fuente: "calibri", opacidad: 1, alineacion: "right" };
+        opcionesTexto = { color: "red", tamano: 10, fuente: "calibri", opacidad: 1, alineacion: "right" };
         constructor(context) {
             this.context = context;
             this.colorTrazo = "blue";
             this.colorRelleno = "skyblue";
             this.colorCelda = "blue";
-            this.colorFondo = "white";
-            this.colorTexto = "blue";
+            this._colorFondo = "white";
             this.grosorTrazo = 1;
             this.opacidad = 1;
             this.colorVectores = "red";
@@ -1196,13 +1194,11 @@
             this.context.strokeStyle = this.colorVectores;
             this.context.stroke();
         }
-        /**Rellena un texto en el canvas según los argumentos ingresados.
-         * Recibe tamaño en pixeles, grosor en un rango de 100 a 900 (como el font-weight de CSS), alineacion como instrucción de
-         * CSS de text-align ("center", "left", "right") y fuente como font-family.
-         */
+        /**Rellena un texto en el canvas en la posicion ingresada.*/
         escribir(texto, posicionX, posicionY) {
             this.context.textAlign = this.opcionesTexto.alineacion;
-            this.context.font = `${this.opcionesTexto.grosor} ${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
+            this.context.font = `${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
+            // this.context.font = `${this.opcionesTexto.grosor} ${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
             this.context.globalAlpha = this.opcionesTexto.opacidad;
             this.context.fillStyle = this.opcionesTexto.color;
             this.context.fillText(texto, posicionX, posicionY);
@@ -1244,9 +1240,40 @@
      */
     class Renderizado extends Dibujante {
         canvas;
+        _anchoCanvas = 500;
+        _altoCanvas = 500;
         constructor(canvas) {
             super(canvas.getContext("2d"));
             this.canvas = canvas;
+            this.canvas.style.backgroundColor = this._colorFondo;
+            this.canvas.width = this._anchoCanvas;
+            this.canvas.height = this._altoCanvas;
+        }
+        get anchoCanvas() {
+            return this._anchoCanvas;
+        }
+        get altoCanvas() {
+            return this._altoCanvas;
+        }
+        get colorFondo() {
+            return this._colorFondo;
+        }
+        set anchoCanvas(ancho) {
+            this._anchoCanvas = ancho;
+            this.canvas.width = this._anchoCanvas;
+        }
+        set altoCanvas(alto) {
+            this._altoCanvas = alto;
+            this.canvas.height = this._altoCanvas;
+        }
+        set colorFondo(color) {
+            this._colorFondo = color;
+            this.canvas.style.backgroundColor = this._colorFondo;
+        }
+        static crearPorIdCanvas(idCanvas) {
+            const CANVAS = document.getElementById(idCanvas);
+            let nuevoRenderizador = new Renderizado(CANVAS);
+            return nuevoRenderizador;
         }
         /**Traza un conjunto de formas.*/
         trazarFormas(formas) {
@@ -1275,7 +1302,7 @@
          * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorFondo y con la opacidad especificada.
          */
         limpiarCanvas(opacidad) {
-            if (opacidad) {
+            if (opacidad != undefined) {
                 this.context.globalAlpha = opacidad;
                 this.context.fillStyle = this.colorFondo;
                 this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -1295,22 +1322,72 @@
         }
     }
 
+    /**Contador de tiempo, en milisegundos.
+     * Su propiedad 'activo' se vuelve false cuando ha transcurrido el tiempo ingresado.
+    */
+    class Temporizador {
+        tiempoInicial = Date.now();
+        duracion;
+        activo = true;
+        constructor(duracionMilisegundos) {
+            this.duracion = duracionMilisegundos;
+            setTimeout(() => this.activo = false, this.duracion);
+        }
+        get tiempoTranscurrido() {
+            return Date.now() - this.tiempoInicial;
+        }
+    }
+
     //Junta los cuerpos, interacciones, entorno, casos límite y renderizado.
     //Debería estar acá la creación de canvas y contexto??
     class Composicion {
+        tiempoInicial;
+        tiempoActual;
+        temporizadores = [];
+        /**Retorna el número de temporizadores activos.      */
+        get numeroTemporizadores() {
+            return this.temporizadores.length;
+        }
         static actualizarMovimientoCuerpos(cuerpos) {
             cuerpos.forEach((cuerpo) => cuerpo.mover());
             return cuerpos;
         }
+        /**Ejecuta una función un número determinado de veces por segundo.*/
+        iterarPorSegundo(funcion, numeroIteraciones) {
+            const periodo = 1000 / numeroIteraciones;
+            if (!this.tiempoInicial) {
+                this.tiempoInicial = Date.now();
+            }
+            this.tiempoActual = Date.now();
+            if (this.tiempoActual - this.tiempoInicial >= periodo) {
+                funcion();
+                this.tiempoInicial = this.tiempoActual;
+            }
+        }
+        /**Crea un termporizador nuevo con la duración ingresada y lo agrega a la lista de temporizadores de la composición.*/
+        crearTemporizador(tiempoMilisegundos) {
+            const temporizador = new Temporizador(tiempoMilisegundos);
+            this.temporizadores.push(temporizador);
+            return temporizador;
+        }
+        /**Elimina del registro de temporizadores aquellos que estén inactivos.*/
+        actualizarTemporizadores() {
+            let indiceInactivo = this.temporizadores.findIndex((temporizador) => temporizador.activo == false);
+            if (indiceInactivo != -1) {
+                this.temporizadores.splice(indiceInactivo, 1);
+            }
+        }
     }
 
     /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
-    const CANVAS = document.getElementById("canvas");
-    CANVAS.width = window.innerWidth - 20 > 360 ? window.innerWidth - 20 : 360;
-    CANVAS.height = window.innerHeight - 20;
+    const dibu = Renderizado.crearPorIdCanvas('canvas');
+    const COLORFONDO = Renderizado.colorHSL(220, 100, 0);
+    dibu.anchoCanvas = window.innerWidth - 20 > 360 ? window.innerWidth - 20 : 360;
+    dibu.altoCanvas = window.innerHeight - 20;
+    dibu.colorFondo = COLORFONDO;
     //CONSTANTES
-    const CENTROCANVAS = { x: CANVAS.width / 2, y: CANVAS.height / 2 };
-    const BORDEMENOR = CANVAS.width < CANVAS.height ? CANVAS.width : CANVAS.height;
+    const BORDEMENOR = dibu.anchoCanvas < dibu.altoCanvas ? dibu.anchoCanvas : dibu.altoCanvas;
+    const CENTROCANVAS = { x: dibu.anchoCanvas / 2, y: dibu.altoCanvas / 2 };
     const LADOSENTORNO = 10;
     let RADIOENTORNO = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
     RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
@@ -1318,14 +1395,10 @@
     const NUMEROCUERPOS = 40;
     const RADIOCUERPO = 8;
     let COLORCUERPO = Renderizado.colorHSL(220, 0, 100);
-    let COLORFONDO = Renderizado.colorHSL(220, 100, 0);
     ////////////////
-    CANVAS.style.backgroundColor = COLORFONDO;
     window.addEventListener("load", () => {
         let cuerpoEntorno = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, LADOSENTORNO, RADIOENTORNO);
-        let entorno = new Entorno(CANVAS, cuerpoEntorno);
-        let dibu = new Renderizado(CANVAS);
-        dibu.colorFondo = COLORFONDO;
+        let entorno = new Entorno(dibu.canvas, cuerpoEntorno);
         dibu.grosorTrazo = 3;
         /**Forma generadora de posiciones.*/
         let formaGeneradora = Forma.poligono(CENTROCANVAS.x, CENTROCANVAS.y, NUMEROCUERPOS, RADIOFORMAGENERADORA);

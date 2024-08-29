@@ -28,7 +28,9 @@ export { Renderizado } from "./Renderizado/Renderizado.js";
 
 /**Composición*/
 export { Composicion } from "./Composicion/Composicion.js";
+export { ManejadorEventos } from "./Composicion/Eventos.js"
 
 /**Cuadrícula*/
-export {Celda} from "./Cuadricula/Celda.js"
-export {Cuadricula} from "./Cuadricula/Cuadricula.js"
+export { Celda } from "./Cuadricula/Celda.js"
+export { Cuadricula } from "./Cuadricula/Cuadricula.js"
+export { Temporizador } from "./Composicion/Temporizador.js"

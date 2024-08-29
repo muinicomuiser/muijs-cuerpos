@@ -1,44 +1,36 @@
-import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Punto } from "../Fuente/GeometriaPlana/Punto.js";
-import { Forma } from "../Fuente/GeometriaPlana/Formas.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Renderizado } from "../Fuente/Renderizado/Renderizado.js";
-import { Cuerpo } from "../Fuente/Fisicas/Cuerpo.js";
-import { Fuerza } from "../Fuente/Fisicas/Fuerza.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
-import { Restriccion } from "../Fuente/Interaccion/Restriccion.js";
-import { Entorno } from "../Fuente/Interaccion/Entorno.js";
+import { Matematica, Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Geometria, Restriccion, Entorno } from "../Fuente/mui.js"
 
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 
-const CANVAS: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("canvas");
-CANVAS.width = 1150;
-CANVAS.height = 680;
 
 //CONSTANTES
-const CENTROCANVAS: Punto = {x:CANVAS.width/2, y: CANVAS.height/2};
-
+const dibu: Renderizado = Renderizado.crearPorIdCanvas('canvas')
 const COLORFONDO: string = Renderizado.colorHSL(220, 100, 0);
+dibu.anchoCanvas = 1150;
+dibu.altoCanvas = 680;
+dibu.colorFondo = COLORFONDO;
+
+
+const CENTROCANVAS: Punto = { x: dibu.anchoCanvas / 2, y: dibu.altoCanvas / 2 };
+
 
 const DETECTARMOUSE: boolean = true;
 
 ////////////////
 
 let mousePresente: boolean = false;
-let mouse: Vector = Vector.cero();    
-CANVAS.style.backgroundColor = COLORFONDO;
-    
-window.addEventListener("load", ()=>{
-    const bordeCanvas: Forma = Forma.rectangulo(CENTROCANVAS.x, CENTROCANVAS.y, CANVAS.width, CANVAS.height);
+let mouse: Vector = Vector.cero();
+
+window.addEventListener("load", () => {
+    const bordeCanvas: Forma = Forma.rectangulo(CENTROCANVAS.x, CENTROCANVAS.y, dibu.anchoCanvas, dibu.altoCanvas);
     bordeCanvas.colorTrazo = "white"
     const forma: Forma = Forma.poligono(500, 300, 5, 50)
     const cuerpo: Cuerpo = Cuerpo.poligono(200, 300, 5, 50)
 
-    let dibu: Renderizado = new Renderizado(CANVAS)
-    dibu.opcionesTexto = {tamano: 20, grosor: 5, alineacion: "left"};
+    dibu.opcionesTexto = { tamano: 20, alineacion: "left" };
     dibu.colorFondo = COLORFONDO;
     let vectorMouse: Vector = Vector.segunPuntos(CENTROCANVAS, mouse);
-    function animar(){
+    function animar() {
         dibu.limpiarCanvas()
         bordeCanvas.trazar(dibu)
         /////////////////////////////////
@@ -49,7 +41,7 @@ window.addEventListener("load", ()=>{
         // cuerpo.rotar(1)
         /////////////////////////////////
         vectorMouse = Vector.segunPuntos(CENTROCANVAS, mouse);
-        dibu.colorTexto = "white";
+        dibu.opcionesTexto = { color: "white" };
         dibu.escribir(`Ángulo vector (en rad):  ${vectorMouse.angulo}`, 30, 30)
         vectorMouse.origen = CENTROCANVAS
         dibu.trazarVector(vectorMouse)
@@ -57,20 +49,20 @@ window.addEventListener("load", ()=>{
     }
     animar()
 })
-if(DETECTARMOUSE){
-    CANVAS.addEventListener("mouseenter", (event)=>{
-        if(event){
+if (DETECTARMOUSE) {
+    dibu.canvas.addEventListener("mouseenter", (event) => {
+        if (event) {
             mousePresente = true;
         }
     })
-    CANVAS.addEventListener("mouseleave", (event)=>{
-        if(event){
+    dibu.canvas.addEventListener("mouseleave", (event) => {
+        if (event) {
             mousePresente = false;
         }
     })
-    CANVAS.addEventListener("mousemove", (event)=>{
-        let mouseX: number = event.pageX - CANVAS.offsetLeft;
-        let mouseY: number = event.pageY - CANVAS.offsetTop;
+    dibu.canvas.addEventListener("mousemove", (event) => {
+        let mouseX: number = event.pageX - dibu.canvas.offsetLeft;
+        let mouseY: number = event.pageY - dibu.canvas.offsetTop;
         mouse = Vector.crear(mouseX, mouseY);
     })
 }

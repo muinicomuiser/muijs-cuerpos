@@ -1,6 +1,5 @@
-import { Matematica } from "../Fuente/Utiles/Matematica.js";
-import { Vector } from "../Fuente/GeometriaPlana/Vector.js";
-import { Geometria } from "../Fuente/Utiles/Geometria.js";
+import { Matematica, Vector, Geometria } from "../Fuente/mui.js";
+
 //Módulo Matemática, Aritmética
 
 /**Medidor de velocidad de cálculo*/
