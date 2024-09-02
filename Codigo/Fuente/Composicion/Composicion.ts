@@ -9,12 +9,13 @@ export class Composicion {
     private tiempoActual?: number;
     private temporizadores: Temporizador[] = []
 
-    /**Retorna el número de temporizadores activos.      */
+    /**Retorna el número de temporizadores activos.*/
     get numeroTemporizadores(): number {
         return this.temporizadores.length;
     }
 
-    static actualizarMovimientoCuerpos(cuerpos: Cuerpo[]): Cuerpo[] {
+    /**Actualiza la posición de un conjunto de cuerpos sumando la velocidad instantanea a la posición.*/
+    static actualizarMovimientoCuerpos(...cuerpos: Cuerpo[]): Cuerpo[] {
         cuerpos.forEach((cuerpo) => cuerpo.mover())
         return cuerpos;
     }

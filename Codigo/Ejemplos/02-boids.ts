@@ -36,7 +36,7 @@ window.addEventListener("load", () => {
 
 
     dibu.colorFondo = COLORFONDO;
-    let entorno: Entorno = new Entorno(dibu.canvas);
+    let entorno: Entorno = Entorno.crearEntornoCanvas(dibu.canvas)
 
     /**Forma generadora de posiciones.*/
     let formaGeneradora: Forma = Forma.poligono(CENTROCANVAS.x, CENTROCANVAS.y, NUMEROBOIDS, 320);

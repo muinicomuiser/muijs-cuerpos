@@ -1,6 +1,7 @@
 import { Celda } from "../Cuadricula/Celda.js";
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
+import { Punto } from "../mui.js";
 import { Dibujante } from "./Dibujante.js";
 
 /**MÓDULO DE RENDERIZADO        
@@ -21,33 +22,45 @@ export class Renderizado extends Dibujante {
         this.canvas.height = this._altoCanvas;
     }
 
+    /**Retorna la medida horizontal del canvas.*/
     get anchoCanvas(): number {
         return this._anchoCanvas;
     }
 
+    /**Retorna la media vertical del canvas. */
     get altoCanvas(): number {
         return this._altoCanvas;
     }
 
+    /**Retorna un punto ubicado en el centro del canvas.*/
+    get centroCanvas(): Punto {
+        return { x: this.anchoCanvas / 2, y: this.altoCanvas / 2 };
+    }
+
+    /**Retorna el color del canvas.*/
     get colorFondo(): string {
         return this._colorFondo
     }
 
+    /**Modifica la medida horizontal del canvas.*/
     set anchoCanvas(ancho: number) {
         this._anchoCanvas = ancho;
         this.canvas.width = this._anchoCanvas;
     }
 
+    /**Modifica la medida vertical del canvas. */
     set altoCanvas(alto: number) {
         this._altoCanvas = alto;
         this.canvas.height = this._altoCanvas;
     }
 
+    /**Modifica el color del canvas.*/
     set colorFondo(color: string) {
         this._colorFondo = color;
         this.canvas.style.backgroundColor = this._colorFondo;
     }
 
+    /**Retorna una instancia de renderizado usando como parámetro el id de un canvas presente en el documento HTML. */
     static crearPorIdCanvas(idCanvas: string): Renderizado {
         const CANVAS: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById(idCanvas);
         let nuevoRenderizador: Renderizado = new Renderizado(CANVAS);

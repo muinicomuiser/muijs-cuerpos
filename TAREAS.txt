@@ -10,8 +10,8 @@
 
 - Resolver el solapamiento para todo tipo de cuerpos, no solo para circunferencias.
 
-- Agregar opciones a Cuerpo, Forma, etcétera
 
 
 Resueltas:
 + Reunir los export en un solo archivo para importar mui.js desde otros proyectos. ++
++ Agregar opciones a Cuerpo, Forma, etcétera

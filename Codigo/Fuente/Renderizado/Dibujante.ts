@@ -5,22 +5,38 @@ import { Vector } from "../GeometriaPlana/Vector.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 import { OpcionesTexto } from "./OpcionesTexto.js";
 import { Celda } from "../Cuadricula/Celda.js";
+
 /**MÓDULO DE DIBUJO         
  * Instancia una herramienta dibujante.         
  * Métodos para definir colores hsla y rgba, dibujar objetos tipo Forma y escribir.         
  */
-
 export class Dibujante {
 
+    /**Color de la línea al dibujar.*/
     colorTrazo: string;
+
+    /**Color de las formas rellenadas. */
     colorRelleno: string;
+
     colorCelda: string;
+
     protected _colorFondo: string;
+
+    /**Grosor de la línea al dibujar.*/
     grosorTrazo: number;
+
+    /**Grosor de la línea al dibujar un vector.*/
     grosorVector: number;
-    opacidad: number;
+
+    /**Color de la línea de los vectores.*/
     colorVectores: string;
+
+    opacidad: number;
+
+    /**Interfaz de dibujo sobre el canvas. 2D*/
     context: CanvasRenderingContext2D;
+
+    /**Opciones de color, tamaño, fuente, opacidad y alineación.*/
     opcionesTexto: OpcionesTexto = { color: "red", tamano: 10, fuente: "calibri", opacidad: 1, alineacion: "right" };
 
     constructor(context: CanvasRenderingContext2D) {

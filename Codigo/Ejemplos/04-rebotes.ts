@@ -1,3 +1,4 @@
+import { Contenedor } from "../Fuente/Fisicas/Contenedor.js";
 import { Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Geometria, Entorno, Composicion, Interaccion } from "../Fuente/mui.js";
 
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
@@ -13,7 +14,7 @@ const BORDEMENOR = dibu.anchoCanvas < dibu.altoCanvas ? dibu.anchoCanvas : dibu.
 const CENTROCANVAS: Punto = { x: dibu.anchoCanvas / 2, y: dibu.altoCanvas / 2 };
 
 const LADOSENTORNO: number = 10;
-let RADIOENTORNO: number = 250 < (BORDEMENOR) / 3 ? 250 : (BORDEMENOR) / 3;
+let RADIOENTORNO: number = 200 < (BORDEMENOR) / 4 ? 200 : (BORDEMENOR) / 4;
 RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
 
 const RADIOFORMAGENERADORA: number = RADIOENTORNO / 2;
@@ -28,7 +29,7 @@ let COLORCUERPO: string = Renderizado.colorHSL(220, 0, 100);
 window.addEventListener("load", () => {
 
     let cuerpoEntorno: Cuerpo = Cuerpo.poligono(CENTROCANVAS.x, CENTROCANVAS.y, LADOSENTORNO, RADIOENTORNO);
-    let entorno: Entorno = new Entorno(dibu.canvas, cuerpoEntorno);
+    let entorno: Contenedor = new Contenedor(cuerpoEntorno);
     dibu.grosorTrazo = 3;
     /**Forma generadora de posiciones.*/
     let formaGeneradora: Forma = Forma.poligono(CENTROCANVAS.x, CENTROCANVAS.y, NUMEROCUERPOS, RADIOFORMAGENERADORA);
@@ -41,14 +42,18 @@ window.addEventListener("load", () => {
         // cuerpito.velocidad = Vector.crear(Matematica.aleatorio(-1, 1), Matematica.aleatorio(-1, 1));
         cuerpos.push(cuerpito);
     }
-    let circulo: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * 1.2, RADIOENTORNO / 3)
+    let circulo: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * (1 / 1.2), RADIOENTORNO / 4)
+    let circuloDos: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y * 1.2, RADIOENTORNO / 4)
     circulo.fijo = true;
     circulo.rotacion = Geometria.PI_MEDIO;
-    cuerpos.push(circulo)
+    circuloDos.fijo = true;
+    circuloDos.rotacion = Geometria.PI_MEDIO;
+    cuerpos.push(circulo, circuloDos)
 
-    let cuerpoAtractor: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 5);
+    let cuerpoAtractor: Cuerpo = Cuerpo.circunferencia(CENTROCANVAS.x, CENTROCANVAS.y + RADIOENTORNO + 20, 8);
 
     circulo.colorTrazo = "skyblue"
+    circuloDos.colorTrazo = "skyblue"
     cuerpoAtractor.colorTrazo = "white"
     entorno.cuerpo.colorTrazo = "skyblue"
 
@@ -57,7 +62,7 @@ window.addEventListener("load", () => {
         animacion()
         function animacion(): void {
             dibu.limpiarCanvas()
-
+            entorno.cuerpo.rotar(0.005)
             for (let cuerpito of cuerpos) {
                 cuerpito.aceleracion = Fuerza.atraer(cuerpito, cuerpoAtractor, 0.05)
                 // cuerpito.aceleracion = Fuerza.repelerDeVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02);
@@ -71,19 +76,18 @@ window.addEventListener("load", () => {
 
             // circulo.rotar(Geometria.gradoARadian(-0.4))
             cuerpos = entorno.rebotarConBorde(cuerpos)
-            cuerpos = Composicion.actualizarMovimientoCuerpos(cuerpos);
+            cuerpos = Composicion.actualizarMovimientoCuerpos(...cuerpos);
             cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
             circulo.rotarSegunPunto(CENTROCANVAS, -0.01)
+            circuloDos.rotarSegunPunto(CENTROCANVAS, -0.01)
             // entorno.cuerpo.rotar(Geometria.gradoARadian(-0.4));
 
             cuerpoAtractor.rellenar(dibu)
 
-            circulo.trazar(dibu)
-
             dibu.trazarFormas(cuerpos)
 
             dibu.trazar(entorno.cuerpo)
-            // dibu.trazarNormales(entorno.cuerpo);
+            dibu.trazarNormales(entorno.cuerpo);
             // dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "left")
         }
         requestAnimationFrame(animar);
