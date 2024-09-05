@@ -1,5 +1,5 @@
 
-export interface OpcionesForma{
+export interface OpcionesForma {
 
     /**Color de trazado de la forma.*/
     colorTrazo?: string,
@@ -13,5 +13,6 @@ export interface OpcionesForma{
     trazada?: boolean,
     /**Determina si la forma debe ser rellenada.*/
     rellenada?: boolean,
-
+    /**Determina el ancho de la línea trazada.*/
+    grosorTrazo?: number,
 }

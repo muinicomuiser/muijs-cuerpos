@@ -19,8 +19,8 @@ RADIOENTORNO = 180 > RADIOENTORNO ? 180 : RADIOENTORNO;
 
 const RADIOFORMAGENERADORA: number = RADIOENTORNO / 2;
 
-const NUMEROCUERPOS: number = 40;
-const RADIOCUERPO: number = 8;
+const NUMEROCUERPOS: number = 15;
+const RADIOCUERPO: number = 14;
 
 let COLORCUERPO: string = Renderizado.colorHSL(220, 0, 100);
 
@@ -64,20 +64,22 @@ window.addEventListener("load", () => {
             dibu.limpiarCanvas()
             entorno.cuerpo.rotar(0.005)
             for (let cuerpito of cuerpos) {
-                cuerpito.aceleracion = Fuerza.atraer(cuerpito, cuerpoAtractor, 0.05)
+                cuerpito.aceleracion = Fuerza.atraer(cuerpito, cuerpoAtractor, 0.002)
                 // cuerpito.aceleracion = Fuerza.repelerDeVector(cuerpito, Vector.crear(CENTROCANVAS.x, CENTROCANVAS.y), 0.02);
                 cuerpito.velocidad = Vector.escalar(cuerpito.velocidad, 0.99)
-                if (cuerpito.velocidad.magnitud < 0.005) {
+                if (cuerpito.velocidad.magnitud < 0.00005) {
                     cuerpito.velocidad = Vector.cero()
                 }
             }
 
-            cuerpoAtractor.rotarSegunPunto(CENTROCANVAS, Geometria.gradoARadian(0.5))
+            cuerpoAtractor.rotarSegunPunto(CENTROCANVAS, Geometria.gradoARadian(-0.5))
 
             // circulo.rotar(Geometria.gradoARadian(-0.4))
-            cuerpos = entorno.rebotarConBorde(cuerpos)
-            cuerpos = Composicion.actualizarMovimientoCuerpos(...cuerpos);
-            cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
+            for (let i: number = 0; i < 3; i++) {
+                cuerpos = entorno.rebotarConBorde(cuerpos)
+                cuerpos = Interaccion.reboteEntreCuerpos(cuerpos);
+                cuerpos = Composicion.actualizarMovimientoCuerpos(...cuerpos);
+            }
             circulo.rotarSegunPunto(CENTROCANVAS, -0.01)
             circuloDos.rotarSegunPunto(CENTROCANVAS, -0.01)
             // entorno.cuerpo.rotar(Geometria.gradoARadian(-0.4));
@@ -87,7 +89,7 @@ window.addEventListener("load", () => {
             dibu.trazarFormas(cuerpos)
 
             dibu.trazar(entorno.cuerpo)
-            dibu.trazarNormales(entorno.cuerpo);
+            // dibu.trazarNormales(entorno.cuerpo);
             // dibu.escribir((`${tiempoFinal - tiempoInicio}` + " milisegundos"), 20, 20, 12, 2, "left")
         }
         requestAnimationFrame(animar);

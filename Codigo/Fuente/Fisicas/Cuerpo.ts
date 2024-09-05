@@ -28,12 +28,19 @@ import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
 export class Cuerpo extends Forma {
 
     protected _velocidad: Vector = Vector.cero();
+
     protected _aceleracion: Vector = Vector.cero();
+
     rotarSegunVelocidad: boolean = false;
+
     fijo: boolean = false;
+
     masa: number = 1;
+
     densidad: number = 1;
+
     controlable: boolean = false;
+
     controles: OpcionesControlesCuerpo = { arriba: false, abajo: false, izquierda: false, derecha: false, rotarIzquierda: false, rotarDerecha: false, rapidez: 1, anguloRotacion: Geometria.PI_MEDIO / 30 }
 
     private constructor() {
@@ -53,6 +60,7 @@ export class Cuerpo extends Forma {
     /**Retorna el conjunto de vértices después de */
     get verticesTransformados(): Vector[] {
         if (this.rotarSegunVelocidad == true) {
+            this.transformacionAnterior.rotacion = this._transformacion.rotacion
             this.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
             return super.verticesTransformados;
         }

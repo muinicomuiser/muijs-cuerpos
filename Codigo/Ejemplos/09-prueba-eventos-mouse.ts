@@ -3,10 +3,10 @@ import { Geometria, Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Restricci
 //Archivo estandar para iniciar pruebas del módulo
 
 //CONSTANTES
-const COLORFONDO: string = Renderizado.colorHSL(220, 50, 0);
+const COLORFONDO: string = Renderizado.colorHSL(220, 0, 0);
 const DIBU: Renderizado = Renderizado.crearPorIdCanvas('canvas')
-DIBU.anchoCanvas = 800;
-DIBU.altoCanvas = 600;
+DIBU.anchoCanvas = 660;
+DIBU.altoCanvas = 660;
 DIBU.colorFondo = COLORFONDO;
 
 
@@ -14,28 +14,37 @@ DIBU.colorFondo = COLORFONDO;
 
 window.addEventListener("load", () => {
     //Colores
-    const COLORPROTAGONISTA: string = Renderizado.colorHSL(200, 100, 50);
-    const COLORSECUNDARIOS: string = Renderizado.colorHSL(280, 100, 50);
+    const COLORPROTAGONISTA: string = Renderizado.colorHSL(200, 0, 80);
+    const COLORSECUNDARIOS: string = Renderizado.colorHSL(250, 0, 80);
+
+    //Figuras
+    const RADIOBOLITOS: number = 8;
 
     //Cuerpos
-    let cuerpoProtagonista: Cuerpo = Cuerpo.rectangulo(DIBU.centroCanvas.x, DIBU.centroCanvas.y, 30, 30, { colorRelleno: COLORPROTAGONISTA, rellenada: true, trazada: false })
-    let puntaProtagonista: Cuerpo = Cuerpo.poligono(50, 50, 3, 30)
+    let cuerpoProtagonista: Cuerpo = Cuerpo.rectangulo(DIBU.centroCanvas.x, DIBU.centroCanvas.y, 30, 30, { colorRelleno: COLORPROTAGONISTA, colorTrazo: COLORPROTAGONISTA, rellenada: true, trazada: true })
+    let puntaProtagonista: Cuerpo = Cuerpo.poligono(50, 50, 3, 30, { colorRelleno: COLORPROTAGONISTA, colorTrazo: COLORPROTAGONISTA, rellenada: true, trazada: true })
 
     function crearSecundarios(numeroCuerpos: number, radioEsparcimiento: number): Cuerpo[] {
         let formaGeneradora: Forma = Forma.poligono(DIBU.centroCanvas.x, DIBU.centroCanvas.y, numeroCuerpos, radioEsparcimiento)
         let cuerpos: Cuerpo[] = []
         for (let i: number = 0; i < formaGeneradora.lados; i++) {
-            cuerpos.push(Cuerpo.circunferencia(formaGeneradora.verticesTransformados[i].x, formaGeneradora.verticesTransformados[i].y, 18, { colorRelleno: COLORSECUNDARIOS, trazada: true, rellenada: false }))
+            cuerpos.push(Cuerpo.circunferencia(formaGeneradora.verticesTransformados[i].x, formaGeneradora.verticesTransformados[i].y, RADIOBOLITOS, { grosorTrazo: 2, colorTrazo: COLORSECUNDARIOS, trazada: true, rellenada: false }))
         }
         return cuerpos;
     }
-    let cuerposSecundarios: Cuerpo[] = crearSecundarios(20, 200);
-    let cuerposSecundariosDos: Cuerpo[] = crearSecundarios(40, 300);
-    let cuerposSecundariosTres: Cuerpo[] = crearSecundarios(40, 400);
-    cuerposSecundarios.push(...cuerposSecundariosDos, ...cuerposSecundariosTres)
+    let cuerpos: Cuerpo[] = []
+    let cuerposSecundarios: Cuerpo[] = crearSecundarios(50, 200);
+    let cuerposSecundariosUno: Cuerpo[] = crearSecundarios(50, 250);
+    let cuerposSecundariosDos: Cuerpo[] = crearSecundarios(50, 350);
+    let cuerposSecundariosDosDos: Cuerpo[] = crearSecundarios(50, 300);
+    let cuerposSecundariosTres: Cuerpo[] = crearSecundarios(50, 100);
+    let cuerposSecundariosTresTres: Cuerpo[] = crearSecundarios(50, 150);
+    cuerpos.push(...cuerposSecundariosDos, ...cuerposSecundariosTres, ...cuerposSecundarios, ...cuerposSecundariosUno, ...cuerposSecundariosDosDos, ...cuerposSecundariosTresTres)
+
     cuerpoProtagonista.controles.rapidez = 10
+
     let entorno: Entorno = Entorno.crearEntornoCanvas(DIBU.canvas)
-    entorno.cuerpo.colorTrazo = 'white'
+    entorno.cuerpo.colorTrazo = COLORPROTAGONISTA;
     entorno.cuerpo.trazada = true
     entorno.cuerpo.rellenada = false
 
@@ -51,14 +60,14 @@ window.addEventListener("load", () => {
 
     function animar() {
         DIBU.limpiarCanvas()
-        Composicion.actualizarMovimientoCuerpos(...cuerposSecundarios);
+        Composicion.actualizarMovimientoCuerpos(...cuerpos);
         cuerpoProtagonista.controlar()
-        Interaccion.reboteEntreCuerpos([cuerpoProtagonista, ...cuerposSecundarios])
-        Interaccion.reboteEntreCuerpos([puntaProtagonista, ...cuerposSecundarios])
-        entorno.rebotarConBorde([cuerpoProtagonista, ...cuerposSecundarios, puntaProtagonista])
+        Interaccion.reboteEntreCuerpos([cuerpoProtagonista, ...cuerpos])
+        Interaccion.reboteEntreCuerpos([puntaProtagonista, ...cuerpos])
+        entorno.rebotarConBorde([cuerpoProtagonista, ...cuerpos, puntaProtagonista])
         puntaProtagonista.rotacion = cuerpoProtagonista.rotacion + Geometria.PI_MEDIO / 3
         puntaProtagonista.posicion = Vector.suma(cuerpoProtagonista.posicion, Vector.escalar(Vector.normalizar(cuerpoProtagonista.normales[0]), cuerpoProtagonista.apotema))
-        DIBU.renderizarFormas([cuerpoProtagonista, ...cuerposSecundarios, entorno.cuerpo, puntaProtagonista])
+        DIBU.renderizarFormas([...cuerpos, cuerpoProtagonista, entorno.cuerpo, puntaProtagonista])
         requestAnimationFrame(animar);
     }
     requestAnimationFrame(animar)

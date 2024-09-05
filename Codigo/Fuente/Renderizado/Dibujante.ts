@@ -107,7 +107,7 @@ export class Dibujante {
             this.pathLinea(forma);
             this.context.strokeStyle = this.colorVectores;
         }
-        this.context.lineWidth = this.grosorTrazo;
+        this.context.lineWidth = forma.grosorTrazo;
         this.context.globalAlpha = this.opacidad;
         this.context.stroke();
     }

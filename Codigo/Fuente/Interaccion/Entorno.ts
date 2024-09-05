@@ -10,13 +10,11 @@ export class Entorno extends Contenedor {
     private canvas: HTMLCanvasElement;
     private alto: number;
     private ancho: number;
-    cuerpo: Cuerpo;
     constructor(canvas: HTMLCanvasElement, cuerpo: Cuerpo) {
         super(cuerpo)
         this.canvas = canvas;
         this.alto = this.canvas.height;
         this.ancho = this.canvas.width;
-        this.cuerpo = Cuerpo.poligonoSegunVertices([Vector.crear(this.ancho, this.alto), Vector.crear(0, this.alto), Vector.crear(0, 0), Vector.crear(this.ancho, 0)]);
         this.cuerpo.fijo = true;
     }
 
@@ -51,5 +49,9 @@ export class Entorno extends Contenedor {
             y += this.alto
         }
         return Vector.crear(x, y)
+    }
+
+    colisionConBorde(...cuerpos: Cuerpo[]): Cuerpo[] {
+        return Interaccion.reboteCircunferenciasConEntorno(cuerpos, this.cuerpo)
     }
 }
