@@ -1,0 +1,17 @@
+1- Si quiero crear una simulación de interacción entre cuerpos
+
+En el archivo main podría haber dos estancias
+    Una para crear los objetos, sus formas y condiciones iniciales. Esta es previa a la animación.
+    Otra para definir la interacción y simulación en el tiempo. Ésta debería estar declarada dentro de la 
+    función que será animada.
+Por otro lado, también debería poder usarse toda la librería sin tener que acceder desde la composición.
+Para eso lo más útil es que cada clase sea lo más estricta y acotada posible.
+
+Crear composición
+En la sección iniciadora
+    Crear cuerpos
+    Definir eventos de interfaz
+En la sección de animación
+    Definir interacciones
+
+Definir interacción entre cuerpos

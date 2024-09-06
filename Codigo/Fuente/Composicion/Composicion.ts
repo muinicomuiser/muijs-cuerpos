@@ -1,50 +1,65 @@
 //Junta los cuerpos, interacciones, entorno, casos límite y renderizado.
 //Debería estar acá la creación de canvas y contexto??
 
+import { Contenedor } from "../Fisicas/Contenedor.js";
 import { Cuerpo } from "../Fisicas/Cuerpo.js";
-import { Temporizador } from "./Temporizador.js";
+// import { Cuadricula, Entorno, Forma, Interaccion, Renderizado } from "../mui.js";
+import { Cuadricula } from "../Cuadricula/Cuadricula.js";
+import { Entorno } from "../Interaccion/Entorno.js";
+import { Forma } from "../GeometriaPlana/Formas.js";
+import { Interaccion } from "../Interaccion/Interaccion.js";
+import { Renderizado } from "../Renderizado/Renderizado.js";
+import { Tiempo } from "./Tiempo.js";
 
 export class Composicion {
-    private tiempoInicial?: number;
-    private tiempoActual?: number;
-    private temporizadores: Temporizador[] = []
 
-    /**Retorna el número de temporizadores activos.*/
-    get numeroTemporizadores(): number {
-        return this.temporizadores.length;
+    render: Renderizado;
+    cuerpos: Cuerpo[] = []
+    formas: Forma[] = [];
+    cuadricula!: Cuadricula;
+    tiempo!: Tiempo;
+    contenedor!: Contenedor;
+    entorno!: Entorno;
+    fps: number = 60;
+
+    constructor(idCanvas: string) {
+        this.render = Renderizado.crearPorIdCanvas(idCanvas);
+
+    }
+
+    tamanoCanvas(ancho: number, alto: number) {
+        this.render.anchoCanvas = ancho;
+        this.render.altoCanvas = alto;
+    }
+
+    agregarCuerpos(...cuerpos: Cuerpo[]): void {
+        this.cuerpos.push(...cuerpos);
     }
 
     /**Actualiza la posición de un conjunto de cuerpos sumando la velocidad instantanea a la posición.*/
-    static actualizarMovimientoCuerpos(...cuerpos: Cuerpo[]): Cuerpo[] {
-        cuerpos.forEach((cuerpo) => cuerpo.mover())
-        return cuerpos;
+    actualizarMovimientoCuerpos() {
+        this.cuerpos.forEach((cuerpo) => cuerpo.mover())
+        Interaccion.reboteEntreCuerpos(this.cuerpos)
     }
 
-    /**Ejecuta una función un número determinado de veces por segundo.*/
-    iterarPorSegundo(funcion: () => void, numeroIteraciones: number): void {
-        const periodo: number = 1000 / numeroIteraciones;
-        if (!this.tiempoInicial) {
-            this.tiempoInicial = Date.now();
-        }
-        this.tiempoActual = Date.now();
-        if (this.tiempoActual - this.tiempoInicial >= periodo) {
-            funcion();
-            this.tiempoInicial = this.tiempoActual;
-        }
+    rellenarCuerpos() {
+        this.render.rellenarFormas(this.cuerpos)
     }
 
-    /**Crea un termporizador nuevo con la duración ingresada y lo agrega a la lista de temporizadores de la composición.*/
-    crearTemporizador(tiempoMilisegundos: number): Temporizador {
-        const temporizador: Temporizador = new Temporizador(tiempoMilisegundos)
-        this.temporizadores.push(temporizador);
-        return temporizador
+    trazarCuerpos() {
+        this.render.trazarFormas(this.cuerpos)
     }
 
-    /**Elimina del registro de temporizadores aquellos que estén inactivos.*/
-    actualizarTemporizadores(): void {
-        let indiceInactivo: number = this.temporizadores.findIndex((temporizador) => temporizador.activo == false)
-        if (indiceInactivo != -1) {
-            this.temporizadores.splice(indiceInactivo, 1);
-        }
+    renderizarCuerpos() {
+        this.render.renderizarFormas(this.cuerpos)
     }
+
+    renderizarFormas() {
+        this.render.renderizarFormas(this.formas)
+    }
+    // static actualizarMovimientoCuerpos(...cuerpos: Cuerpo[]): Cuerpo[] {
+    //     cuerpos.forEach((cuerpo) => cuerpo.mover())
+    //     return cuerpos;
+    // }
+
 }

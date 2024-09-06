@@ -35,7 +35,7 @@ let vectorMouse: Vector = Vector.cero();
 window.addEventListener("load", () => {
 
 
-    dibu.colorFondo = COLORFONDO;
+    // dibu.colorFondo = COLORFONDO;
     let entorno: Entorno = Entorno.crearEntornoCanvas(dibu.canvas)
 
     /**Forma generadora de posiciones.*/
@@ -52,7 +52,7 @@ window.addEventListener("load", () => {
         boid.velocidad = velocidadInicial;
         boid.escala = ESCALA;
         boid.rotarSegunVelocidad = ROTARSEGUNVELOCIDAD;
-        boid.colorTrazo = COLORBOID;
+        // boid.colorTrazo = COLORBOID;
         boids.push(boid);
     }
 

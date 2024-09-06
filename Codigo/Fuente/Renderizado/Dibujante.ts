@@ -5,6 +5,7 @@ import { Vector } from "../GeometriaPlana/Vector.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
 import { OpcionesTexto } from "./OpcionesTexto.js";
 import { Celda } from "../Cuadricula/Celda.js";
+import { OpcionesGraficasForma } from "../GeometriaPlana/OpcionesGraficasForma.js";
 
 /**MÓDULO DE DIBUJO         
  * Instancia una herramienta dibujante.         
@@ -12,18 +13,9 @@ import { Celda } from "../Cuadricula/Celda.js";
  */
 export class Dibujante {
 
-    /**Color de la línea al dibujar.*/
-    colorTrazo: string;
-
-    /**Color de las formas rellenadas. */
-    colorRelleno: string;
-
     colorCelda: string;
 
     protected _colorFondo: string;
-
-    /**Grosor de la línea al dibujar.*/
-    grosorTrazo: number;
 
     /**Grosor de la línea al dibujar un vector.*/
     grosorVector: number;
@@ -31,24 +23,43 @@ export class Dibujante {
     /**Color de la línea de los vectores.*/
     colorVectores: string;
 
-    opacidad: number;
-
     /**Interfaz de dibujo sobre el canvas. 2D*/
     context: CanvasRenderingContext2D;
 
+    // opcionesCelda:
+
+    opcionesForma: OpcionesGraficasForma = {
+        colorTrazo: 'blue',
+        colorRelleno: "skyblue",
+        trazada: true,
+        rellenada: true,
+        grosorTrazo: 1,
+        opacidad: 1,
+    }
+
     /**Opciones de color, tamaño, fuente, opacidad y alineación.*/
-    opcionesTexto: OpcionesTexto = { color: "red", tamano: 10, fuente: "calibri", opacidad: 1, alineacion: "right" };
+    opcionesTexto: OpcionesTexto = {
+        color: "red",
+        tamano: 10,
+        fuente: "calibri",
+        opacidad: 1,
+        alineacion: "right"
+    };
 
     constructor(context: CanvasRenderingContext2D) {
         this.context = context;
-        this.colorTrazo = "blue";
-        this.colorRelleno = "skyblue";
         this.colorCelda = "blue"
         this._colorFondo = "white";
-        this.grosorTrazo = 1;
-        this.opacidad = 1;
         this.colorVectores = "red"
         this.grosorVector = 1;
+        this.opcionesForma = {
+            colorTrazo: 'blue',
+            colorRelleno: "skyblue",
+            trazada: true,
+            rellenada: true,
+            grosorTrazo: 1,
+            opacidad: 1,
+        }
     }
 
     /**
@@ -87,55 +98,70 @@ export class Dibujante {
         return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
 
-
-    /**Traza en el canvas la forma ingresada como argumento.*/
-    trazar(forma: Forma): void {
+    protected recorrerPath(forma: Forma): void {
         if (forma.tipo == TipoFormas.circunferencia) {
             this.pathCircunferencia(forma);
         }
         else if (forma.tipo == TipoFormas.poligono) {
             this.pathPoligono(forma);
         }
-        else if (forma.tipo == TipoFormas.linea) {
+        else if (forma.tipo == TipoFormas.linea || forma.tipo == TipoFormas.vector) {
             this.pathLinea(forma);
         }
-        this.context.strokeStyle = this.colorTrazo;
-        if (forma.colorTrazo) {
-            this.context.strokeStyle = forma.colorTrazo;
-        }
+    }
+
+    /**Traza en el canvas la forma ingresada como argumento.*/
+    trazar(forma: Forma): void {
+        this.recorrerPath(forma)
         if (forma.tipo == TipoFormas.vector) {
-            this.pathLinea(forma);
             this.context.strokeStyle = this.colorVectores;
         }
-        this.context.lineWidth = forma.grosorTrazo;
-        this.context.globalAlpha = this.opacidad;
+        else {
+            if (forma.opcionesGraficas.colorTrazo) {
+                this.context.strokeStyle = forma.opcionesGraficas.colorTrazo
+            }
+            else {
+                this.context.strokeStyle = this.opcionesForma.colorTrazo!;
+            }
+            if (forma.opcionesGraficas.opacidad) {
+                this.context.globalAlpha = forma.opcionesGraficas.opacidad
+            }
+            else {
+                this.context.globalAlpha = this.opcionesForma.opacidad!;
+            }
+            if (forma.opcionesGraficas.grosorTrazo) {
+                this.context.lineWidth = forma.opcionesGraficas.grosorTrazo
+            }
+            else {
+                this.context.lineWidth = this.opcionesForma.grosorTrazo!;
+            }
+        }
         this.context.stroke();
     }
 
 
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenar(forma: Forma): void {
-        if (forma.tipo == TipoFormas.circunferencia) {
-            this.pathCircunferencia(forma);
+        this.recorrerPath(forma);
+        if (forma.opcionesGraficas.opacidad) {
+            this.context.globalAlpha = forma.opcionesGraficas.opacidad
         }
-        if (forma.tipo == TipoFormas.poligono) {
-            this.pathPoligono(forma);
+        else {
+            this.context.globalAlpha = this.opcionesForma.opacidad!;
         }
-        if (forma.tipo == TipoFormas.linea) {
-            this.pathPoligono(forma);
+        if (forma.opcionesGraficas.colorRelleno) {
+            this.context.fillStyle = forma.opcionesGraficas.colorRelleno
         }
-        this.context.fillStyle = this.colorRelleno;
-        if (forma.colorRelleno) {
-            this.context.fillStyle = forma.colorRelleno;
+        else {
+            this.context.fillStyle = this.opcionesForma.colorRelleno!;
         }
-        this.context.globalAlpha = this.opacidad;
         this.context.fill();
     }
 
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenarCelda(celda: Celda): void {
         this.context.beginPath();
-        this.context.globalAlpha = this.opacidad;
+        this.context.globalAlpha = this.opcionesForma.opacidad!;
         this.context.fillStyle = this.colorCelda;
         if (celda.color) {
             this.context.fillStyle = celda.color;
@@ -155,7 +181,7 @@ export class Dibujante {
         this.context.lineTo(extremo.x, extremo.y);
 
         this.context.lineWidth = this.grosorVector;
-        this.context.globalAlpha = this.opacidad;
+        this.context.globalAlpha = this.opcionesForma.opacidad!;
         this.context.strokeStyle = this.colorVectores;
         this.context.stroke();
     }

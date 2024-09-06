@@ -8,6 +8,7 @@ import { Interaccion } from "../Interaccion/Interaccion.js";
 
 export class Contenedor {
     cuerpo: Cuerpo;
+    cuerpos: Cuerpo[] = []
     constructor(cuerpo: Cuerpo) {
         this.cuerpo = cuerpo;
         this.cuerpo.fijo = true;

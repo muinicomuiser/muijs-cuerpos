@@ -4,6 +4,7 @@ import { Transformacion } from "./Transformacion.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { Geometria } from "../Utiles/Geometria.js";
 import { TipoFormas } from "./TipoFormas.js";
+import { OpcionesGraficasForma } from "./OpcionesGraficasForma.js";
 import { OpcionesForma } from "./OpcionesForma.js";
 //POR INTEGRAR
 // Para una forma personalizada, ya sea abierta o cerrada, agregar un método para calcular su radio o su centro
@@ -31,23 +32,25 @@ export class Forma {
 
     protected transformar: boolean = true;
 
+    opcionesGraficas: OpcionesGraficasForma = {
+        colorTrazo: '',
+        colorRelleno: '',
+        trazada: true,
+        rellenada: true,
+        grosorTrazo: undefined,
+        opacidad: undefined,
+    }
+
+    opciones: OpcionesForma = {
+        rotacion: 0,
+        escala: 1,
+    }
+
     radio: number = 0;
 
     lados: number = 0;
 
-    colorTrazo: string = "blue";
-
-    colorRelleno: string = "skyblue";
-
-    /**Determina si la forma debe ser trazada.*/
-    trazada: boolean = true;
-
-    /**Determina si la forma debe ser rellenada.*/
-    rellenada: boolean = true;
-
     tipo: TipoFormas = TipoFormas.poligono;
-
-    grosorTrazo: number = 2;
 
     protected constructor() { }
 
@@ -181,7 +184,7 @@ export class Forma {
     }
 
     /**Retorna una forma de tipo polígono. El radio es el valor entre el centro y cualquiera de sus vértices.*/
-    static poligono(x: number, y: number, lados: number, radio: number, opciones?: OpcionesForma) {
+    static poligono(x: number, y: number, lados: number, radio: number, opciones?: OpcionesForma & OpcionesGraficasForma) {
         let nuevoPoligono = new Forma();
         nuevoPoligono.lados = lados;
         nuevoPoligono.radio = radio;
@@ -195,7 +198,7 @@ export class Forma {
     }
 
     /**Retorna una forma de tipo circunferencia. */
-    static circunferencia(x: number, y: number, radio: number, opciones?: OpcionesForma) {
+    static circunferencia(x: number, y: number, radio: number, opciones?: OpcionesForma & OpcionesGraficasForma) {
         let nuevaCircunferencia = new Forma();
         nuevaCircunferencia.radio = radio;
         let lados = 10 + Math.trunc(radio / 10);
@@ -216,7 +219,7 @@ export class Forma {
     }
 
     /**Retorna una forma de tipo rectángulo. */
-    static rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesForma) {
+    static rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesForma & OpcionesGraficasForma) {
         let rectangulo = new Forma();
         rectangulo.lados = 4;
         rectangulo.radio = Geometria.hipotenusa(base * 0.5, altura * 0.5);
@@ -224,8 +227,7 @@ export class Forma {
         let ver2: Vector = Vector.crear(-base / 2, altura / 2);
         let ver3: Vector = Vector.crear(-base / 2, -altura / 2);
         let ver4: Vector = Vector.crear(base / 2, -altura / 2);
-        let rectVertices = [ver1, ver2, ver3, ver4];
-        rectangulo.vertices = rectVertices;
+        rectangulo.vertices = [ver1, ver2, ver3, ver4];
         rectangulo.tipo = TipoFormas.poligono;
         if (opciones) {
             rectangulo.aplicarOpciones(opciones)
@@ -236,13 +238,12 @@ export class Forma {
 
 
     /**Crea una recta centrada en el origen y con la posición ingresada almacenada en su registro de transformación.*/
-    static recta(puntoUno: Punto, puntoDos: Punto, opciones?: OpcionesForma) {
+    static recta(puntoUno: Punto, puntoDos: Punto, opciones?: OpcionesForma & OpcionesGraficasForma) {
         let linea: Forma = new Forma();
         linea.lados = 1;
         linea.radio = Geometria.distanciaEntrePuntos(puntoUno, puntoDos) / 2;
         let centro = Vector.crear(puntoUno.x / 2 + puntoDos.x / 2, puntoUno.y / 2 + puntoDos.y / 2);
-        let vertices: Vector[] = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
-        linea.vertices = vertices;
+        linea.vertices = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
         linea.tipo = TipoFormas.linea;
         if (opciones) {
             linea.aplicarOpciones(opciones)
@@ -257,18 +258,14 @@ export class Forma {
      * Calcula el centro de los vértices, centra la forma en el origen y almacena
      * el centro en el registro de transformación.
      */
-    static trazo(vertices: Vector[], opciones?: OpcionesForma): Forma {
+    static trazo(vertices: Vector[], opciones?: OpcionesForma & OpcionesGraficasForma): Forma {
         let centro: Vector = Vector.crear(0, 0)
         let trazo: Forma = new Forma();
         let verticesTrazo: Vector[] = []
+        vertices.forEach((vertice) => centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length)))
+        vertices.forEach((vertice) => verticesTrazo.push(Vector.resta(vertice, centro)))
+        trazo.vertices = verticesTrazo
         trazo.lados = vertices.length - 1;
-        for (let vertice of vertices) {
-            centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length))
-        }
-        for (let vertice of vertices) {
-            verticesTrazo.push(Vector.resta(vertice, centro));
-        }
-        trazo.vertices = verticesTrazo;
         trazo.tipo = TipoFormas.linea;
         if (opciones) {
             trazo.aplicarOpciones(opciones)
@@ -282,18 +279,14 @@ export class Forma {
      * Calcula el centro de los vértices, centra la forma en el origen y almacena
      * el centro en el registro de transformación.
      */
-    static poligonoSegunVertices(vertices: Vector[], opciones?: OpcionesForma): Forma {
+    static poligonoSegunVertices(vertices: Vector[], opciones?: OpcionesForma & OpcionesGraficasForma): Forma {
         let centro: Vector = Vector.crear(0, 0)
         let poligono: Forma = new Forma();
         let verticesPoligono: Vector[] = []
-        poligono.lados = vertices.length - 1;
-        for (let vertice of vertices) {
-            centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length))
-        }
-        for (let vertice of vertices) {
-            verticesPoligono.push(Vector.resta(vertice, centro));
-        }
+        vertices.forEach((vertice) => centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length)))
+        vertices.forEach((vertice) => verticesPoligono.push(Vector.resta(vertice, centro)))
         poligono.vertices = verticesPoligono;
+        poligono.lados = vertices.length - 1;
         poligono.tipo = TipoFormas.poligono;
         if (opciones) {
             poligono.aplicarOpciones(opciones)
@@ -309,27 +302,29 @@ export class Forma {
     }
 
     /**Aplicación de la opciones definidas al crear una forma nueva.*/
-    protected aplicarOpciones(opciones: OpcionesForma): void {
+    protected aplicarOpciones(opciones: OpcionesForma & OpcionesGraficasForma): void {
         if (opciones.colorTrazo) {
-            this.colorTrazo = opciones.colorTrazo;
+            this.opcionesGraficas!.colorTrazo = opciones.colorTrazo;
         }
         if (opciones.colorRelleno) {
-            this.colorRelleno = opciones.colorRelleno;
+            this.opcionesGraficas!.colorRelleno = opciones.colorRelleno;
         }
         if (opciones.trazada != undefined) {
-            this.trazada = opciones.trazada;
+            this.opcionesGraficas!.trazada = opciones.trazada;
         }
         if (opciones.rellenada != undefined) {
-            this.rellenada = opciones.rellenada;
-        }
-        if (opciones.escala) {
-            this.escala = opciones.escala;
-        }
-        if (opciones.rotacion) {
-            this.rotacion = opciones.rotacion;
+            this.opcionesGraficas!.rellenada = opciones.rellenada;
         }
         if (opciones.grosorTrazo) {
-            this.grosorTrazo = opciones.grosorTrazo;
+            this.opcionesGraficas!.grosorTrazo = opciones.grosorTrazo;
+        }
+        if (opciones.escala) {
+            this.escala = opciones.escala
+            this.opciones.escala = opciones.escala;
+        }
+        if (opciones.rotacion) {
+            this.rotacion = opciones.rotacion
+            this.opciones.rotacion = opciones.rotacion;
         }
     }
 

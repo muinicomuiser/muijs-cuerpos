@@ -12,7 +12,7 @@
 
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
-import { Geometria } from "../mui.js";
+import { Geometria } from "../Utiles/Geometria.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { OpcionesControlesCuerpo } from "./OpcionesControlesCuerpo.js";
 import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
@@ -41,7 +41,16 @@ export class Cuerpo extends Forma {
 
     controlable: boolean = false;
 
-    controles: OpcionesControlesCuerpo = { arriba: false, abajo: false, izquierda: false, derecha: false, rotarIzquierda: false, rotarDerecha: false, rapidez: 1, anguloRotacion: Geometria.PI_MEDIO / 30 }
+    controles: OpcionesControlesCuerpo = {
+        arriba: false,
+        abajo: false,
+        izquierda: false,
+        derecha: false,
+        rotarIzquierda: false,
+        rotarDerecha: false,
+        rapidez: 1,
+        anguloRotacion: Geometria.PI_MEDIO / 30
+    }
 
     private constructor() {
         super();
@@ -174,11 +183,9 @@ export class Cuerpo extends Forma {
 
     public controlar() {
         if (this.controles.arriba) {
-            // this.posicion = Vector.suma(this.posicion, Vector.arriba(this.controles.rapidez))
             this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), this.controles.rapidez))
         }
         if (this.controles.abajo) {
-            // this.posicion = Vector.suma(this.posicion, Vector.abajo(this.controles.rapidez))
             this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), -this.controles.rapidez))
         }
         if (this.controles.izquierda) {
