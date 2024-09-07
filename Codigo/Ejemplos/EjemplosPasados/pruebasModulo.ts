@@ -1,13 +1,13 @@
-import { Matematica, Vector, Geometria } from "../Fuente/mui.js";
+// import { Matematica, Vector, Geometria } from "../../Fuente/mui.js";
 
-//Módulo Matemática, Aritmética
+// //Módulo Matemática, Aritmética
 
-/**Medidor de velocidad de cálculo*/
-function contador(): void{
-    let tiempoInicio: number = Date.now();
-    let tiempoFinal: number = Date.now();
-    console.log((`${tiempoFinal - tiempoInicio}` + " milisegundos"));
-}
+// /**Medidor de velocidad de cálculo*/
+// function contador(): void{
+//     let tiempoInicio: number = Date.now();
+//     let tiempoFinal: number = Date.now();
+//     console.log((`${tiempoFinal - tiempoInicio}` + " milisegundos"));
+// }
 
 // aritmetica();
 // console.log(0.1 + 0.2);
@@ -62,13 +62,13 @@ function contador(): void{
 //         let selector: number = (Date.now() % 10) + 1;
 //         unidades = unidades / (10**(selector+1));
 //         aleatorio += numero * unidades;
-//     } 
+//     }
 //     aleatorio = Matematica.parteDecimal(aleatorio);
-//     console.log(aleatorio)   
+//     console.log(aleatorio)
 //     console.log(Date.now())
 // }
 
-    
+
 /**Me gusta cómo quedó esta prueba */
 // function pruebaAleatorioEnteroRango(){
 //     let repeticiones: number = 500;
@@ -136,7 +136,7 @@ function contador(): void{
 // pruebaAleatorioRango()
 
 
-/**Revisar la velocidad de cálculo del método Matematica.multiplicación.        
+/**Revisar la velocidad de cálculo del método Matematica.multiplicación.
  * Lo compara con el operador *.
  */
 // function probarMultiplicacion(){
@@ -152,9 +152,9 @@ function contador(): void{
 //         resultadosMetodo.push(Matematica.multiplicacion(multiplicador, i));
 //         // if(i > 2 && !Matematica.comparar(resultadosMetodo[resultadosMetodo.length - 1 ], resultadosMetodo[resultadosMetodo.length - 2 ] + 10.0000001, 0.00000001)){
 //         //     (console.log("salto", resultadosMetodo[resultadosMetodo.length - 1 ], resultadosMetodo[resultadosMetodo.length - 2 ]))
-//         // }    
+//         // }
 //     }
-//     console.log(resultadosMetodo) 
+//     console.log(resultadosMetodo)
 //     console.log("Fin método Matematica.multiplicacion()")
 //     let tiempoMetodo: number = Date.now();
 //     console.log((`${tiempoMetodo - inicioTiempo}` + " milisegundos"));
@@ -162,9 +162,9 @@ function contador(): void{
 //     for(let i: number = inicio; i < repeticiones; i++){
 //         resultadosJS.push(multiplicador * i);
 //     }
-//     console.log(resultadosJS) 
+//     console.log(resultadosJS)
 //     console.log("Fin operador *")
-//     console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");   
+//     console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");
 // }
 // probarMultiplicacion();
 
@@ -181,7 +181,7 @@ function contador(): void{
 //         resultadosMetodo.push(i);
 //         resultadosMetodo.push(Matematica.division(i, divisor));
 //     }
-//     console.log(resultadosMetodo) 
+//     console.log(resultadosMetodo)
 //     console.log("Fin método Matematica.division()")
 //     let tiempoMetodo: number = Date.now();
 //     console.log((`${tiempoMetodo - inicioTiempo}` + " milisegundos"));
@@ -189,9 +189,9 @@ function contador(): void{
 //     for(let i: number = inicio; i < repeticiones; i = Matematica.suma(i, 0.3)){
 //         resultadosJS.push((i) / divisor);
 //     }
-//     console.log(resultadosJS) 
+//     console.log(resultadosJS)
 //     console.log("Fin operador /")
-//     console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");   
+//     console.log(`${Date.now() - tiempoMetodo}` + " milisegundos");
 // }
 // probarDivision();
 
@@ -206,22 +206,22 @@ function contador(): void{
 // }
 // probarVectorNormal();
 
-function probarNuevoAleatorioEntero(): void{
-    const iteraciones: number = 10000;
-    const rango: number = 5;
-    let resultados: number[] = []
-    for(let indice: number = 0; indice <= rango; indice++){
-        resultados.push(0);
-    }
-    for(let iteracion: number = 0; iteracion < iteraciones; iteracion++){
-        const randomEntero: number = Matematica.aleatorioEntero(rango-rango, rango);
-        resultados[randomEntero]++
-        if(randomEntero ==-1 || randomEntero == 6){
-            console.log(randomEntero)
-        }
-    }
-    for(let i: number = 0; i <= rango; i++){
-        console.log(`El número ${i} apareció ${resultados[i]} veces`)
-    }
-}
-probarNuevoAleatorioEntero()
+// function probarNuevoAleatorioEntero(): void {
+//     const iteraciones: number = 10000;
+//     const rango: number = 5;
+//     let resultados: number[] = []
+//     for (let indice: number = 0; indice <= rango; indice++) {
+//         resultados.push(0);
+//     }
+//     for (let iteracion: number = 0; iteracion < iteraciones; iteracion++) {
+//         const randomEntero: number = Matematica.aleatorioEntero(rango - rango, rango);
+//         resultados[randomEntero]++
+//         if (randomEntero == -1 || randomEntero == 6) {
+//             console.log(randomEntero)
+//         }
+//     }
+//     for (let i: number = 0; i <= rango; i++) {
+//         console.log(`El número ${i} apareció ${resultados[i]} veces`)
+//     }
+// }
+// probarNuevoAleatorioEntero()

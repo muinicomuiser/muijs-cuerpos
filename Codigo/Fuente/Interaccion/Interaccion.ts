@@ -8,30 +8,68 @@ import { Geometria } from "../Utiles/Geometria.js";
 import { Colision } from "./Colision.js";
 
 export class Interaccion {
+    static get iteraciones(): number {
+        return 15;
+    }
+
     /**Retorna una copia del conjunto de cuerpos con la resolución de rebote para cuerpos que han colisionado.      */
     static reboteEntreCuerpos(cuerpos: Cuerpo[]): Cuerpo[] {
-        let cuerposRebotados: Cuerpo[] = [];
-        for (let i: number = 0; i < cuerpos.length - 1; i++) {
-            for (let j: number = i + 1; j < cuerpos.length; j++) {
-                if (Colision.detectar(cuerpos[i], cuerpos[j])) {
-                    let normales: Vector[] = Colision.normalesContacto(cuerpos[i], cuerpos[j]);
-                    // cuerpos[i].velocidad = Cinematica.reboteSimple(cuerpos[i], normales[1])
-                    // cuerpos[j].velocidad = Cinematica.reboteSimple(cuerpos[j], normales[0])
-                    if (cuerpos[i].fijo) {
-                        cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
-                    }
-                    else if (cuerpos[j].fijo) {
-                        cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
-                    }
-                    else {
-                        cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
-                        cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+        for (let iteracion: number = 0; iteracion < Interaccion.iteraciones; iteracion++) {
+            // let cuerposRebotados: Cuerpo[] = [];
+            for (let i: number = 0; i < cuerpos.length - 1; i++) {
+                for (let j: number = i + 1; j < cuerpos.length; j++) {
+                    if (Colision.detectar(cuerpos[i], cuerpos[j])) {
+                        let normales: Vector[] = Colision.normalesContacto(cuerpos[i], cuerpos[j]);
+                        let velocidadesFinales: Vector[] = Cinematica.reboteElastico(cuerpos[i], cuerpos[j])
+                        cuerpos[i].velocidad = velocidadesFinales[0]
+                        cuerpos[j].velocidad = velocidadesFinales[1]
+                        // cuerpos[i].velocidad = Cinematica.reboteSimple(cuerpos[i], normales[1])
+                        // cuerpos[j].velocidad = Cinematica.reboteSimple(cuerpos[j], normales[0])
+                        if (cuerpos[i].fijo) {
+                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                        }
+                        else if (cuerpos[j].fijo) {
+                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                        }
+                        else {
+                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                        }
                     }
                 }
+                // cuerposRebotados.push(cuerpos[i])
             }
-            cuerposRebotados.push(cuerpos[i])
+            // cuerposRebotados.push(cuerpos[cuerpos.length - 1])
         }
-        cuerposRebotados.push(cuerpos[cuerpos.length - 1])
+        return cuerpos;
+        // return cuerposRebotados;
+    }
+
+    /**Retorna una copia del conjunto de cuerpos con la resolución de contacto sólido para cuerpos que han colisionado.      */
+    static contactoSimple(cuerpos: Cuerpo[]): Cuerpo[] {
+        for (let iteracion: number = 0; iteracion < Interaccion.iteraciones; iteracion++) {
+            // let cuerposRebotados: Cuerpo[] = [];
+            for (let i: number = 0; i < cuerpos.length - 1; i++) {
+                for (let j: number = i + 1; j < cuerpos.length; j++) {
+                    if (Colision.detectar(cuerpos[i], cuerpos[j])) {
+                        let normales: Vector[] = Colision.normalesContacto(cuerpos[i], cuerpos[j]);
+                        let velocidadesFinales: Vector[] = Cinematica.reboteElastico(cuerpos[i], cuerpos[j])
+                        if (cuerpos[i].fijo) {
+                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                        }
+                        else if (cuerpos[j].fijo) {
+                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                        }
+                        else {
+                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                        }
+                    }
+                }
+                // cuerposRebotados.push(cuerpos[i])
+            }
+            // cuerposRebotados.push(cuerpos[cuerpos.length - 1])
+        }
         return cuerpos;
         // return cuerposRebotados;
     }

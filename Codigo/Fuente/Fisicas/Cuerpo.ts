@@ -12,10 +12,11 @@
 
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
-import { Geometria } from "../mui.js";
+import { Geometria } from "../Utiles/Geometria.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { OpcionesControlesCuerpo } from "./OpcionesControlesCuerpo.js";
 import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
+import { OpcionesForma } from "../GeometriaPlana/OpcionesForma.js";
 //TAREAS
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
@@ -28,13 +29,29 @@ import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
 export class Cuerpo extends Forma {
 
     protected _velocidad: Vector = Vector.cero();
+
     protected _aceleracion: Vector = Vector.cero();
+
     rotarSegunVelocidad: boolean = false;
-    fijo: boolean = false;
-    masa: number = 1;
-    densidad: number = 1;
+
     controlable: boolean = false;
-    controles: OpcionesControlesCuerpo = { arriba: false, abajo: false, izquierda: false, derecha: false, rotarIzquierda: false, rotarDerecha: false, rapidez: 1, anguloRotacion: Geometria.PI_MEDIO / 30 }
+
+    fijo: boolean = false;
+
+    masa: number = 1;
+
+    densidad: number = 1;
+
+    controles: OpcionesControlesCuerpo = {
+        arriba: false,
+        abajo: false,
+        izquierda: false,
+        derecha: false,
+        rotarIzquierda: false,
+        rotarDerecha: false,
+        rapidez: 1,
+        anguloRotacion: Geometria.PI_MEDIO / 30
+    }
 
     private constructor() {
         super();
@@ -53,6 +70,7 @@ export class Cuerpo extends Forma {
     /**Retorna el conjunto de vértices después de */
     get verticesTransformados(): Vector[] {
         if (this.rotarSegunVelocidad == true) {
+            this.transformacionAnterior.rotacion = this._transformacion.rotacion
             this.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
             return super.verticesTransformados;
         }
@@ -134,17 +152,14 @@ export class Cuerpo extends Forma {
         if (opciones.densidad) {
             this.densidad = opciones.densidad;
         }
-        if (opciones.aceleracion) {
-            this.aceleracion = opciones.aceleracion;
-        }
         if (opciones.fijo != undefined) {
             this.fijo = opciones.fijo;
         }
         if (opciones.rotarSegunVelocidad != undefined) {
             this.rotarSegunVelocidad = opciones.rotarSegunVelocidad;
         }
-        if (opciones.velocidad) {
-            this.velocidad = opciones.velocidad;
+        if (opciones.controlable != undefined) {
+            this.controlable = opciones.controlable!
         }
     }
 
@@ -166,11 +181,9 @@ export class Cuerpo extends Forma {
 
     public controlar() {
         if (this.controles.arriba) {
-            // this.posicion = Vector.suma(this.posicion, Vector.arriba(this.controles.rapidez))
             this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), this.controles.rapidez))
         }
         if (this.controles.abajo) {
-            // this.posicion = Vector.suma(this.posicion, Vector.abajo(this.controles.rapidez))
             this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), -this.controles.rapidez))
         }
         if (this.controles.izquierda) {

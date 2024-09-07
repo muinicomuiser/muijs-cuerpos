@@ -1,8 +1,4 @@
-//  escribir(texto: string, posicionX: number, posicionY: number, tamano: number, 
-//     grosor: number = 500, alineacion: CanvasTextAlign = "center", fuente: string = "calibri"): void{
-//     } 
-
-export interface OpcionesTexto {
+export interface OpcionesGraficasTexto {
     tamano?: number,
     alineacion?: CanvasTextAlign,
     fuente?: string,

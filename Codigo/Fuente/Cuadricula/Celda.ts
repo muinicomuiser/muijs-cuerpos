@@ -1,6 +1,6 @@
 import { Punto } from "../GeometriaPlana/Punto.js";
-import { Dibujante, Vector } from "../mui.js";
-
+import { Dibujante } from "../Renderizado/Dibujante.js";
+import { Vector } from "../GeometriaPlana/Vector.js";
 
 export class Celda {
     posicion: Punto;

@@ -1,5 +1,4 @@
-import { Dibujante } from "../mui.js";
-import { Renderizado } from "../Renderizado/Renderizado.js";
+import { Dibujante } from "../Renderizado/Dibujante.js";
 import { Matematica } from "../Utiles/Matematica.js";
 import { Celda } from "./Celda.js";
 
@@ -57,7 +56,7 @@ export class Cuadricula {
     rellenarCeldas(dibujante: Dibujante): void {
         this.celdas.forEach((celdas) => {
             celdas.forEach((celda) => {
-                dibujante.opacidad = (celda.estado / (this.estados - 1));
+                dibujante.estiloForma.opacidad = (celda.estado / (this.estados - 1));
                 celda.rellenar(dibujante);
             })
         })

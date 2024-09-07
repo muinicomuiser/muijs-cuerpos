@@ -6,9 +6,9 @@
 
 ## mui.js
 Motor simulador y graficador de cuerpos rígidos     
-Completamente en Español
-Proyecto de estudio     
-Creado por Nicolás Donoso     
+Completamente en Español      
+Proyecto de estudio       
+Creado por Nicolás Donoso       
 
 ## Descripción
 En proceso      
@@ -22,6 +22,7 @@ Hasta el momento permite:
 - crear cuerpos atractores y repulsores    
 - crear cuadrículas y pintar sus celdas según su estado 
 - incorporar controles y eventos con mouse y teclado
+- choque elástico entre circunferencias
 
 ## Demostración
 

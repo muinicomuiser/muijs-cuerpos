@@ -1,7 +1,6 @@
-import { Celda } from "../Cuadricula/Celda.js";
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
-import { Punto } from "../mui.js";
+import { Punto } from "../GeometriaPlana/Punto.js";
 import { Dibujante } from "./Dibujante.js";
 
 /**MÓDULO DE RENDERIZADO        
@@ -14,6 +13,7 @@ export class Renderizado extends Dibujante {
     canvas: HTMLCanvasElement;
     private _anchoCanvas: number = 500;
     private _altoCanvas: number = 500;
+    private _colorFondo: string = 'black';
     constructor(canvas: HTMLCanvasElement) {
         super(canvas.getContext("2d")!);
         this.canvas = canvas;
@@ -38,7 +38,7 @@ export class Renderizado extends Dibujante {
     }
 
     /**Retorna el color del canvas.*/
-    get colorFondo(): string {
+    get colorCanvas(): string {
         return this._colorFondo
     }
 
@@ -55,7 +55,7 @@ export class Renderizado extends Dibujante {
     }
 
     /**Modifica el color del canvas.*/
-    set colorFondo(color: string) {
+    set colorCanvas(color: string) {
         this._colorFondo = color;
         this.canvas.style.backgroundColor = this._colorFondo;
     }
@@ -85,23 +85,25 @@ export class Renderizado extends Dibujante {
     renderizarFormas(formas: Forma[]): void {
         for (let forma of formas) {
             if (forma.trazada) {
-                forma.trazar(this);
+                this.trazar(forma)
+                // forma.trazar(this);
             }
             if (forma.rellenada) {
-                forma.rellenar(this);
+                this.rellenar(forma)
+                // forma.rellenar(this);
             }
         }
     }
 
     /**Borra el contenido del canvas.       
-     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorFondo y con la opacidad especificada.
+     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorCanvas y con la opacidad especificada.
      */
     limpiarCanvas(opacidad?: number): void {
         if (opacidad != undefined) {
             this.context.globalAlpha = opacidad;
-            this.context.fillStyle = this.colorFondo;
+            this.context.fillStyle = this._colorFondo;
             this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            this.context.globalAlpha = this.opacidad;
+            this.context.globalAlpha = this.estiloForma.opacidad!;
         }
         else {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
