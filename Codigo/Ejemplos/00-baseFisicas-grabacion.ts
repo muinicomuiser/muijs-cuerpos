@@ -1,36 +1,35 @@
 import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
+import { OpcionesGraficasForma } from "../Fuente/Renderizado/OpcionesGraficasForma.js";
 
 const COMPO: Composicion = new Composicion('canvas')
-let ancho: number = window.innerWidth < 600 ? window.innerWidth : 600;
-let alto: number = window.innerHeight < 600 ? window.innerHeight : 600;
-COMPO.tamanoCanvas(ancho, alto)
+COMPO.tamanoCanvas(1080, 1080)
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = 'black'
 
 //CUERPOS
 //Formas generadoras
-const RADIOGENERADORA: number = 180;
-const RADIOGENERADORADOS: number = 100;
+const RADIOGENERADORA: number = 380;
+const RADIOGENERADORADOS: number = 280;
 const NUMEROCUERPOSFUERA: number = 30;
 const NUMEROCUERPOSCENTRO: number = 60
 const FormaGeneradora: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA)
 const FormaGeneradoraDos: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS)
 
 //Cuerpos
-const RADIOCUERPO: number = 8;
-const RADIOCUERPODOS: number = 4;
+const RADIOCUERPO: number = 18;
+const RADIOCUERPODOS: number = 10;
 const Circunferencias: Cuerpo[] = []
 
 FormaGeneradora.verticesTransformados.forEach((vertice) => {
     let circunferencia: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, RADIOCUERPO)
-    circunferencia.estiloGrafico = { colorRelleno: 'brown', colorTrazo: 'darkblue' }
+    circunferencia.estiloGrafico = { colorRelleno: 'brown', colorTrazo: 'black' }
     circunferencia.masa = 80
     Circunferencias.push(circunferencia);
 })
 
 FormaGeneradoraDos.verticesTransformados.forEach((vertice) => {
     let circunferencia: Cuerpo = Cuerpo.circunferencia(vertice.x, vertice.y, RADIOCUERPODOS)
-    circunferencia.estiloGrafico = { colorRelleno: 'pink', colorTrazo: 'blue' }
+    circunferencia.estiloGrafico = { colorRelleno: 'pink', colorTrazo: 'black' }
     circunferencia.masa = 10
     Circunferencias.push(circunferencia);
 })
@@ -38,10 +37,10 @@ FormaGeneradoraDos.verticesTransformados.forEach((vertice) => {
 
 //cuerpo atractor
 const MagnitudAtraccion: number = 0.02;
-const RADIOATRACTOR: number = 30
+const RADIOATRACTOR: number = 50
 const Atractor: Cuerpo = Cuerpo.circunferencia(Render.centroCanvas.x, Render.centroCanvas.y, RADIOATRACTOR)
 Atractor.masa = 5000
-Atractor.estiloGrafico = { colorRelleno: 'orange', colorTrazo: 'purple', rellenada: true }
+Atractor.estiloGrafico = { colorRelleno: 'orange', colorTrazo: 'black', rellenada: true }
 Atractor.fijo = false;
 
 
@@ -54,15 +53,46 @@ const Frontera: Entorno = Entorno.crearEntornoCanvas(Render.canvas);
 Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 
 
-//Animación
+//GRABACIÓN
+let videoStream = Render.canvas.captureStream(60);
+let mediaRecorder = new MediaRecorder(videoStream);
+
+let chunks: BlobPart[] = [];
+mediaRecorder.ondataavailable = function (e) {
+    chunks.push(e.data);
+};
+
+mediaRecorder.onstop = function (e) {
+    let blob = new Blob(chunks, { 'type': 'video/avi' });
+    chunks = [];
+    let videoURL = URL.createObjectURL(blob);
+    // let link = document.createElement("a"); // Or maybe get it from the current document
+    let link: HTMLAnchorElement = <HTMLAnchorElement>document.getElementById("descarga"); // Or maybe get it from the current document
+    link.href = videoURL;
+    link.download = "Captura Canvas";
+    link.innerHTML = 'Descargar'
+    link.style.color = 'skyblue'
+    // link.click()
+};
+
+mediaRecorder.ondataavailable = function (e) {
+    chunks.push(e.data);
+};
+
+mediaRecorder.start();
+animar();
+setTimeout(function () { mediaRecorder.stop(); }, 60000);
+
+
+//ANIMACIÓN
 function animar() {
     Render.limpiarCanvas(0)
 
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion))
     Frontera.colisionConBorde(...Circunferencias, Atractor);
     COMPO.actualizarMovimientoCuerpos()
-    // COMPO.contactoSimpleCuerpos()
-    COMPO.reboteElasticoCuerpos()
+    COMPO.contactoSimpleCuerpos()
+    // COMPO.reboteElasticoCuerpos()
 
     COMPO.cuerpos.forEach((cuerpo) => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
@@ -73,4 +103,5 @@ function animar() {
     COMPO.renderizarCuerpos();
     requestAnimationFrame(animar)
 }
-animar()
+
+
