@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dist": "tsc && npx rollup build/Ejemplos/04-rebotes.js --file dist/Ejemplos/rebotesDist.js --format iife",
+    "dist": "tsc && npx rollup build/Ejemplos/00-baseFisicas.js --file dist/Ejemplos/00-baseFisicasDist.js --format iife",
     "ejemplos": "rm -r build/Ejemplos && tsc",
     "build": "rm -r build && tsc"
   },

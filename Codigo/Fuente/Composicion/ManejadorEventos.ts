@@ -30,11 +30,24 @@ export class ManejadorEventos {
     /**Agrega un eventListener para eventos de mouse. Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
     static eventoMouseEnCanvas<K>(tipoEvento: EventoMouse, canvas: HTMLCanvasElement, manejarEvento: (eventoMouse: MouseEvent, param: K) => void, parametro?: K) {
         canvas.addEventListener(tipoEvento, (evento) => {
-            if (parametro) {
+            if (parametro != undefined) {
                 manejarEvento(evento, parametro);
             }
             else {
                 manejarEvento(evento, undefined!)
+            }
+        })
+    }
+
+    /**Agrega un eventListener para detectar cambios en el mouse, mas no trabaja con el evento.         
+     * Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+    static mouseEnCanvas<K>(tipoEvento: EventoMouse, canvas: HTMLCanvasElement, manejarEvento: (param: K) => void, parametro?: K) {
+        canvas.addEventListener(tipoEvento, () => {
+            if (parametro != undefined) {
+                manejarEvento(parametro);
+            }
+            else {
+                manejarEvento(undefined!)
             }
         })
     }

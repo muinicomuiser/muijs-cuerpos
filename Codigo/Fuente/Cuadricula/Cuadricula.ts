@@ -56,7 +56,7 @@ export class Cuadricula {
     rellenarCeldas(dibujante: Dibujante): void {
         this.celdas.forEach((celdas) => {
             celdas.forEach((celda) => {
-                dibujante.opcionesForma.opacidad = (celda.estado / (this.estados - 1));
+                dibujante.estiloForma.opacidad = (celda.estado / (this.estados - 1));
                 celda.rellenar(dibujante);
             })
         })

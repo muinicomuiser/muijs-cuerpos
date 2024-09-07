@@ -1,0 +1,60 @@
+DETERMINACIONES PRINCIPALES
+
+1- Cada clase tendrá sus atributos individualizados.
+2- A cada atributo se accede solamente por set/get o directamente llamando el atributo.
+3- La interfaz Opciones solo será necesaria al momento de instanciar un objeto
+4- Métodos lo más sencillos posible
+5- Tiene que haber tanto estructuras que permitan resumir muchos procesos, como funciones y atributos
+    lo suficientemente específicos y bien detallados como para crear estructuras personalizadas, según sea el caso.
+    Para no restringir los usos posibles a un solo tipo de estructura.
+
+
+CASOS
+1- Si quiero crear una simulación de interacción entre cuerpos
+
+En el archivo main podría haber dos estancias
+    Una para crear los objetos, sus formas y condiciones iniciales. Esta es previa a la animación.
+    Otra para definir la interacción y simulación en el tiempo. Ésta debería estar declarada dentro de la 
+    función que será animada.
+Por otro lado, también debería poder usarse toda la librería sin tener que acceder desde la composición.
+Para eso lo más útil es que cada clase sea lo más estricta y acotada posible.
+
+Crear composición
+En la sección iniciadora
+    Crear cuerpos
+    Definir eventos de interfaz
+En la sección de animación
+    Definir interacciones
+
+Definir interacción entre cuerpos
+
+
+
+TAREAS
+- Documentación
+- Estudiar y aplicar energía, conservación del momento, fuerzas, normales y transformaciones.
+- Simplificar. Que a todas las funcionalidades de trabajo con cuerpos se pueda acceder por medio de una o dos instancias y módulos.
+
+- Crear método para agrupar formas.
+- Gravedad y roce.
+
+- Reunir detección entre formas y forma-contenedor en un solo método que detecte el producto escalar entre las normales para determinar la posición de los cuerpos.
+
+- Resolver el solapamiento para todo tipo de cuerpos, no solo para circunferencias.
+- Aplicar también resolución de choques para todo tipo de cuerpos
+- Iteraciones
+
+- Roce
+
+- Métodos para grabar
+
+- Composición podría contener todo. Agregarle y quitarle cuerpos, agregarle y quitarle entornos, y que actualice todo lo que tiene.
+    Como si composición fuese el mundo creado.
+    Matter.js funciona más o menos así.
+- Que temporizador se llame Tiempo y controle tanto el contador puntual como todos los contadores.
+- Composición también definirá los fps
+
+Resueltas:
++ Reunir los export en un solo archivo para importar mui.js desde otros proyectos. ++
++ Agregar opciones a Cuerpo, Forma, etcétera
++ Agregar una clase que se dedique a manejar eventos de teclado y mouse

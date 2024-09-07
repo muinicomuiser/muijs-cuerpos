@@ -4,7 +4,7 @@ import { Transformacion } from "./Transformacion.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { Geometria } from "../Utiles/Geometria.js";
 import { TipoFormas } from "./TipoFormas.js";
-import { OpcionesGraficasForma } from "./OpcionesGraficasForma.js";
+import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma.js";
 import { OpcionesForma } from "./OpcionesForma.js";
 //POR INTEGRAR
 // Para una forma personalizada, ya sea abierta o cerrada, agregar un método para calcular su radio o su centro
@@ -32,25 +32,23 @@ export class Forma {
 
     protected transformar: boolean = true;
 
-    opcionesGraficas: OpcionesGraficasForma = {
-        colorTrazo: '',
-        colorRelleno: '',
-        trazada: true,
-        rellenada: true,
-        grosorTrazo: undefined,
-        opacidad: undefined,
-    }
-
-    opciones: OpcionesForma = {
-        rotacion: 0,
-        escala: 1,
-    }
-
     radio: number = 0;
 
     lados: number = 0;
 
     tipo: TipoFormas = TipoFormas.poligono;
+
+    colorTrazo: string | undefined;
+
+    colorRelleno: string | undefined;
+
+    trazada: boolean = true;
+
+    rellenada: boolean = true;
+
+    grosorTrazo: number | undefined
+
+    opacidad: number | undefined
 
     protected constructor() { }
 
@@ -158,6 +156,11 @@ export class Forma {
     /**Reemplaza el conjunto de vértices base de la forma.*/
     set vertices(vertices: Vector[]) {
         this._vertices = Vector.clonarConjunto(vertices);
+    }
+
+    /**Permite modificar las opciones gráficas con la interfaz OpcionesGráficasForma*/
+    set estiloGrafico(opciones: OpcionesGraficasForma) {
+        this.aplicarOpciones(opciones)
     }
 
     /**Inicia los vértices de la forma creada.*/
@@ -304,27 +307,25 @@ export class Forma {
     /**Aplicación de la opciones definidas al crear una forma nueva.*/
     protected aplicarOpciones(opciones: OpcionesForma & OpcionesGraficasForma): void {
         if (opciones.colorTrazo) {
-            this.opcionesGraficas!.colorTrazo = opciones.colorTrazo;
+            this.colorTrazo = opciones.colorTrazo;
         }
         if (opciones.colorRelleno) {
-            this.opcionesGraficas!.colorRelleno = opciones.colorRelleno;
+            this.colorRelleno = opciones.colorRelleno;
         }
         if (opciones.trazada != undefined) {
-            this.opcionesGraficas!.trazada = opciones.trazada;
+            this.trazada = opciones.trazada;
         }
         if (opciones.rellenada != undefined) {
-            this.opcionesGraficas!.rellenada = opciones.rellenada;
+            this.rellenada = opciones.rellenada;
         }
         if (opciones.grosorTrazo) {
-            this.opcionesGraficas!.grosorTrazo = opciones.grosorTrazo;
+            this.grosorTrazo = opciones.grosorTrazo;
         }
         if (opciones.escala) {
             this.escala = opciones.escala
-            this.opciones.escala = opciones.escala;
         }
         if (opciones.rotacion) {
             this.rotacion = opciones.rotacion
-            this.opciones.rotacion = opciones.rotacion;
         }
     }
 

@@ -11,10 +11,6 @@ export interface OpcionesCuerpo extends OpcionesForma {
     masa?: number,
     /**El valor de la densidad del cuerpo.*/
     densidad?: number,
-    /**Vector velocidad inicial del cuerpo.*/
-    velocidad?: Vector,
-    /**Vector aceleración inicial del cuerpo.*/
-    aceleracion?: Vector,
     /**Si el cuerpo se verá afectado por eventos de teclado o mouse.*/
     controlable?: boolean,
 

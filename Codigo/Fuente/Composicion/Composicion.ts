@@ -39,7 +39,14 @@ export class Composicion {
     /**Actualiza la posición de un conjunto de cuerpos sumando la velocidad instantanea a la posición.*/
     actualizarMovimientoCuerpos() {
         this.cuerpos.forEach((cuerpo) => cuerpo.mover())
+    }
+
+    reboteElasticoCuerpos() {
         Interaccion.reboteEntreCuerpos(this.cuerpos)
+    }
+
+    contactoSimpleCuerpos() {
+        Interaccion.contactoSimple(this.cuerpos)
     }
 
     rellenarCuerpos() {

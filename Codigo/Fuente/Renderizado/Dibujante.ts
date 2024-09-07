@@ -3,9 +3,10 @@ import { Geometria } from "../Utiles/Geometria.js";
 import { Punto } from "../GeometriaPlana/Punto.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
-import { OpcionesTexto } from "./OpcionesTexto.js";
 import { Celda } from "../Cuadricula/Celda.js";
-import { OpcionesGraficasForma } from "../GeometriaPlana/OpcionesGraficasForma.js";
+import { OpcionesGraficasForma } from "./OpcionesGraficasForma.js";
+import { OpcionesGraficasVector } from "./OpcionesGraficasVector.js";
+import { OpcionesGraficasTexto } from "./OpcionesTexto.js";
 
 /**MÓDULO DE DIBUJO         
  * Instancia una herramienta dibujante.         
@@ -15,20 +16,12 @@ export class Dibujante {
 
     colorCelda: string;
 
-    protected _colorFondo: string;
-
-    /**Grosor de la línea al dibujar un vector.*/
-    grosorVector: number;
-
-    /**Color de la línea de los vectores.*/
-    colorVectores: string;
-
     /**Interfaz de dibujo sobre el canvas. 2D*/
     context: CanvasRenderingContext2D;
 
     // opcionesCelda:
 
-    opcionesForma: OpcionesGraficasForma = {
+    estiloForma: OpcionesGraficasForma = {
         colorTrazo: 'blue',
         colorRelleno: "skyblue",
         trazada: true,
@@ -38,7 +31,7 @@ export class Dibujante {
     }
 
     /**Opciones de color, tamaño, fuente, opacidad y alineación.*/
-    opcionesTexto: OpcionesTexto = {
+    estiloTexto: OpcionesGraficasTexto = {
         color: "red",
         tamano: 10,
         fuente: "calibri",
@@ -46,20 +39,14 @@ export class Dibujante {
         alineacion: "right"
     };
 
+    estiloVector: OpcionesGraficasVector = {
+        color: "red",
+        grosorTrazo: 1,
+    }
+
     constructor(context: CanvasRenderingContext2D) {
         this.context = context;
         this.colorCelda = "blue"
-        this._colorFondo = "white";
-        this.colorVectores = "red"
-        this.grosorVector = 1;
-        this.opcionesForma = {
-            colorTrazo: 'blue',
-            colorRelleno: "skyblue",
-            trazada: true,
-            rellenada: true,
-            grosorTrazo: 1,
-            opacidad: 1,
-        }
     }
 
     /**
@@ -114,26 +101,26 @@ export class Dibujante {
     trazar(forma: Forma): void {
         this.recorrerPath(forma)
         if (forma.tipo == TipoFormas.vector) {
-            this.context.strokeStyle = this.colorVectores;
+            this.context.strokeStyle = this.estiloVector.color;
         }
         else {
-            if (forma.opcionesGraficas.colorTrazo) {
-                this.context.strokeStyle = forma.opcionesGraficas.colorTrazo
+            if (forma.colorTrazo) {
+                this.context.strokeStyle = forma.colorTrazo
             }
             else {
-                this.context.strokeStyle = this.opcionesForma.colorTrazo!;
+                this.context.strokeStyle = this.estiloForma.colorTrazo!;
             }
-            if (forma.opcionesGraficas.opacidad) {
-                this.context.globalAlpha = forma.opcionesGraficas.opacidad
-            }
-            else {
-                this.context.globalAlpha = this.opcionesForma.opacidad!;
-            }
-            if (forma.opcionesGraficas.grosorTrazo) {
-                this.context.lineWidth = forma.opcionesGraficas.grosorTrazo
+            if (forma.opacidad) {
+                this.context.globalAlpha = forma.opacidad
             }
             else {
-                this.context.lineWidth = this.opcionesForma.grosorTrazo!;
+                this.context.globalAlpha = this.estiloForma.opacidad!;
+            }
+            if (forma.grosorTrazo) {
+                this.context.lineWidth = forma.grosorTrazo
+            }
+            else {
+                this.context.lineWidth = this.estiloForma.grosorTrazo!;
             }
         }
         this.context.stroke();
@@ -143,17 +130,17 @@ export class Dibujante {
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenar(forma: Forma): void {
         this.recorrerPath(forma);
-        if (forma.opcionesGraficas.opacidad) {
-            this.context.globalAlpha = forma.opcionesGraficas.opacidad
+        if (forma.opacidad) {
+            this.context.globalAlpha = forma.opacidad
         }
         else {
-            this.context.globalAlpha = this.opcionesForma.opacidad!;
+            this.context.globalAlpha = this.estiloForma.opacidad!;
         }
-        if (forma.opcionesGraficas.colorRelleno) {
-            this.context.fillStyle = forma.opcionesGraficas.colorRelleno
+        if (forma.colorRelleno) {
+            this.context.fillStyle = forma.colorRelleno
         }
         else {
-            this.context.fillStyle = this.opcionesForma.colorRelleno!;
+            this.context.fillStyle = this.estiloForma.colorRelleno!;
         }
         this.context.fill();
     }
@@ -161,7 +148,7 @@ export class Dibujante {
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenarCelda(celda: Celda): void {
         this.context.beginPath();
-        this.context.globalAlpha = this.opcionesForma.opacidad!;
+        this.context.globalAlpha = this.estiloForma.opacidad!;
         this.context.fillStyle = this.colorCelda;
         if (celda.color) {
             this.context.fillStyle = celda.color;
@@ -180,20 +167,20 @@ export class Dibujante {
         this.context.moveTo(origen.x, origen.y);
         this.context.lineTo(extremo.x, extremo.y);
 
-        this.context.lineWidth = this.grosorVector;
-        this.context.globalAlpha = this.opcionesForma.opacidad!;
-        this.context.strokeStyle = this.colorVectores;
+        this.context.lineWidth = this.estiloVector.grosorTrazo;
+        this.context.globalAlpha = this.estiloForma.opacidad!;
+        this.context.strokeStyle = this.estiloVector.color;
         this.context.stroke();
     }
 
 
     /**Rellena un texto en el canvas en la posicion ingresada.*/
     escribir(texto: string, posicionX: number, posicionY: number): void {
-        this.context.textAlign = this.opcionesTexto.alineacion!;
-        this.context.font = `${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
+        this.context.textAlign = this.estiloTexto.alineacion!;
+        this.context.font = `${this.estiloTexto.tamano}px ${this.estiloTexto.fuente}`;
         // this.context.font = `${this.opcionesTexto.grosor} ${this.opcionesTexto.tamano}px ${this.opcionesTexto.fuente}`;
-        this.context.globalAlpha = this.opcionesTexto.opacidad!;
-        this.context.fillStyle = this.opcionesTexto.color!;
+        this.context.globalAlpha = this.estiloTexto.opacidad!;
+        this.context.fillStyle = this.estiloTexto.color!;
         this.context.fillText(texto, posicionX, posicionY);
     }
 

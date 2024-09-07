@@ -16,6 +16,7 @@ import { Geometria } from "../Utiles/Geometria.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { OpcionesControlesCuerpo } from "./OpcionesControlesCuerpo.js";
 import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
+import { OpcionesForma } from "../GeometriaPlana/OpcionesForma.js";
 //TAREAS
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
@@ -33,13 +34,13 @@ export class Cuerpo extends Forma {
 
     rotarSegunVelocidad: boolean = false;
 
+    controlable: boolean = false;
+
     fijo: boolean = false;
 
     masa: number = 1;
 
     densidad: number = 1;
-
-    controlable: boolean = false;
 
     controles: OpcionesControlesCuerpo = {
         arriba: false,
@@ -151,17 +152,14 @@ export class Cuerpo extends Forma {
         if (opciones.densidad) {
             this.densidad = opciones.densidad;
         }
-        if (opciones.aceleracion) {
-            this.aceleracion = opciones.aceleracion;
-        }
         if (opciones.fijo != undefined) {
             this.fijo = opciones.fijo;
         }
         if (opciones.rotarSegunVelocidad != undefined) {
             this.rotarSegunVelocidad = opciones.rotarSegunVelocidad;
         }
-        if (opciones.velocidad) {
-            this.velocidad = opciones.velocidad;
+        if (opciones.controlable != undefined) {
+            this.controlable = opciones.controlable!
         }
     }
 

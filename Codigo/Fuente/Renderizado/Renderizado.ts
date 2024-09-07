@@ -1,4 +1,3 @@
-import { Celda } from "../Cuadricula/Celda.js";
 import { Forma } from "../GeometriaPlana/Formas.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { Punto } from "../GeometriaPlana/Punto.js";
@@ -14,6 +13,7 @@ export class Renderizado extends Dibujante {
     canvas: HTMLCanvasElement;
     private _anchoCanvas: number = 500;
     private _altoCanvas: number = 500;
+    private _colorFondo: string = 'black';
     constructor(canvas: HTMLCanvasElement) {
         super(canvas.getContext("2d")!);
         this.canvas = canvas;
@@ -84,11 +84,11 @@ export class Renderizado extends Dibujante {
     /**Rellena y/o traza, según el caso, un conjunto de formas.*/
     renderizarFormas(formas: Forma[]): void {
         for (let forma of formas) {
-            if (forma.opcionesGraficas.trazada) {
+            if (forma.trazada) {
                 this.trazar(forma)
                 // forma.trazar(this);
             }
-            if (forma.opcionesGraficas.rellenada) {
+            if (forma.rellenada) {
                 this.rellenar(forma)
                 // forma.rellenar(this);
             }
@@ -103,7 +103,7 @@ export class Renderizado extends Dibujante {
             this.context.globalAlpha = opacidad;
             this.context.fillStyle = this._colorFondo;
             this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            this.context.globalAlpha = this.opcionesForma.opacidad!;
+            this.context.globalAlpha = this.estiloForma.opacidad!;
         }
         else {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
