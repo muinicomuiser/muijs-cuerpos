@@ -13,25 +13,29 @@ import { Tiempo } from "./Tiempo.js";
 
 export class Composicion {
 
+    /**Herramienta renderizadora.*/
     render: Renderizado;
+    /**Conjunto de cuerpos sobre los que trabaja la composición.*/
     cuerpos: Cuerpo[] = []
+    /**Conjunto de formas sobre las que trabaja la composición.*/
     formas: Forma[] = [];
     cuadricula!: Cuadricula;
     tiempo!: Tiempo;
-    contenedor!: Contenedor;
+    contenedores: Contenedor[] = [];
     entorno!: Entorno;
     fps: number = 60;
 
     constructor(idCanvas: string) {
         this.render = Renderizado.crearPorIdCanvas(idCanvas);
-
     }
 
+    /**Define el ancho y el alto del canvas, en pixeles. */
     tamanoCanvas(ancho: number, alto: number) {
         this.render.anchoCanvas = ancho;
         this.render.altoCanvas = alto;
     }
 
+    /**Agrega cuerpos al conjunto de cuerpos manipulados por la composición. */
     agregarCuerpos(...cuerpos: Cuerpo[]): void {
         this.cuerpos.push(...cuerpos);
     }
@@ -41,32 +45,33 @@ export class Composicion {
         this.cuerpos.forEach((cuerpo) => cuerpo.mover())
     }
 
+    /**Calcula la colisión entre los cuerpos de la composición y resuelve sus choques como choques eslásticos.*/
     reboteElasticoCuerpos() {
         Interaccion.reboteEntreCuerpos(this.cuerpos)
     }
 
+    /**Calcula la colisión entre los cuerpos de la composición y evita que los cuerpos se solapen.*/
     contactoSimpleCuerpos() {
         Interaccion.contactoSimple(this.cuerpos)
     }
 
+    /**Método gráfico. Pinta el interior de los cuerpos de la composición en el canvas.*/
     rellenarCuerpos() {
         this.render.rellenarFormas(this.cuerpos)
     }
 
+    /**Método gráfico. Traza los cuerpos de la composición en el canvas.*/
     trazarCuerpos() {
         this.render.trazarFormas(this.cuerpos)
     }
 
+    /**Método gráfico. Pinta y/o rellena los cuerpos de la composición, según lo definido para cada cuerpo.*/
     renderizarCuerpos() {
         this.render.renderizarFormas(this.cuerpos)
     }
 
+    /**Método gráfico. Pinta y/o rellena las formas de la composición, según lo definido para cada forma.*/
     renderizarFormas() {
         this.render.renderizarFormas(this.formas)
     }
-    // static actualizarMovimientoCuerpos(...cuerpos: Cuerpo[]): Cuerpo[] {
-    //     cuerpos.forEach((cuerpo) => cuerpo.mover())
-    //     return cuerpos;
-    // }
-
 }

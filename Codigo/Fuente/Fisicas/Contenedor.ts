@@ -8,7 +8,7 @@ import { Interaccion } from "../Interaccion/Interaccion.js";
 
 export class Contenedor {
     cuerpo: Cuerpo;
-    cuerpos: Cuerpo[] = []
+    cuerposContenidos: Cuerpo[] = []
     constructor(cuerpo: Cuerpo) {
         this.cuerpo = cuerpo;
         this.cuerpo.fijo = true;
@@ -18,13 +18,17 @@ export class Contenedor {
         return Vector.clonarConjunto(this.cuerpo.normales)
     }
 
-    crearContenedor(cuerpo: Cuerpo): Contenedor {
+    static crearContenedor(cuerpo: Cuerpo): Contenedor {
         return new Contenedor(cuerpo);
     }
 
-    rebotarConBorde(cuerpos: Cuerpo[]): Cuerpo[] {
-        let cuerposRebotados: Cuerpo[] = Interaccion.reboteCircunferenciasConEntorno(cuerpos, this.cuerpo)
-        return cuerposRebotados;
+    /**Agrega cuerpos al conjunto de cuerpos que estarán dentro del contenedor.*/
+    agregarCuerposContenidos(...cuerpos: Cuerpo[]) {
+        this.cuerposContenidos.push(...cuerpos)
+    }
+
+    rebotarConBorde() {
+        Interaccion.reboteCircunferenciasConEntorno(this.cuerposContenidos, this.cuerpo)
     }
 
     mover(): void {

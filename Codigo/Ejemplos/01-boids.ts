@@ -1,4 +1,4 @@
-import { Geometria, Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Restriccion, Entorno, Matematica, Composicion, ManejadorEventos } from "../Fuente/mui.js";
+import { Geometria, Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Restriccion, Entorno, Matematica, Composicion, ManejadorEventos, Grabador } from "../Fuente/mui.js";
 
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 
@@ -10,12 +10,12 @@ Render.colorCanvas = Renderizado.colorHSL(220, 100, 0);
 
 //CONSTANTES
 const NUMEROBOIDS: number = 200;
-const ESCALA: number = 5
-const VELMAXIMA: number = 4;
+const ESCALA: number = 3;
+const VELMAXIMA: number = 2;
 const RADIOINICIAL: number = 400;
 
 const DISTANCIAREPELER: number = 30;
-const FUERZAREPELER: number = 6;
+const FUERZAREPELER: number = 2;
 
 const DISTANCIACOORDINAR: number = 60;
 const FACTORCOORDINACION: number = 0.4;
@@ -48,35 +48,9 @@ formaGeneradora.verticesTransformados.forEach((vertice) => {
     boid.colorTrazo = COLORBOID;
     boids.push(boid);
 })
-//GRABACIÓN
-let videoStream = Render.canvas.captureStream(60);
-let mediaRecorder = new MediaRecorder(videoStream);
 
-let chunks: BlobPart[] = [];
-mediaRecorder.ondataavailable = function (e) {
-    chunks.push(e.data);
-};
-
-mediaRecorder.onstop = function (e) {
-    let blob = new Blob(chunks, { 'type': 'video/avi' });
-    chunks = [];
-    let videoURL = URL.createObjectURL(blob);
-    // let link = document.createElement("a"); // Or maybe get it from the current document
-    let link: HTMLAnchorElement = <HTMLAnchorElement>document.getElementById("descarga"); // Or maybe get it from the current document
-    link.href = videoURL;
-    link.download = "Captura Canvas";
-    link.innerHTML = 'Descargar'
-    link.style.color = 'skyblue'
-    // link.click()
-};
-
-mediaRecorder.ondataavailable = function (e) {
-    chunks.push(e.data);
-};
-
-mediaRecorder.start();
+Grabador.grabarCanvas(Render.canvas, 50000, 60, 'descarga')
 animar();
-setTimeout(function () { mediaRecorder.stop(); }, 30000);
 
 function animar() {
     Render.limpiarCanvas()

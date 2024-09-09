@@ -41,20 +41,20 @@ TAREAS
 - Reunir detección entre formas y forma-contenedor en un solo método que detecte el producto escalar entre las normales para determinar la posición de los cuerpos.
 
 - Resolver el solapamiento para todo tipo de cuerpos, no solo para circunferencias.
+- Resolución de colisiones
 - Aplicar también resolución de choques para todo tipo de cuerpos
 - Iteraciones
-
-- Roce
-
+- FPS
+- Quadtree
 - Métodos para grabar
 
 - Composición podría contener todo. Agregarle y quitarle cuerpos, agregarle y quitarle entornos, y que actualice todo lo que tiene.
     Como si composición fuese el mundo creado.
     Matter.js funciona más o menos así.
-- Que temporizador se llame Tiempo y controle tanto el contador puntual como todos los contadores.
 - Composición también definirá los fps
 
 Resueltas:
++ Que temporizador se llame Tiempo y controle tanto el contador puntual como todos los contadores.
 + Reunir los export en un solo archivo para importar mui.js desde otros proyectos. ++
 + Agregar opciones a Cuerpo, Forma, etcétera
 + Agregar una clase que se dedique a manejar eventos de teclado y mouse
