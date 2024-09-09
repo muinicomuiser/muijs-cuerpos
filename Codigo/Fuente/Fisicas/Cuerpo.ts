@@ -32,16 +32,17 @@ export class Cuerpo extends Forma {
 
     protected _aceleracion: Vector = Vector.cero();
 
+    /**Determina si el cuerpo rotará o no según la dirección y sentido de su velocidad.*/
     rotarSegunVelocidad: boolean = false;
-
+    /**Propiedad útil para determinar si un cuerpo será controlado por el usuario.*/
     controlable: boolean = false;
-
+    /**Determina si un cuerpo se moverá o no producto de la interacción con otros cuerpos.*/
     fijo: boolean = false;
 
     masa: number = 1;
 
     densidad: number = 1;
-
+    /**Propiedades para activar y desactivar acciones relacionadas con el control del movimiento de cuerpos por parte del usuario.*/
     controles: OpcionesControlesCuerpo = {
         arriba: false,
         abajo: false,
@@ -179,7 +180,9 @@ export class Cuerpo extends Forma {
         dibujante.trazarVector(vectorVelocidad);
     }
 
-    public controlar() {
+
+    /**Aplica las transformaciones definidas para cada evento (de teclado, mouse u otro) sobre el cuerpo.*/
+    public ejecutarControles() {
         if (this.controles.arriba) {
             this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), this.controles.rapidez))
         }

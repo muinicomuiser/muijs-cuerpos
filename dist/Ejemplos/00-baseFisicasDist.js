@@ -1,6 +1,23 @@
 (function () {
     'use strict';
 
+    /**
+     * MÓDULO MATEMÁTICO EN ESPAÑOL
+     * Reducido. Contiene solo funciones útiles de números aleatorios.
+     */
+    class Matematica {
+        /**Retorna un número aleatorio entre dos números.*/
+        static aleatorio(min, max) {
+            let rango = max - min;
+            return (Math.random() * rango) + min;
+        }
+        /**Retorna un número aleatorio entero entre dos números, ambos incluídos.*/
+        static aleatorioEntero(min, max) {
+            let rango = 1 + max - min;
+            return Math.trunc((Math.random() * rango) + min);
+        }
+    }
+
     /**MÓDULO DE GEOMETRÍA EN ESPAÑOL
      * Útilitario para mui.js
      * Incluye métodos de conversión de grados y distancia entre puntos.
@@ -841,7 +858,7 @@
     //Interacciones entre cuerpos.
     class Interaccion {
         static get iteraciones() {
-            return 15;
+            return 5;
         }
         /**Retorna una copia del conjunto de cuerpos con la resolución de rebote para cuerpos que han colisionado.      */
         static reboteEntreCuerpos(cuerpos) {
@@ -938,7 +955,7 @@
     //REPENSAR ESTA CLASE
     class Contenedor {
         cuerpo;
-        cuerpos = [];
+        cuerposContenidos = [];
         constructor(cuerpo) {
             this.cuerpo = cuerpo;
             this.cuerpo.fijo = true;
@@ -946,12 +963,15 @@
         get normales() {
             return Vector.clonarConjunto(this.cuerpo.normales);
         }
-        crearContenedor(cuerpo) {
+        static crearContenedor(cuerpo) {
             return new Contenedor(cuerpo);
         }
-        rebotarConBorde(cuerpos) {
-            let cuerposRebotados = Interaccion.reboteCircunferenciasConEntorno(cuerpos, this.cuerpo);
-            return cuerposRebotados;
+        /**Agrega cuerpos al conjunto de cuerpos que estarán dentro del contenedor.*/
+        agregarCuerposContenidos(...cuerpos) {
+            this.cuerposContenidos.push(...cuerpos);
+        }
+        rebotarConBorde() {
+            Interaccion.reboteCircunferenciasConEntorno(this.cuerposContenidos, this.cuerpo);
         }
         mover() {
             this.cuerpo.mover();
@@ -979,11 +999,15 @@
     class Cuerpo extends Forma {
         _velocidad = Vector.cero();
         _aceleracion = Vector.cero();
+        /**Determina si el cuerpo rotará o no según la dirección y sentido de su velocidad.*/
         rotarSegunVelocidad = false;
+        /**Propiedad útil para determinar si un cuerpo será controlado por el usuario.*/
         controlable = false;
+        /**Determina si un cuerpo se moverá o no producto de la interacción con otros cuerpos.*/
         fijo = false;
         masa = 1;
         densidad = 1;
+        /**Propiedades para activar y desactivar acciones relacionadas con el control del movimiento de cuerpos por parte del usuario.*/
         controles = {
             arriba: false,
             abajo: false,
@@ -1103,7 +1127,8 @@
             vectorVelocidad.origen = this._transformacion.posicion;
             dibujante.trazarVector(vectorVelocidad);
         }
-        controlar() {
+        /**Aplica las transformaciones definidas para cada evento (de teclado, mouse u otro) sobre el cuerpo.*/
+        ejecutarControles() {
             if (this.controles.arriba) {
                 this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), this.controles.rapidez));
             }
@@ -1530,21 +1555,26 @@
     //Junta los cuerpos, interacciones, entorno, casos límite y renderizado.
     //Debería estar acá la creación de canvas y contexto??
     class Composicion {
+        /**Herramienta renderizadora.*/
         render;
+        /**Conjunto de cuerpos sobre los que trabaja la composición.*/
         cuerpos = [];
+        /**Conjunto de formas sobre las que trabaja la composición.*/
         formas = [];
         cuadricula;
         tiempo;
-        contenedor;
+        contenedores = [];
         entorno;
         fps = 60;
         constructor(idCanvas) {
             this.render = Renderizado.crearPorIdCanvas(idCanvas);
         }
+        /**Define el ancho y el alto del canvas, en pixeles. */
         tamanoCanvas(ancho, alto) {
             this.render.anchoCanvas = ancho;
             this.render.altoCanvas = alto;
         }
+        /**Agrega cuerpos al conjunto de cuerpos manipulados por la composición. */
         agregarCuerpos(...cuerpos) {
             this.cuerpos.push(...cuerpos);
         }
@@ -1552,21 +1582,27 @@
         actualizarMovimientoCuerpos() {
             this.cuerpos.forEach((cuerpo) => cuerpo.mover());
         }
+        /**Calcula la colisión entre los cuerpos de la composición y resuelve sus choques como choques eslásticos.*/
         reboteElasticoCuerpos() {
             Interaccion.reboteEntreCuerpos(this.cuerpos);
         }
+        /**Calcula la colisión entre los cuerpos de la composición y evita que los cuerpos se solapen.*/
         contactoSimpleCuerpos() {
             Interaccion.contactoSimple(this.cuerpos);
         }
+        /**Método gráfico. Pinta el interior de los cuerpos de la composición en el canvas.*/
         rellenarCuerpos() {
             this.render.rellenarFormas(this.cuerpos);
         }
+        /**Método gráfico. Traza los cuerpos de la composición en el canvas.*/
         trazarCuerpos() {
             this.render.trazarFormas(this.cuerpos);
         }
+        /**Método gráfico. Pinta y/o rellena los cuerpos de la composición, según lo definido para cada cuerpo.*/
         renderizarCuerpos() {
             this.render.renderizarFormas(this.cuerpos);
         }
+        /**Método gráfico. Pinta y/o rellena las formas de la composición, según lo definido para cada forma.*/
         renderizarFormas() {
             this.render.renderizarFormas(this.formas);
         }
@@ -1580,12 +1616,12 @@
     Render.colorCanvas = 'black';
     //CUERPOS
     //Formas generadoras
-    const RADIOGENERADORA = 180;
-    const RADIOGENERADORADOS = 100;
-    const NUMEROCUERPOSFUERA = 30;
-    const NUMEROCUERPOSCENTRO = 60;
-    const FormaGeneradora = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA);
-    const FormaGeneradoraDos = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS);
+    const RADIOGENERADORA = Matematica.aleatorioEntero(180, 220);
+    const RADIOGENERADORADOS = Matematica.aleatorioEntero(80, 150);
+    const NUMEROCUERPOSFUERA = Matematica.aleatorioEntero(0, 40);
+    const NUMEROCUERPOSCENTRO = Matematica.aleatorioEntero(0, 80) + (NUMEROCUERPOSFUERA == 0 ? 1 : 0);
+    const FormaGeneradora = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) });
+    const FormaGeneradoraDos = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) });
     //Cuerpos
     const RADIOCUERPO = 8;
     const RADIOCUERPODOS = 4;
@@ -1616,7 +1652,7 @@
     Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 };
     //Animación
     function animar() {
-        Render.limpiarCanvas(0);
+        Render.limpiarCanvas();
         Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
         Frontera.colisionConBorde(...Circunferencias, Atractor);
         COMPO.actualizarMovimientoCuerpos();

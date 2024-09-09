@@ -26,8 +26,8 @@ export class ManejadorEventos {
         ManejadorEventos.eventoTeclado('keypress', codigoTecla, manejarEvento, parametro)
     }
 
-    //Considerar agregar un parámetro validador (validador?: boolean). Un if boolean
-    /**Agrega un eventListener para eventos de mouse. Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+    /**Agrega un eventListener para eventos de mouse y para trabajar con las propiedades del evento.            
+     * Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
     static eventoMouseEnCanvas<K>(tipoEvento: EventoMouse, canvas: HTMLCanvasElement, manejarEvento: (eventoMouse: MouseEvent, param: K) => void, parametro?: K) {
         canvas.addEventListener(tipoEvento, (evento) => {
             if (parametro != undefined) {

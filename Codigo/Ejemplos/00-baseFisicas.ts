@@ -1,4 +1,4 @@
-import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
+import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
 const COMPO: Composicion = new Composicion('canvas')
 let ancho: number = window.innerWidth < 600 ? window.innerWidth : 600;
@@ -9,12 +9,12 @@ Render.colorCanvas = 'black'
 
 //CUERPOS
 //Formas generadoras
-const RADIOGENERADORA: number = 180;
-const RADIOGENERADORADOS: number = 100;
-const NUMEROCUERPOSFUERA: number = 30;
-const NUMEROCUERPOSCENTRO: number = 60
-const FormaGeneradora: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA)
-const FormaGeneradoraDos: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS)
+const RADIOGENERADORA: number = Matematica.aleatorioEntero(180, 220);
+const RADIOGENERADORADOS: number = Matematica.aleatorioEntero(80, 150);
+const NUMEROCUERPOSFUERA: number = Matematica.aleatorioEntero(0, 40);
+const NUMEROCUERPOSCENTRO: number = Matematica.aleatorioEntero(0, 80) + (NUMEROCUERPOSFUERA == 0 ? 1 : 0);
+const FormaGeneradora: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) })
+const FormaGeneradoraDos: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) })
 
 //Cuerpos
 const RADIOCUERPO: number = 8;
@@ -56,7 +56,7 @@ Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 
 //Animación
 function animar() {
-    Render.limpiarCanvas(0)
+    Render.limpiarCanvas()
 
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion))
     Frontera.colisionConBorde(...Circunferencias, Atractor);

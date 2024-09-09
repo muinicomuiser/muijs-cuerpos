@@ -1,5 +1,4 @@
 import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
-import { OpcionesGraficasForma } from "../Fuente/Renderizado/OpcionesGraficasForma.js";
 
 const COMPO: Composicion = new Composicion('canvas')
 COMPO.tamanoCanvas(1080, 1080)
@@ -63,7 +62,7 @@ mediaRecorder.ondataavailable = function (e) {
 };
 
 mediaRecorder.onstop = function (e) {
-    let blob = new Blob(chunks, { 'type': 'video/avi' });
+    let blob = new Blob(chunks, { 'type': 'video/mpeg' });
     chunks = [];
     let videoURL = URL.createObjectURL(blob);
     // let link = document.createElement("a"); // Or maybe get it from the current document
@@ -81,7 +80,7 @@ mediaRecorder.ondataavailable = function (e) {
 
 mediaRecorder.start();
 animar();
-setTimeout(function () { mediaRecorder.stop(); }, 60000);
+setTimeout(function () { mediaRecorder.stop(); }, 30000);
 
 
 //ANIMACIÓN
