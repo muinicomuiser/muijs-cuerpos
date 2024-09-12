@@ -24,6 +24,8 @@ export class Composicion {
     contenedores: Contenedor[] = [];
     entorno!: Entorno;
     fps: number = 60;
+    animar: boolean = true;
+
 
     constructor(idCanvas: string) {
         this.render = Renderizado.crearPorIdCanvas(idCanvas);
@@ -73,5 +75,18 @@ export class Composicion {
     /**Método gráfico. Pinta y/o rellena las formas de la composición, según lo definido para cada forma.*/
     renderizarFormas() {
         this.render.renderizarFormas(this.formas)
+    }
+
+    animacion(funcion: () => void): void {
+        let tiempo: Tiempo = new Tiempo()
+        const funcionAnimar = () => {
+            let fps: number = this.fps;
+            if (this.animar) {
+                tiempo.iterarPorSegundo(funcion, fps)
+            }
+
+            requestAnimationFrame(funcionAnimar)
+        }
+        funcionAnimar()
     }
 }

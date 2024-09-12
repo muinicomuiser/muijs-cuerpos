@@ -53,6 +53,8 @@ TAREAS
     Matter.js funciona más o menos así.
 - Composición también definirá los fps
 
+- Interfaz en html para páginas de ejemplos
+
 Resueltas:
 + Que temporizador se llame Tiempo y controle tanto el contador puntual como todos los contadores.
 + Reunir los export en un solo archivo para importar mui.js desde otros proyectos. ++

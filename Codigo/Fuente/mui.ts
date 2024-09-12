@@ -5,7 +5,6 @@ export { Matematica } from "./Utiles/Matematica.js";
 export { Geometria } from "./Utiles/Geometria.js";
 export { Grabador } from "./Utiles/Grabacion.js";
 
-
 /**Geometría Plana*/
 export { Forma } from "./GeometriaPlana/Formas.js";
 export { Punto } from "./GeometriaPlana/Punto.js";

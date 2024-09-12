@@ -148,6 +148,7 @@ export class Dibujante {
     /**Rellena en el canvas la forma ingresada como argumento.*/
     rellenarCelda(celda: Celda): void {
         this.context.beginPath();
+        this.context.clearRect((celda.x - 1) * celda.tamano, (celda.y - 1) * celda.tamano, celda.tamano, celda.tamano);
         this.context.globalAlpha = this.estiloForma.opacidad!;
         this.context.fillStyle = this.colorCelda;
         if (celda.color) {

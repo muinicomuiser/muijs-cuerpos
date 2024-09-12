@@ -1,3 +1,4 @@
+import { Vector } from "../mui.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { Matematica } from "../Utiles/Matematica.js";
 import { Celda } from "./Celda.js";
@@ -8,6 +9,7 @@ export class Cuadricula {
     columnas: number;
     /**La dimensión del lado de una celda cuadrada.*/
     tamanoCelda: number;
+
     celdas: Celda[][] = []
     /**El número de estados posibles que puede adoptar cada celda.*/
     estados: number;
@@ -41,15 +43,32 @@ export class Cuadricula {
 
     private crearCeldas(): Celda[][] {
         let celdasNuevas: Celda[][] = [];
+
         for (let columna: number = 1; columna <= this.columnas; columna++) {
             celdasNuevas.push([])
             for (let fila: number = 1; fila <= this.filas; fila++) {
                 let celda: Celda = new Celda(columna, fila, this.tamanoCelda);
                 celda.color = this._colorCeldas;
+                celda.determinarVecinos(this.columnas, this.filas)
                 celdasNuevas[columna - 1].push(celda);
             }
         }
         return celdasNuevas;
+    }
+
+    /**Retorna un arreglo de tuplas con el número de vecinos de la celda que están en cada estado posible.          
+     * [[estado, número de vecinos en ese estado], [estado, número de vecinos en ese estado]...]
+     */
+    estadosVecinosPorCelda(celda: Celda): [number, number][] {
+        let vecinos: Vector[] = this.celdas[celda.x - 1][celda.y - 1].posicionVecinos;
+        let listaEstados: [number, number][] = [];
+        for (let estado: number = 0; estado < this.estados; estado++) {
+            listaEstados.push([estado, 0])
+        }
+        vecinos.forEach(vecino => {
+            listaEstados[this.celdaSegunCoordenada(vecino.x, vecino.y).estado][1]++
+        })
+        return listaEstados;
     }
 
     /**Pinta todas las celdas de la cuadrícula. Asigna la opacidad de acuerdo al estado de cada celda.*/
@@ -81,6 +100,21 @@ export class Cuadricula {
         }
         else {
             this.celdas.forEach((celdas) => celdas.forEach((celda) => celda.estado = Matematica.aleatorioEntero(0, this.estados - 1)));
+        }
+    }
+
+    /**Asigna un estado aleatorio a cada celda de la cuadrícula.*/
+    estadosCero(): void {
+        this.celdas.forEach((celdas) => celdas.forEach((celda) => celda.estado = 0));
+    }
+
+    /**Asigna un estado aleatorio a cada celda de la cuadrícula.*/
+    estadosMaximos(): void {
+        if (this.estados == 1) {
+            this.celdas.forEach((celdas) => celdas.forEach((celda) => celda.estado = 1));
+        }
+        else {
+            this.celdas.forEach((celdas) => celdas.forEach((celda) => celda.estado = this.estados - 1));
         }
     }
 }
