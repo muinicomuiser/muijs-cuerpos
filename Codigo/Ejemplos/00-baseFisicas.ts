@@ -13,8 +13,8 @@ window.visualViewport!.height
 //Formas generadoras
 const RADIOGENERADORA: number = Matematica.aleatorioEntero(180, 220);
 const RADIOGENERADORADOS: number = Matematica.aleatorioEntero(80, 150);
-const NUMEROCUERPOSFUERA: number = Matematica.aleatorioEntero(0, 40);
-const NUMEROCUERPOSCENTRO: number = Matematica.aleatorioEntero(0, 80) + (NUMEROCUERPOSFUERA == 0 ? 1 : 0);
+const NUMEROCUERPOSFUERA: number = Matematica.aleatorioEntero(0, 60);
+const NUMEROCUERPOSCENTRO: number = Matematica.aleatorioEntero(0, 120) + (NUMEROCUERPOSFUERA == 0 ? 1 : 0);
 const FormaGeneradora: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) })
 const FormaGeneradoraDos: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) })
 
@@ -39,7 +39,7 @@ FormaGeneradoraDos.verticesTransformados.forEach((vertice) => {
 
 
 //cuerpo atractor
-const MagnitudAtraccion: number = 0.1;
+const MagnitudAtraccion: number = 0.05;
 const RADIOATRACTOR: number = 30
 const Atractor: Cuerpo = Cuerpo.circunferencia(Render.centroCanvas.x, Render.centroCanvas.y, RADIOATRACTOR)
 Atractor.masa = 5000
@@ -57,8 +57,9 @@ Frontera.cuerpo.masa = 10000000000;
 Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 
 COMPO.usarfpsNativos = true;
-COMPO.tick = 40;
+COMPO.tick = 10;
 COMPO.animacion(() => {
+    let inicio: number = Date.now()
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
     Frontera.colisionConBorde(...Circunferencias, Atractor);
     COMPO.moverCuerpos();
@@ -68,6 +69,7 @@ COMPO.animacion(() => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
         cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999)
     })
+    console.log(Date.now() - inicio)
 
 }, () => {
     Render.limpiarCanvas();
