@@ -1429,8 +1429,8 @@
             let origen = vector.origen;
             let extremo = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
             this.context.beginPath();
-            this.context.moveTo(Math.round(origen.x), Math.round(origen.y));
-            this.context.lineTo(Math.round(extremo.x), Math.round(extremo.y));
+            this.context.moveTo(origen.x, origen.y);
+            this.context.lineTo(extremo.x, extremo.y);
             this.context.lineWidth = this.estiloVector.grosorTrazo;
             this.context.globalAlpha = this.estiloForma.opacidad;
             this.context.strokeStyle = this.estiloVector.color;
@@ -1452,16 +1452,16 @@
         */
         pathCircunferencia(forma) {
             this.context.beginPath();
-            this.context.arc(Math.round(forma.posicion.x), Math.round(forma.posicion.y), forma.radioTransformado, 0, Geometria.DOS_PI);
+            this.context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
         }
         /**Método interno.
         * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.
         */
         pathPoligono(forma) {
             this.context.beginPath();
-            this.context.moveTo(Math.round(forma.verticesTransformados[0].x), Math.round(forma.verticesTransformados[0].y));
+            this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
             for (let vertice of forma.verticesTransformados) {
-                this.context.lineTo(Math.round(vertice.x), Math.round(vertice.y));
+                this.context.lineTo(vertice.x, vertice.y);
             }
             this.context.closePath();
         }
@@ -1470,9 +1470,9 @@
         */
         pathLinea(forma) {
             this.context.beginPath();
-            this.context.moveTo(Math.round(forma.verticesTransformados[0].x), Math.round(forma.verticesTransformados[0].y));
+            this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
             for (let vertice of forma.verticesTransformados) {
-                this.context.lineTo(Math.round(vertice.x), Math.round(vertice.y));
+                this.context.lineTo(vertice.x, vertice.y);
             }
         }
     }
@@ -1759,8 +1759,10 @@
     }
 
     const COMPO = Composicion.crearConIDCanvas('canvas');
-    let ancho = window.innerWidth < 600 ? window.innerWidth : 600;
-    let alto = window.innerHeight < 600 ? window.innerHeight : 600;
+    let ancho = window.visualViewport.width < 600 ? window.visualViewport.width : 600;
+    let alto = window.visualViewport.height < 600 ? window.visualViewport.height : 600;
+    // let ancho: number = window.innerWidth < 600 ? window.innerWidth : 600;
+    // let alto: number = window.innerHeight < 600 ? window.innerHeight : 600;
     COMPO.tamanoCanvas(ancho, alto);
     const Render = COMPO.render;
     Render.colorCanvas = 'black';
@@ -1789,7 +1791,7 @@
         Circunferencias.push(circunferencia);
     });
     //cuerpo atractor
-    const MagnitudAtraccion = 0.02;
+    const MagnitudAtraccion = 0.1;
     const RADIOATRACTOR = 30;
     const Atractor = Cuerpo.circunferencia(Render.centroCanvas.x, Render.centroCanvas.y, RADIOATRACTOR);
     Atractor.masa = 5000;
@@ -1801,9 +1803,9 @@
     const Frontera = Entorno.crearEntornoCanvas(Render.canvas);
     Frontera.cuerpo.masa = 10000000000;
     Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 };
-    //Animación
-    function animar() {
-        Render.limpiarCanvas();
+    COMPO.usarfpsNativos = true;
+    COMPO.tick = 40;
+    COMPO.animacion(() => {
         Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
         Frontera.colisionConBorde(...Circunferencias, Atractor);
         COMPO.moverCuerpos();
@@ -1813,10 +1815,10 @@
             cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10);
             cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999);
         });
+    }, () => {
+        Render.limpiarCanvas();
         Render.trazar(Frontera.cuerpo);
         COMPO.renderizarCuerpos();
-        requestAnimationFrame(animar);
-    }
-    animar();
+    });
 
 })();
