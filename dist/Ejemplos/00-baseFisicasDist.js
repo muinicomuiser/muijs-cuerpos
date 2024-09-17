@@ -639,7 +639,7 @@
     */
     class Colision {
         static get iteraciones() {
-            return 4;
+            return 20;
         }
         /**Detecta colisiones usando el teorema SAT entre formas de tipo circunferencia y/o polígono.
          * Retorna true si detecta una colisión.
@@ -1770,8 +1770,8 @@
     //Formas generadoras
     const RADIOGENERADORA = Matematica.aleatorioEntero(180, 220);
     const RADIOGENERADORADOS = Matematica.aleatorioEntero(80, 150);
-    const NUMEROCUERPOSFUERA = Matematica.aleatorioEntero(0, 40);
-    const NUMEROCUERPOSCENTRO = Matematica.aleatorioEntero(0, 80) + (NUMEROCUERPOSFUERA == 0 ? 1 : 0);
+    const NUMEROCUERPOSFUERA = Matematica.aleatorioEntero(0, 60);
+    const NUMEROCUERPOSCENTRO = Matematica.aleatorioEntero(0, 120) + (NUMEROCUERPOSFUERA == 0 ? 1 : 0);
     const FormaGeneradora = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) });
     const FormaGeneradoraDos = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS, { rotacion: Geometria.gradoARadian(Matematica.aleatorioEntero(0, 360)) });
     //Cuerpos
@@ -1791,7 +1791,7 @@
         Circunferencias.push(circunferencia);
     });
     //cuerpo atractor
-    const MagnitudAtraccion = 0.1;
+    const MagnitudAtraccion = 0.05;
     const RADIOATRACTOR = 30;
     const Atractor = Cuerpo.circunferencia(Render.centroCanvas.x, Render.centroCanvas.y, RADIOATRACTOR);
     Atractor.masa = 5000;
@@ -1804,8 +1804,9 @@
     Frontera.cuerpo.masa = 10000000000;
     Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 };
     COMPO.usarfpsNativos = true;
-    COMPO.tick = 40;
+    COMPO.tick = 10;
     COMPO.animacion(() => {
+        let inicio = Date.now();
         Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
         Frontera.colisionConBorde(...Circunferencias, Atractor);
         COMPO.moverCuerpos();
@@ -1815,6 +1816,7 @@
             cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10);
             cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999);
         });
+        console.log(Date.now() - inicio);
     }, () => {
         Render.limpiarCanvas();
         Render.trazar(Frontera.cuerpo);
