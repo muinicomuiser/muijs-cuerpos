@@ -1,7 +1,7 @@
-import { Celda, Composicion, Cuadricula, Grabador, ManejadorEventos, Renderizado, Tiempo, Vector } from "../Fuente/mui.js";
+import { Celda, Composicion, Cuadricula, ManejadorEventos, Renderizado } from "../Fuente/mui.js";
 
 const CuadriculaJuego: Cuadricula = new Cuadricula(90, 160, 10, 2);
-const COMPO: Composicion = new Composicion('canvas');
+const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = 'black';
 CuadriculaJuego.colorCeldas = 'white';
@@ -10,11 +10,15 @@ COMPO.tamanoCanvas(CuadriculaJuego.anchoCuadricula, CuadriculaJuego.altoCuadricu
 CuadriculaJuego.estadosCero();
 // CuadriculaJuego.estadosAleatorios();
 
-COMPO.fps = 1;
+COMPO.tick = 1;
+COMPO.usarfpsNativos = true
 CuadriculaJuego.rellenarCeldas(Render);
 
 // Grabador.grabarCanvas(Render.canvas, 100000, 60, 'descarga');
-COMPO.animacion(nuevoFrame);
+COMPO.animacion(() => juegoVida(), () => {
+    Render.limpiarCanvas();
+    CuadriculaJuego.rellenarCeldas(Render);
+});
 
 function nuevoFrame() {
     Render.limpiarCanvas();
@@ -66,32 +70,32 @@ ManejadorEventos.eventoKeyup('espacio', () => {
     nuevoFrame()
 });
 ManejadorEventos.eventoKeyup('abajo', () => {
-    if (COMPO.fps >= 1) {
-        if (COMPO.fps > 40) {
-            COMPO.fps -= 5;
+    if (COMPO.tick >= 1) {
+        if (COMPO.tick > 40) {
+            COMPO.tick -= 5;
         }
-        else if (COMPO.fps > 12) {
-            COMPO.fps -= 2
+        else if (COMPO.tick > 12) {
+            COMPO.tick -= 2
         }
         else {
-            COMPO.fps--
+            COMPO.tick--
         }
     }
-    console.log(COMPO.fps)
+    console.log(COMPO.tick)
 });
 ManejadorEventos.eventoKeyup('arriba', () => {
-    if (COMPO.fps < 60) {
-        if (COMPO.fps >= 40) {
-            COMPO.fps += 5;
+    if (COMPO.tick < 60) {
+        if (COMPO.tick >= 40) {
+            COMPO.tick += 5;
         }
-        else if (COMPO.fps >= 12) {
-            COMPO.fps += 2
+        else if (COMPO.tick >= 12) {
+            COMPO.tick += 2
         }
         else {
-            COMPO.fps++
+            COMPO.tick++
         }
     }
-    console.log(COMPO.fps)
+    console.log(COMPO.tick)
 });
 ManejadorEventos.eventoMouseEnCanvas('click', Render.canvas, evento => {
     let mouseX: number = evento.pageX - Render.canvas.offsetLeft;

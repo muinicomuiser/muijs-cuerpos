@@ -1,6 +1,6 @@
 import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
-const COMPO: Composicion = new Composicion('canvas')
+const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 let ancho: number = window.innerWidth < 600 ? window.innerWidth : 600;
 let alto: number = window.innerHeight < 600 ? window.innerHeight : 600;
 COMPO.tamanoCanvas(ancho, alto)
@@ -51,6 +51,7 @@ COMPO.agregarCuerpos(...Circunferencias, Atractor);
 
 //Frontera del canvas
 const Frontera: Entorno = Entorno.crearEntornoCanvas(Render.canvas);
+Frontera.cuerpo.masa = 10000000000;
 Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 
 
@@ -60,7 +61,7 @@ function animar() {
 
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion))
     Frontera.colisionConBorde(...Circunferencias, Atractor);
-    COMPO.actualizarMovimientoCuerpos()
+    COMPO.moverCuerpos()
     // COMPO.contactoSimpleCuerpos()
     COMPO.reboteElasticoCuerpos()
 

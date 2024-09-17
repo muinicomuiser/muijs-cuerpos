@@ -16,10 +16,10 @@ export class Celda {
         this.estado = estado;
     }
 
-    get x(): number {
+    get columna(): number {
         return this.posicion.x;
     }
-    get y(): number {
+    get fila(): number {
         return this.posicion.y;
     }
 
@@ -30,19 +30,7 @@ export class Celda {
         return Vector.crear(-this.distanciaVecindad, this.distanciaVecindad)
     }
 
-    determinarVecinos(numColumnas: number, numFilas: number) {
-        const posicionesVecinos: Vector[] = [];
-        for (let col: number = -this.distanciaVecindad; col <= this.distanciaVecindad; col++) {
-            for (let fil: number = -this.distanciaVecindad; fil <= this.distanciaVecindad; fil++) {
-                if (fil + this.y > 0 && fil + this.y <= numFilas && col + this.x > 0 && col + this.x <= numColumnas && !(col == 0 && fil == 0)) {
-                    posicionesVecinos.push(Vector.crear(this.x + col, this.y + fil))
-                }
-            }
-        }
-        this.posicionVecinos = posicionesVecinos;
-
-    }
-
+    /**Pinta el interior de la celda. Usa como argumento una instancia de la clase Dibujante o Renderizado.*/
     rellenar(dibujante: Dibujante): void {
         dibujante.rellenarCelda(this);
     }

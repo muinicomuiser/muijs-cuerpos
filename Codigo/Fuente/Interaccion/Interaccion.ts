@@ -94,6 +94,8 @@ export class Interaccion {
             if (solapamiento != null) {
                 let normal: Vector = Colision.normalContactoConEntorno(circunferencias[i], entorno);
                 let normalInvertida: Vector = Vector.invertir(normal)
+                // circunferencias[i].velocidad = Cinematica.reboteElastico(circunferencias[i], entorno)[0]
+                // circunferencias[i].velocidad = Vector.invertir(Cinematica.reboteElastico(circunferencias[i], entorno)[0])
                 circunferencias[i].velocidad = Cinematica.reboteSimple(circunferencias[i], normalInvertida)
                 circunferencias[i].posicion = Vector.suma(circunferencias[i].posicion, Interaccion.resolverSolapamientoEntorno(normalInvertida, solapamiento))
             }

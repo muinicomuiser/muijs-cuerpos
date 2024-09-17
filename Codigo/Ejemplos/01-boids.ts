@@ -2,7 +2,7 @@ import { Geometria, Punto, Forma, Vector, Renderizado, Cuerpo, Fuerza, Restricci
 
 /**AQUÍ EMPECÉ A PROBAR ATRACCIONES Y REPULSIONES.*/
 
-const COMPO: Composicion = new Composicion('canvas')
+const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 COMPO.tamanoCanvas(1080, 1920)
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = Renderizado.colorHSL(220, 100, 0);

@@ -30,3 +30,4 @@ Hasta el momento permite:
 
 ## Proyectos creados con mui.js
 - <a href="https://muinicomuiser.github.io/boids" target="_blank">boids</a>
+- <a href="https://muinicomuiser.github.io/Juego-de-la-vida" target="_blank">Juego de la Vida</a>

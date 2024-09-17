@@ -1,6 +1,6 @@
 import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
-const COMPO: Composicion = new Composicion('canvas')
+const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 COMPO.tamanoCanvas(1080, 1080)
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = 'black'
@@ -89,7 +89,7 @@ function animar() {
 
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion))
     Frontera.colisionConBorde(...Circunferencias, Atractor);
-    COMPO.actualizarMovimientoCuerpos()
+    COMPO.moverCuerpos()
     COMPO.contactoSimpleCuerpos()
     // COMPO.reboteElasticoCuerpos()
 
