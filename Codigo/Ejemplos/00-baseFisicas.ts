@@ -1,12 +1,14 @@
 import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
 const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
-let ancho: number = window.innerWidth < 600 ? window.innerWidth : 600;
-let alto: number = window.innerHeight < 600 ? window.innerHeight : 600;
+let ancho: number = window.visualViewport!.width < 600 ? window.visualViewport!.width : 600;
+let alto: number = window.visualViewport!.height < 600 ? window.visualViewport!.height : 600;
+// let ancho: number = window.innerWidth < 600 ? window.innerWidth : 600;
+// let alto: number = window.innerHeight < 600 ? window.innerHeight : 600;
 COMPO.tamanoCanvas(ancho, alto)
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = 'black'
-
+window.visualViewport!.height
 //CUERPOS
 //Formas generadoras
 const RADIOGENERADORA: number = Matematica.aleatorioEntero(180, 220);
@@ -37,7 +39,7 @@ FormaGeneradoraDos.verticesTransformados.forEach((vertice) => {
 
 
 //cuerpo atractor
-const MagnitudAtraccion: number = 0.02;
+const MagnitudAtraccion: number = 0.1;
 const RADIOATRACTOR: number = 30
 const Atractor: Cuerpo = Cuerpo.circunferencia(Render.centroCanvas.x, Render.centroCanvas.y, RADIOATRACTOR)
 Atractor.masa = 5000
@@ -54,24 +56,21 @@ const Frontera: Entorno = Entorno.crearEntornoCanvas(Render.canvas);
 Frontera.cuerpo.masa = 10000000000;
 Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 
-
-//Animación
-function animar() {
-    Render.limpiarCanvas()
-
-    Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion))
+COMPO.usarfpsNativos = true;
+COMPO.tick = 40;
+COMPO.animacion(() => {
+    Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
     Frontera.colisionConBorde(...Circunferencias, Atractor);
-    COMPO.moverCuerpos()
+    COMPO.moverCuerpos();
     // COMPO.contactoSimpleCuerpos()
-    COMPO.reboteElasticoCuerpos()
-
+    COMPO.reboteElasticoCuerpos();
     COMPO.cuerpos.forEach((cuerpo) => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
         cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999)
     })
 
+}, () => {
+    Render.limpiarCanvas();
     Render.trazar(Frontera.cuerpo);
     COMPO.renderizarCuerpos();
-    requestAnimationFrame(animar)
-}
-animar()
+})
