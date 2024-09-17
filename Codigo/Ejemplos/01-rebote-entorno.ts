@@ -1,6 +1,6 @@
 import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Renderizado, Vector, Contenedor } from "../Fuente/mui.js";
 
-const COMPO: Composicion = new Composicion('canvas')
+const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 COMPO.tamanoCanvas(1080, 1080)
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = 'black'
@@ -38,12 +38,12 @@ function animar() {
     contenedor.cuerpo.aceleracion = Fuerza.atraer(contenedor.cuerpo, atractorGravedad, 0.1)
     contenedor.cuerpo.velocidad = Vector.escalar(contenedor.cuerpo.velocidad, 0.99)
     contenedor.mover()
-    entorno.rebotarConBorde()
+    entorno.rebotarCircunferenciasConBorde()
     atractorGravedad.rotarSegunPunto(Render.centroCanvas, 0.02)
     // entorno.cuerpo.rotar(0.01)
     COMPO.reboteElasticoCuerpos()
-    contenedor.rebotarConBorde()
-    COMPO.actualizarMovimientoCuerpos()
+    contenedor.rebotarCircunferenciasConBorde()
+    COMPO.moverCuerpos()
     // contenedor.cuerpo.trazar(Render)
     // entorno.cuerpo.trazar(Render)
     COMPO.trazarCuerpos();

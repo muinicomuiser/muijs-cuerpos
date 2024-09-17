@@ -1,25 +1,25 @@
-import { Punto } from "../GeometriaPlana/Punto.js";
 import { Dibujante } from "../Renderizado/Dibujante.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 
 export class Celda {
-    posicion: Punto;
+    posicion: Vector;
     tamano: number;
     color: string;
     estado: number;
     distanciaVecindad: number = 1;
+    posicionVecinos: Vector[] = []  //Podría ser un arreglo de tuplas [vector vecino, distancia];
 
     constructor(posicionX: number, posicionY: number, tamano: number, estado: number = 1, color: string = '') {
-        this.posicion = { x: posicionX, y: posicionY };
+        this.posicion = Vector.crear(posicionX, posicionY);
         this.tamano = tamano;
         this.color = color;
         this.estado = estado;
     }
 
-    get x(): number {
+    get columna(): number {
         return this.posicion.x;
     }
-    get y(): number {
+    get fila(): number {
         return this.posicion.y;
     }
 
@@ -30,11 +30,10 @@ export class Celda {
         return Vector.crear(-this.distanciaVecindad, this.distanciaVecindad)
     }
 
+    /**Pinta el interior de la celda. Usa como argumento una instancia de la clase Dibujante o Renderizado.*/
     rellenar(dibujante: Dibujante): void {
         dibujante.rellenarCelda(this);
     }
-
-
 }
 
 // Distancia. Métrica máxima. Distancia vecindad

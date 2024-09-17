@@ -1,7 +1,12 @@
+/**Clase que permite capturar lo que se proyecte en un canvas. */
 export class Grabador {
     constructor() { }
 
-    static grabarCanvas(canvas: HTMLCanvasElement, milisegundos: number, fps: number, boton?: string) {
+    /**Graba la animación de un canvas en formato .avi y asocia la grabación a un link de descarga en el documento HTML.        
+     * Permite definir la duración de la grabación, en milisegundos, el número de FPS y la id del <anchor> HTML que iniciará la descarga.     
+     * Si no se define un elemento <anchor>, el método creará uno.
+     */
+    static grabarCanvas(canvas: HTMLCanvasElement, milisegundos: number, fps: number, anchor?: string) {
         let chunks: BlobPart[] = []
         let videoStream = canvas.captureStream(fps);
         let mediaRecorder = new MediaRecorder(videoStream);
@@ -17,8 +22,8 @@ export class Grabador {
             chunks = [];
             let videoURL = URL.createObjectURL(blob);
             let link: HTMLAnchorElement;
-            if (boton) {
-                link = <HTMLAnchorElement>document.getElementById(boton);
+            if (anchor) {
+                link = <HTMLAnchorElement>document.getElementById(anchor);
             }
             else {
                 link = document.createElement("a");

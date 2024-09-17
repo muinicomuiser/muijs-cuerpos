@@ -20,7 +20,9 @@ export class Dibujante {
     context: CanvasRenderingContext2D;
 
     // opcionesCelda:
-
+    /**Opciones del método en que se graficará.     
+     * 'colorTrazo', 'colorRelleno', 'trazada', 'rellenada', 'grosorTrazo' y 'opacidad'.
+    */
     estiloForma: OpcionesGraficasForma = {
         colorTrazo: 'blue',
         colorRelleno: "skyblue",
@@ -30,7 +32,7 @@ export class Dibujante {
         opacidad: 1,
     }
 
-    /**Opciones de color, tamaño, fuente, opacidad y alineación.*/
+    /**Opciones de 'color', 'tamano', 'fuente', 'opacidad' y 'alineacion'.*/
     estiloTexto: OpcionesGraficasTexto = {
         color: "red",
         tamano: 10,
@@ -39,6 +41,9 @@ export class Dibujante {
         alineacion: "right"
     };
 
+    /**Opciones del método en que se graficará.
+    * 'color' y 'grosorTrazo'.
+    */
     estiloVector: OpcionesGraficasVector = {
         color: "red",
         grosorTrazo: 1,
@@ -84,6 +89,7 @@ export class Dibujante {
     static colorRGBA(red: number, green: number, blue: number, alpha: number) {
         return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
     }
+
 
     protected recorrerPath(forma: Forma): void {
         if (forma.tipo == TipoFormas.circunferencia) {
@@ -145,27 +151,28 @@ export class Dibujante {
         this.context.fill();
     }
 
-    /**Rellena en el canvas la forma ingresada como argumento.*/
+    /**Rellena en el canvas la celda ingresada como argumento.*/
     rellenarCelda(celda: Celda): void {
         this.context.beginPath();
+        this.context.clearRect((celda.columna - 1) * celda.tamano, (celda.fila - 1) * celda.tamano, celda.tamano, celda.tamano);
         this.context.globalAlpha = this.estiloForma.opacidad!;
         this.context.fillStyle = this.colorCelda;
         if (celda.color) {
             this.context.fillStyle = celda.color;
         }
-        this.context.fillRect((celda.x - 1) * celda.tamano, (celda.y - 1) * celda.tamano, celda.tamano, celda.tamano);
+        this.context.fillRect((celda.columna - 1) * celda.tamano, (celda.fila - 1) * celda.tamano, celda.tamano, celda.tamano);
         this.context.globalAlpha = 1;
     }
 
     /** Traza en el canvas el vector ingresado como argumento.      
-     * Usa como color el atributo colorVectores.
+     * Usa como color el atributo .estiloVector.color.
      */
     trazarVector(vector: Vector): void {
         let origen: Punto = vector.origen;
         let extremo: Punto = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
         this.context.beginPath();
-        this.context.moveTo(origen.x, origen.y);
-        this.context.lineTo(extremo.x, extremo.y);
+        this.context.moveTo(Math.round(origen.x), Math.round(origen.y));
+        this.context.lineTo(Math.round(extremo.x), Math.round(extremo.y));
 
         this.context.lineWidth = this.estiloVector.grosorTrazo;
         this.context.globalAlpha = this.estiloForma.opacidad!;
@@ -174,7 +181,9 @@ export class Dibujante {
     }
 
 
-    /**Rellena un texto en el canvas en la posicion ingresada.*/
+    /**Rellena un texto en el canvas en la posicion ingresada.          
+     * Usa como opciones gráficas el atributo .estiloTexto
+    */
     escribir(texto: string, posicionX: number, posicionY: number): void {
         this.context.textAlign = this.estiloTexto.alineacion!;
         this.context.font = `${this.estiloTexto.tamano}px ${this.estiloTexto.fuente}`;
@@ -190,7 +199,7 @@ export class Dibujante {
     */
     protected pathCircunferencia(forma: Forma): void {
         this.context.beginPath();
-        this.context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
+        this.context.arc(Math.round(forma.posicion.x), Math.round(forma.posicion.y), forma.radioTransformado, 0, Geometria.DOS_PI);
     }
 
 
@@ -199,9 +208,9 @@ export class Dibujante {
     */
     protected pathPoligono(forma: Forma) {
         this.context.beginPath();
-        this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+        this.context.moveTo(Math.round(forma.verticesTransformados[0].x), Math.round(forma.verticesTransformados[0].y));
         for (let vertice of forma.verticesTransformados) {
-            this.context.lineTo(vertice.x, vertice.y);
+            this.context.lineTo(Math.round(vertice.x), Math.round(vertice.y));
         }
         this.context.closePath();
     }
@@ -212,9 +221,9 @@ export class Dibujante {
     */
     protected pathLinea(forma: Forma) {
         this.context.beginPath();
-        this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+        this.context.moveTo(Math.round(forma.verticesTransformados[0].x), Math.round(forma.verticesTransformados[0].y));
         for (let vertice of forma.verticesTransformados) {
-            this.context.lineTo(vertice.x, vertice.y);
+            this.context.lineTo(Math.round(vertice.x), Math.round(vertice.y));
         }
     }
 }

@@ -23,6 +23,8 @@ Hasta el momento permite:
 - crear cuadrículas y pintar sus celdas según su estado 
 - incorporar controles y eventos con mouse y teclado
 - choque elástico entre circunferencias
+- grabar canvas
+- control de tick y fps
 
 ## Demostración
 
@@ -30,3 +32,5 @@ Hasta el momento permite:
 
 ## Proyectos creados con mui.js
 - <a href="https://muinicomuiser.github.io/boids" target="_blank">boids</a>
+- <a href="https://muinicomuiser.github.io/Juego-de-la-vida" target="_blank">Juego de la Vida</a>
+- <a href="https://muinicomuiser.github.io/Vida-y-particulas/" target="_blank">Vida y partículas</a>

@@ -43,11 +43,11 @@
         //PITAGÓRICA
         /**Retorna la longitud de la hipotenusa según la longitud de los dos catetos ingresados.*/
         static hipotenusa(cateto1, cateto2) {
-            return (cateto1 ** 2 + cateto2 ** 2) ** (1 / 2);
+            return Math.pow((Math.pow(cateto1, 2) + Math.pow(cateto2, 2)), (1 / 2));
         }
         /**Retorna la longitud de un cateto según la longitud de la hipotenusa y del otro cateto.*/
         static cateto(hipotenusa, cateto) {
-            return (hipotenusa ** 2 - cateto ** 2) ** (1 / 2);
+            return Math.pow((Math.pow(hipotenusa, 2) - Math.pow(cateto, 2)), (1 / 2));
         }
         //COORDENADAS
         /**Retorna el valor de la distancia entre dos puntos de un plano cartesiano.*/
@@ -62,10 +62,6 @@
 
     //POR REVISAR
     class Vector {
-        x;
-        y;
-        origen;
-        id;
         constructor(x, y) {
             this.x = x;
             this.y = y;
@@ -79,7 +75,7 @@
             return Vector.angulo(this);
         }
         static magnitud(vector) {
-            return (vector.x ** 2 + vector.y ** 2) ** (1 / 2);
+            return Math.pow((Math.pow(vector.x, 2) + Math.pow(vector.y, 2)), (1 / 2));
         }
         //REVISARRRRRRRRRRRRRRRR
         static angulo(vector) {
@@ -228,9 +224,6 @@
      * Almacena en sus atributos los valores de las transformaciones que aplica.
      */
     class Transformacion {
-        escala;
-        rotacion;
-        posicion;
         constructor(x = 0, y = 0, rotacion = 0, escala = 1) {
             this.escala = escala;
             this.rotacion = rotacion;
@@ -312,22 +305,21 @@
      * Permite cambiar su posición, rotar, escalar, crear formas básicas y personalizadas, y dibujarlas.
      */
     class Forma {
-        _vertices = [];
-        _verticesTransformados = [];
-        _transformacion = new Transformacion();
-        verticesTransformadosAnteriores = [];
-        transformacionAnterior = new Transformacion();
-        transformar = true;
-        radio = 0;
-        lados = 0;
-        tipo = TipoFormas.poligono;
-        colorTrazo;
-        colorRelleno;
-        trazada = true;
-        rellenada = true;
-        grosorTrazo;
-        opacidad;
-        constructor() { }
+        constructor() {
+            this._vertices = [];
+            this._verticesTransformados = [];
+            this._transformacion = new Transformacion();
+            this.verticesTransformadosAnteriores = [];
+            this.transformacionAnterior = new Transformacion();
+            this.transformar = true;
+            this.radio = 0;
+            this.lados = 0;
+            this.tipo = TipoFormas.poligono;
+            /**Determina si la forma debe ser trazada al renderizar.*/
+            this.trazada = true;
+            /**Determina si la forma debe ser rellenada al renderizar.*/
+            this.rellenada = true;
+        }
         /**Retorna el valor del radio con la transformación de escala aplicada.*/
         get radioTransformado() {
             let radioTransformado = this.radio * this._transformacion.escala;
@@ -351,14 +343,15 @@
         get rotacion() {
             return this._transformacion.rotacion;
         }
+        /**Retorna el valor de la escala de la forma.*/
         get escala() {
             return this._transformacion.escala;
         }
-        /**Retorna el arreglo de vértices sin transformaciones.*/
+        /**Retorna una copia del arreglo de vértices sin transformaciones.*/
         get vertices() {
             return Vector.clonarConjunto(this._vertices);
         }
-        /**Retorna el arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento..*/
+        /**Retorna una copia del arreglo de vértices después de aplicar las transformaciones de escala, rotación y desplazamiento.*/
         get verticesTransformados() {
             if (this.transformar) {
                 this.verticesTransformadosAnteriores = Vector.clonarConjunto(this._verticesTransformados);
@@ -366,8 +359,8 @@
             }
             return Vector.clonarConjunto(this._verticesTransformados);
         }
-        /**Retorna un conjunto de vectores normales de cada arista del polígono.
-         * El orden de las aristas es en senttipoo horario.
+        /**Retorna el conjunto de vectores normales de cada arista del polígono.
+         * El orden de las aristas es en sentido horario.
         */
         get normales() {
             let normales = [];
@@ -408,7 +401,7 @@
             this.transformacionAnterior.rotacion = this._transformacion.rotacion;
             this._transformacion.rotacion = rotacion;
         }
-        /**Reemplaza el valor de la rotación de la forma.*/
+        /**Reemplaza el valor de la escala de la forma.*/
         set escala(nuevaEscala) {
             this.transformar = true;
             this.transformacionAnterior.escala = this._transformacion.escala;
@@ -418,7 +411,7 @@
         set vertices(vertices) {
             this._vertices = Vector.clonarConjunto(vertices);
         }
-        /**Permite modificar las opciones gráficas con la interfaz OpcionesGráficasForma*/
+        /**Permite modificar las opciones gráficas con la interfaz OpcionesGraficasForma*/
         set estiloGrafico(opciones) {
             this.aplicarOpciones(opciones);
         }
@@ -439,11 +432,11 @@
             }
             return nVertices;
         }
-        //Agregar control de errores para índices mayores al número de vértices
+        ////////Agregar control de errores para índices mayores al número de vértices
         moverVertice(indice, punto) {
             this._vertices[indice] = Vector.crear(punto.x, punto.y);
         }
-        /**Retorna una forma de tipo polígono. El radio es el valor entre el centro y cualquiera de sus vértices.*/
+        /**Retorna una forma de tipo polígono. El radio es el valor de la distancia entre el centro y cualquiera de sus vértices.*/
         static poligono(x, y, lados, radio, opciones) {
             let nuevoPoligono = new Forma();
             nuevoPoligono.lados = lados;
@@ -476,7 +469,7 @@
             nuevaCircunferencia.iniciarTransformacion(x, y);
             return nuevaCircunferencia;
         }
-        /**Retorna una forma de tipo rectángulo. */
+        /**Retorna una forma de tipo rectángulo. El radio es el valor de la distancia entre el centro y cualquiera de sus vértices.*/
         static rectangulo(x, y, base, altura, opciones) {
             let rectangulo = new Forma();
             rectangulo.lados = 4;
@@ -493,7 +486,7 @@
             rectangulo.iniciarTransformacion(x, y);
             return rectangulo;
         }
-        /**Crea una recta centrada en el origen y con la posición ingresada almacenada en su registro de transformación.*/
+        /**Crea una recta centrada en la posición ingresada.*/
         static recta(puntoUno, puntoDos, opciones) {
             let linea = new Forma();
             linea.lados = 1;
@@ -509,8 +502,7 @@
         }
         /**
          * Crea un conjunto de rectas a partir de un grupo de vértices.
-         * Calcula el centro de los vértices, centra la forma en el origen y almacena
-         * el centro en el registro de transformación.
+         * Calcula el centro de los vértices y centra el trazo en la posición ingresada.
          */
         static trazo(vertices, opciones) {
             let centro = Vector.crear(0, 0);
@@ -529,8 +521,7 @@
         }
         /**
          * Crea un polígono a partir de un grupo de vértices.
-         * Calcula el centro de los vértices, centra la forma en el origen y almacena
-         * el centro en el registro de transformación.
+         * Calcula el centro de los vértices ingresados y lo asigna a su posición.
          */
         static poligonoSegunVertices(vertices, opciones) {
             let centro = Vector.crear(0, 0);
@@ -582,13 +573,30 @@
             this._verticesTransformados = this._transformacion.transformarConjuntoVectores(this._vertices);
             this.transformar = false;
         }
-        /**Suma el ángulo ingresado al ángulo de rotación de la figura.*/
+        /**Retorna una copia de la forma como una forma nueva.*/
+        clonar() {
+            const clonForma = new Forma();
+            clonForma.vertices = this.vertices;
+            clonForma.transformacion = this.transformacion;
+            clonForma.lados = this.lados;
+            clonForma.radio = this.radio;
+            clonForma.tipo = this.tipo;
+            clonForma.colorRelleno = this.colorRelleno;
+            clonForma.colorTrazo = this.colorTrazo;
+            clonForma.rellenada = this.rellenada;
+            clonForma.trazada = this.trazada;
+            clonForma.grosorTrazo = this.grosorTrazo;
+            clonForma.opacidad = this.opacidad;
+            clonForma.iniciarTransformacion(this.posicion.x, this.posicion.y);
+            return clonForma;
+        }
+        /**Suma el ángulo ingresado al ángulo de rotación de la forma.*/
         rotar(angulo) {
             this.transformacionAnterior.rotacion = this._transformacion.rotacion;
             this._transformacion.rotacion += angulo;
             this.transformar = true;
         }
-        /**Suma el vector ingresado al vector de posición de la figura.*/
+        /**Suma el vector ingresado al vector de posición de la forma.*/
         desplazar(vector) {
             this.transformacionAnterior.posicion = this._transformacion.posicion;
             this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vector);
@@ -839,7 +847,7 @@
             const restaVelocidades = Vector.resta(cuerpoDos.velocidad, cuerpoUno.velocidad);
             const restaPosiciones = Vector.resta(cuerpoDos.posicion, cuerpoUno.posicion);
             const puntoVelocidadesPosiciones = Vector.punto(restaVelocidades, restaPosiciones);
-            const moduloPosicionesCuadrado = restaPosiciones.magnitud ** 2;
+            const moduloPosicionesCuadrado = Math.pow(restaPosiciones.magnitud, 2);
             const velUnoFinal = Vector.suma(velUnoInicial, Vector.escalar(restaPosiciones, divisionMasas * puntoVelocidadesPosiciones / moduloPosicionesCuadrado));
             return velUnoFinal;
         }
@@ -849,7 +857,7 @@
             const restaVelocidades = Vector.resta(cuerpoUno.velocidad, cuerpoDos.velocidad);
             const restaPosiciones = Vector.resta(cuerpoUno.posicion, cuerpoDos.posicion);
             const puntoVelocidadesPosiciones = Vector.punto(restaVelocidades, restaPosiciones);
-            const moduloPosicionesCuadrado = restaPosiciones.magnitud ** 2;
+            const moduloPosicionesCuadrado = Math.pow(restaPosiciones.magnitud, 2);
             const velDosFinal = Vector.suma(velDosInicial, Vector.escalar(restaPosiciones, divisionMasas * puntoVelocidadesPosiciones / moduloPosicionesCuadrado));
             return velDosFinal;
         }
@@ -938,6 +946,8 @@
                 if (solapamiento != null) {
                     let normal = Colision.normalContactoConEntorno(circunferencias[i], entorno);
                     let normalInvertida = Vector.invertir(normal);
+                    // circunferencias[i].velocidad = Cinematica.reboteElastico(circunferencias[i], entorno)[0]
+                    // circunferencias[i].velocidad = Vector.invertir(Cinematica.reboteElastico(circunferencias[i], entorno)[0])
                     circunferencias[i].velocidad = Cinematica.reboteSimple(circunferencias[i], normalInvertida);
                     circunferencias[i].posicion = Vector.suma(circunferencias[i].posicion, Interaccion.resolverSolapamientoEntorno(normalInvertida, solapamiento));
                 }
@@ -954,15 +964,16 @@
 
     //REPENSAR ESTA CLASE
     class Contenedor {
-        cuerpo;
-        cuerposContenidos = [];
         constructor(cuerpo) {
+            this.cuerposContenidos = [];
             this.cuerpo = cuerpo;
             this.cuerpo.fijo = true;
         }
+        /**Retorna el conjunto de vectores normales de cada arista del contenedor. */
         get normales() {
             return Vector.clonarConjunto(this.cuerpo.normales);
         }
+        /**Retorna un objeto Contenedor a partir de un cuerpo.*/
         static crearContenedor(cuerpo) {
             return new Contenedor(cuerpo);
         }
@@ -970,9 +981,10 @@
         agregarCuerposContenidos(...cuerpos) {
             this.cuerposContenidos.push(...cuerpos);
         }
-        rebotarConBorde() {
+        rebotarCircunferenciasConBorde() {
             Interaccion.reboteCircunferenciasConEntorno(this.cuerposContenidos, this.cuerpo);
         }
+        /**Suma la aceleración a la velocidad y la velocidad a la posición.*/
         mover() {
             this.cuerpo.mover();
         }
@@ -997,29 +1009,29 @@
      * Trabaja usando objetos de tipo Forma.
      */
     class Cuerpo extends Forma {
-        _velocidad = Vector.cero();
-        _aceleracion = Vector.cero();
-        /**Determina si el cuerpo rotará o no según la dirección y sentido de su velocidad.*/
-        rotarSegunVelocidad = false;
-        /**Propiedad útil para determinar si un cuerpo será controlado por el usuario.*/
-        controlable = false;
-        /**Determina si un cuerpo se moverá o no producto de la interacción con otros cuerpos.*/
-        fijo = false;
-        masa = 1;
-        densidad = 1;
-        /**Propiedades para activar y desactivar acciones relacionadas con el control del movimiento de cuerpos por parte del usuario.*/
-        controles = {
-            arriba: false,
-            abajo: false,
-            izquierda: false,
-            derecha: false,
-            rotarIzquierda: false,
-            rotarDerecha: false,
-            rapidez: 1,
-            anguloRotacion: Geometria.PI_MEDIO / 30
-        };
         constructor() {
             super();
+            this._velocidad = Vector.cero();
+            this._aceleracion = Vector.cero();
+            /**Determina si el cuerpo rotará o no según la dirección y sentido de su velocidad.*/
+            this.rotarSegunVelocidad = false;
+            /**Propiedad útil para determinar si un cuerpo será controlado por el usuario.*/
+            this.controlable = false;
+            /**Determina si un cuerpo se moverá o no producto de la interacción con otros cuerpos.*/
+            this.fijo = false;
+            this.masa = 1;
+            this.densidad = 1;
+            /**Propiedades para activar y desactivar acciones relacionadas con el control del movimiento de cuerpos por parte del usuario.*/
+            this.controles = {
+                arriba: false,
+                abajo: false,
+                izquierda: false,
+                derecha: false,
+                rotarIzquierda: false,
+                rotarDerecha: false,
+                rapidez: 1,
+                anguloRotacion: Geometria.PI_MEDIO / 30
+            };
         }
         /**Retorna una copia del vector velocidad.*/
         get velocidad() {
@@ -1029,7 +1041,6 @@
         get aceleracion() {
             return Vector.clonar(this._aceleracion);
         }
-        /**Retorna el conjunto de vértices después de */
         get verticesTransformados() {
             if (this.rotarSegunVelocidad == true) {
                 this.transformacionAnterior.rotacion = this._transformacion.rotacion;
@@ -1038,11 +1049,11 @@
             }
             return super.verticesTransformados;
         }
-        /**Retorna una copia del vector velocidad.*/
+        /**Modifica el vector velocidad.*/
         set velocidad(velocidad) {
             this._velocidad = Vector.clonar(velocidad);
         }
-        /**Retorna una copia del vector aceleración. */
+        /**Modifica el vector aceleración.*/
         set aceleracion(aceleracion) {
             this._aceleracion = Vector.clonar(aceleracion);
         }
@@ -1113,7 +1124,18 @@
                 this.controlable = opciones.controlable;
             }
         }
-        /**Suma la velocidad y la aceleración a la posición.*/
+        /**Retorna una copia del cuerpo como un cuerpo nuevo.*/
+        clonar() {
+            const formaClonada = super.clonar();
+            const cuerpoClonado = Cuerpo.cuerpoSegunForma(formaClonada);
+            cuerpoClonado.masa = this.masa;
+            cuerpoClonado.densidad = this.densidad;
+            cuerpoClonado.fijo = this.fijo;
+            cuerpoClonado.rotarSegunVelocidad = this.rotarSegunVelocidad;
+            cuerpoClonado.controlable = this.controlable;
+            return cuerpoClonado;
+        }
+        /**Suma la aceleración a la velocidad y la velocidad a la posición.*/
         mover() {
             if (!this.fijo) {
                 this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
@@ -1128,7 +1150,7 @@
             dibujante.trazarVector(vectorVelocidad);
         }
         /**Aplica las transformaciones definidas para cada evento (de teclado, mouse u otro) sobre el cuerpo.*/
-        ejecutarControles() {
+        usarControles() {
             if (this.controles.arriba) {
                 this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), this.controles.rapidez));
             }
@@ -1152,9 +1174,6 @@
 
     //Fricción, bordes, gravedad
     class Entorno extends Contenedor {
-        canvas;
-        alto;
-        ancho;
         constructor(canvas, cuerpo) {
             super(cuerpo);
             this.canvas = canvas;
@@ -1198,6 +1217,9 @@
     }
 
     class Restriccion {
+        /**Limita la magnitud de la velocidad de un cuerpo.
+         * Retorna una copia del vector velocidad si se ha modificado su magnitud.
+        */
         static limitarVelocidad(cuerpo, limite) {
             let magnitudVel = cuerpo.velocidad.magnitud;
             if (magnitudVel > limite) {
@@ -1229,37 +1251,37 @@
         /**Retorna un vector correspondiente a la aceleración de un cuerpo atraído hacia un cuerpo atractor.
          * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
         */
-        static atraer(cuerpo, atractor, magnitudAceleracion) {
+        static atraer(cuerpo, atractor, magnitudAtraccion) {
             let vectorAtractor = Vector.segunPuntos(cuerpo.posicion, atractor.posicion);
             vectorAtractor = Vector.normalizar(vectorAtractor);
-            vectorAtractor = Vector.escalar(vectorAtractor, magnitudAceleracion);
+            vectorAtractor = Vector.escalar(vectorAtractor, magnitudAtraccion);
             return vectorAtractor;
         }
         /**Retorna un vector correspondiente a la aceleración de un cuerpo atraído hacia un vector atractor.
          * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
         */
-        static atraerAVector(cuerpo, atractor, magnitudAceleracion) {
+        static atraerAVector(cuerpo, atractor, magnitudAtraccion) {
             let vectorAtractor = Vector.segunPuntos(cuerpo.posicion, atractor);
             vectorAtractor = Vector.normalizar(vectorAtractor);
-            vectorAtractor = Vector.escalar(vectorAtractor, magnitudAceleracion);
+            vectorAtractor = Vector.escalar(vectorAtractor, magnitudAtraccion);
             return vectorAtractor;
         }
         /**Retorna un vector correspondiente a la aceleración de un cuerpo repelido por un cuerpo repulsor.
         * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
         */
-        static repeler(cuerpo, repulsor, magnitudAceleracion) {
+        static repeler(cuerpo, repulsor, magnitudRepulsion) {
             let vectorAtractor = Vector.segunPuntos(repulsor.posicion, cuerpo.posicion);
             vectorAtractor = Vector.normalizar(vectorAtractor);
-            vectorAtractor = Vector.escalar(vectorAtractor, magnitudAceleracion);
+            vectorAtractor = Vector.escalar(vectorAtractor, magnitudRepulsion);
             return vectorAtractor;
         }
         /**Retorna un vector correspondiente a la aceleración de un cuerpo repelido por un vector repulsor.
         * TODAVÍA NO HE INCORPORADO LA MASA NI LA DISTANCIA.
        */
-        static repelerDeVector(cuerpo, repulsor, magnitudAceleracion) {
+        static repelerDeVector(cuerpo, repulsor, magnitudRepulsion) {
             let vectorRepulsor = Vector.segunPuntos(repulsor, cuerpo.posicion);
             vectorRepulsor = Vector.normalizar(vectorRepulsor);
-            vectorRepulsor = Vector.escalar(vectorRepulsor, magnitudAceleracion);
+            vectorRepulsor = Vector.escalar(vectorRepulsor, magnitudRepulsion);
             return vectorRepulsor;
         }
     }
@@ -1269,31 +1291,34 @@
      * Métodos para definir colores hsla y rgba, dibujar objetos tipo Forma y escribir.
      */
     class Dibujante {
-        colorCelda;
-        /**Interfaz de dibujo sobre el canvas. 2D*/
-        context;
-        // opcionesCelda:
-        estiloForma = {
-            colorTrazo: 'blue',
-            colorRelleno: "skyblue",
-            trazada: true,
-            rellenada: true,
-            grosorTrazo: 1,
-            opacidad: 1,
-        };
-        /**Opciones de color, tamaño, fuente, opacidad y alineación.*/
-        estiloTexto = {
-            color: "red",
-            tamano: 10,
-            fuente: "calibri",
-            opacidad: 1,
-            alineacion: "right"
-        };
-        estiloVector = {
-            color: "red",
-            grosorTrazo: 1,
-        };
         constructor(context) {
+            // opcionesCelda:
+            /**Opciones del método en que se graficará.
+             * 'colorTrazo', 'colorRelleno', 'trazada', 'rellenada', 'grosorTrazo' y 'opacidad'.
+            */
+            this.estiloForma = {
+                colorTrazo: 'blue',
+                colorRelleno: "skyblue",
+                trazada: true,
+                rellenada: true,
+                grosorTrazo: 1,
+                opacidad: 1,
+            };
+            /**Opciones de 'color', 'tamano', 'fuente', 'opacidad' y 'alineacion'.*/
+            this.estiloTexto = {
+                color: "red",
+                tamano: 10,
+                fuente: "calibri",
+                opacidad: 1,
+                alineacion: "right"
+            };
+            /**Opciones del método en que se graficará.
+            * 'color' y 'grosorTrazo'.
+            */
+            this.estiloVector = {
+                color: "red",
+                grosorTrazo: 1,
+            };
             this.context = context;
             this.colorCelda = "blue";
         }
@@ -1385,32 +1410,35 @@
             }
             this.context.fill();
         }
-        /**Rellena en el canvas la forma ingresada como argumento.*/
+        /**Rellena en el canvas la celda ingresada como argumento.*/
         rellenarCelda(celda) {
             this.context.beginPath();
+            this.context.clearRect((celda.columna - 1) * celda.tamano, (celda.fila - 1) * celda.tamano, celda.tamano, celda.tamano);
             this.context.globalAlpha = this.estiloForma.opacidad;
             this.context.fillStyle = this.colorCelda;
             if (celda.color) {
                 this.context.fillStyle = celda.color;
             }
-            this.context.fillRect((celda.x - 1) * celda.tamano, (celda.y - 1) * celda.tamano, celda.tamano, celda.tamano);
+            this.context.fillRect((celda.columna - 1) * celda.tamano, (celda.fila - 1) * celda.tamano, celda.tamano, celda.tamano);
             this.context.globalAlpha = 1;
         }
         /** Traza en el canvas el vector ingresado como argumento.
-         * Usa como color el atributo colorVectores.
+         * Usa como color el atributo .estiloVector.color.
          */
         trazarVector(vector) {
             let origen = vector.origen;
             let extremo = { x: vector.origen.x + vector.x, y: vector.origen.y + vector.y };
             this.context.beginPath();
-            this.context.moveTo(origen.x, origen.y);
-            this.context.lineTo(extremo.x, extremo.y);
+            this.context.moveTo(Math.round(origen.x), Math.round(origen.y));
+            this.context.lineTo(Math.round(extremo.x), Math.round(extremo.y));
             this.context.lineWidth = this.estiloVector.grosorTrazo;
             this.context.globalAlpha = this.estiloForma.opacidad;
             this.context.strokeStyle = this.estiloVector.color;
             this.context.stroke();
         }
-        /**Rellena un texto en el canvas en la posicion ingresada.*/
+        /**Rellena un texto en el canvas en la posicion ingresada.
+         * Usa como opciones gráficas el atributo .estiloTexto
+        */
         escribir(texto, posicionX, posicionY) {
             this.context.textAlign = this.estiloTexto.alineacion;
             this.context.font = `${this.estiloTexto.tamano}px ${this.estiloTexto.fuente}`;
@@ -1424,16 +1452,16 @@
         */
         pathCircunferencia(forma) {
             this.context.beginPath();
-            this.context.arc(forma.posicion.x, forma.posicion.y, forma.radioTransformado, 0, Geometria.DOS_PI);
+            this.context.arc(Math.round(forma.posicion.x), Math.round(forma.posicion.y), forma.radioTransformado, 0, Geometria.DOS_PI);
         }
         /**Método interno.
         * Crea un recorrido para una forma con id "poligono". Registra líneas entre cada vértice del polígono.
         */
         pathPoligono(forma) {
             this.context.beginPath();
-            this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+            this.context.moveTo(Math.round(forma.verticesTransformados[0].x), Math.round(forma.verticesTransformados[0].y));
             for (let vertice of forma.verticesTransformados) {
-                this.context.lineTo(vertice.x, vertice.y);
+                this.context.lineTo(Math.round(vertice.x), Math.round(vertice.y));
             }
             this.context.closePath();
         }
@@ -1442,9 +1470,9 @@
         */
         pathLinea(forma) {
             this.context.beginPath();
-            this.context.moveTo(forma.verticesTransformados[0].x, forma.verticesTransformados[0].y);
+            this.context.moveTo(Math.round(forma.verticesTransformados[0].x), Math.round(forma.verticesTransformados[0].y));
             for (let vertice of forma.verticesTransformados) {
-                this.context.lineTo(vertice.x, vertice.y);
+                this.context.lineTo(Math.round(vertice.x), Math.round(vertice.y));
             }
         }
     }
@@ -1455,12 +1483,11 @@
      * Se instancia usando el canvas.
      */
     class Renderizado extends Dibujante {
-        canvas;
-        _anchoCanvas = 500;
-        _altoCanvas = 500;
-        _colorFondo = 'black';
         constructor(canvas) {
             super(canvas.getContext("2d"));
+            this._anchoCanvas = 500;
+            this._altoCanvas = 500;
+            this._colorFondo = 'black';
             this.canvas = canvas;
             this.canvas.style.backgroundColor = this._colorFondo;
             this.canvas.width = this._anchoCanvas;
@@ -1498,10 +1525,15 @@
             this.canvas.style.backgroundColor = this._colorFondo;
         }
         /**Retorna una instancia de renderizado usando como parámetro el id de un canvas presente en el documento HTML. */
-        static crearPorIdCanvas(idCanvas) {
+        static crearConIdCanvas(idCanvas) {
             const CANVAS = document.getElementById(idCanvas);
             let nuevoRenderizador = new Renderizado(CANVAS);
             return nuevoRenderizador;
+        }
+        /**Retorna una instancia de renderizado usando como parámetro el canvas presente en el documento HTML. */
+        static crearConCanvas(canvas) {
+            const nuevoRender = new Renderizado(canvas);
+            return nuevoRender;
         }
         /**Traza un conjunto de formas.*/
         trazarFormas(formas) {
@@ -1552,22 +1584,110 @@
         }
     }
 
+    /**Contador de tiempo, en milisegundos.
+     * Su propiedad 'activo' se vuelve false cuando ha transcurrido el tiempo ingresado.
+    */
+    class Temporizador {
+        constructor(duracionMilisegundos) {
+            this.tiempoInicial = Date.now();
+            this.activo = true;
+            this.duracion = duracionMilisegundos;
+            setTimeout(() => this.activo = false, this.duracion);
+        }
+        /**Retorna el tiempo, en milisegundos, transcurrido desde la creación del temporizador.*/
+        get tiempoTranscurrido() {
+            return Date.now() - this.tiempoInicial;
+        }
+    }
+
+    class Tiempo {
+        constructor() {
+            this._tiempoInicial = Date.now();
+            this.temporizadores = [];
+        }
+        /**Retorna el número de temporizadores activos.*/
+        get numeroTemporizadores() {
+            return this.temporizadores.length;
+        }
+        /**Retorna el momento en milisegundos de la instanciación de este objeto.*/
+        get tiempoInicial() {
+            return this._tiempoInicial;
+        }
+        /**Retorna el tiempo en milisegundos transcurrido desde la última vez que se consultó .delta.
+         * Si no se lo ha consultado antes, retorna el tiempo transcurrido desde la instanciación del objeto Tiempo.
+        */
+        get delta() {
+            if (!this.tiempoPrevio) {
+                this.tiempoPrevio = Date.now();
+            }
+            this.tiempoActual = Date.now();
+            let delta = this.tiempoActual - this.tiempoPrevio;
+            this.tiempoPrevio = this.tiempoActual;
+            return delta;
+        }
+        /**Ejecuta una función un número determinado de veces por segundo.*/
+        iterarPorSegundo(funcion, numeroIteraciones) {
+            const periodo = 1000 / numeroIteraciones;
+            if (!this.tiempoPrevio) {
+                this.tiempoPrevio = Date.now();
+            }
+            this.tiempoActual = Date.now();
+            if (this.tiempoActual - this.tiempoPrevio >= periodo) {
+                funcion();
+                this.tiempoPrevio = this.tiempoActual;
+            }
+        }
+        /**Crea un termporizador nuevo con la duración ingresada y lo agrega a la lista de temporizadores de la composición.*/
+        crearTemporizador(tiempoMilisegundos) {
+            const temporizador = new Temporizador(tiempoMilisegundos);
+            this.temporizadores.push(temporizador);
+            return temporizador;
+        }
+        /**Elimina del registro de temporizadores aquellos que estén inactivos.*/
+        actualizarTemporizadores() {
+            let indiceInactivo = this.temporizadores.findIndex((temporizador) => temporizador.activo == false);
+            if (indiceInactivo != -1) {
+                this.temporizadores.splice(indiceInactivo, 1);
+            }
+        }
+    }
+
     //Junta los cuerpos, interacciones, entorno, casos límite y renderizado.
     //Debería estar acá la creación de canvas y contexto??
     class Composicion {
-        /**Herramienta renderizadora.*/
-        render;
-        /**Conjunto de cuerpos sobre los que trabaja la composición.*/
-        cuerpos = [];
-        /**Conjunto de formas sobre las que trabaja la composición.*/
-        formas = [];
-        cuadricula;
-        tiempo;
-        contenedores = [];
-        entorno;
-        fps = 60;
-        constructor(idCanvas) {
-            this.render = Renderizado.crearPorIdCanvas(idCanvas);
+        constructor(canvas, idCanvas) {
+            /**Conjunto de cuerpos sobre los que trabaja la composición.*/
+            this.cuerpos = [];
+            /**Conjunto de formas sobre las que trabaja la composición.*/
+            this.formas = [];
+            this.contenedores = [];
+            this._entorno = undefined;
+            this.fps = 60;
+            this.usarfpsNativos = false;
+            this.tick = 50;
+            this.animar = true;
+            if (canvas) {
+                this.render = Renderizado.crearConCanvas(canvas);
+            }
+            else {
+                this.render = Renderizado.crearConIdCanvas(idCanvas);
+            }
+        }
+        set entorno(entorno) {
+            this._entorno = entorno;
+        }
+        get entorno() {
+            return this._entorno;
+        }
+        /**Retorna un objeto de tipo Composicion a partir del id de un canvas.*/
+        static crearConIDCanvas(idCanvas) {
+            const nuevaCompo = new Composicion(undefined, idCanvas);
+            return nuevaCompo;
+        }
+        /**Retorna un objeto de tipo Composicion a partir de un canvas.*/
+        static crearConCanvas(canvas) {
+            const nuevaCompo = new Composicion(canvas);
+            return nuevaCompo;
         }
         /**Define el ancho y el alto del canvas, en pixeles. */
         tamanoCanvas(ancho, alto) {
@@ -1578,11 +1698,11 @@
         agregarCuerpos(...cuerpos) {
             this.cuerpos.push(...cuerpos);
         }
-        /**Actualiza la posición de un conjunto de cuerpos sumando la velocidad instantanea a la posición.*/
-        actualizarMovimientoCuerpos() {
+        /**Actualiza la posición del conjunto de cuerpos sumando la velocidad instantánea a la posición.*/
+        moverCuerpos() {
             this.cuerpos.forEach((cuerpo) => cuerpo.mover());
         }
-        /**Calcula la colisión entre los cuerpos de la composición y resuelve sus choques como choques eslásticos.*/
+        /**Calcula la colisión entre los cuerpos de la composición y resuelve sus choques como choques elásticos.*/
         reboteElasticoCuerpos() {
             Interaccion.reboteEntreCuerpos(this.cuerpos);
         }
@@ -1606,9 +1726,39 @@
         renderizarFormas() {
             this.render.renderizarFormas(this.formas);
         }
+        /**Crea un loop para ejecutar dos funciones, una asociada a la duración de cada tick y otra a los fps.
+         * El atributo .tick permite cambiar su duración en milisegundos.
+         * La propiedad .fps permite ajustar su número.
+         */
+        animacion(funcionCalcular, funcionRenderizar) {
+            let tiempoCalculo = new Tiempo();
+            let tiempoFrame = new Tiempo();
+            const funcionAnimar = () => {
+                if (this.animar && !this.usarfpsNativos) {
+                    tiempoCalculo.iterarPorSegundo(funcionCalcular, 1000 / this.tick);
+                    tiempoFrame.iterarPorSegundo(funcionRenderizar, this.fps);
+                }
+                else if (this.animar && this.usarfpsNativos) {
+                    tiempoCalculo.iterarPorSegundo(funcionCalcular, 1000 / this.tick);
+                    funcionRenderizar();
+                }
+                requestAnimationFrame(funcionAnimar);
+            };
+            funcionAnimar();
+        }
+        bordesEntornoInfinitos(entorno) {
+            this.cuerpos.forEach((cuerpo) => {
+                cuerpo.posicion = entorno.envolverBorde(cuerpo.posicion);
+            });
+        }
+        limitarVelocidad(magnitudVelMaxima) {
+            this.cuerpos.forEach((cuerpo) => {
+                cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, magnitudVelMaxima);
+            });
+        }
     }
 
-    const COMPO = new Composicion('canvas');
+    const COMPO = Composicion.crearConIDCanvas('canvas');
     let ancho = window.innerWidth < 600 ? window.innerWidth : 600;
     let alto = window.innerHeight < 600 ? window.innerHeight : 600;
     COMPO.tamanoCanvas(ancho, alto);
@@ -1649,13 +1799,14 @@
     COMPO.agregarCuerpos(...Circunferencias, Atractor);
     //Frontera del canvas
     const Frontera = Entorno.crearEntornoCanvas(Render.canvas);
+    Frontera.cuerpo.masa = 10000000000;
     Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 };
     //Animación
     function animar() {
         Render.limpiarCanvas();
         Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
         Frontera.colisionConBorde(...Circunferencias, Atractor);
-        COMPO.actualizarMovimientoCuerpos();
+        COMPO.moverCuerpos();
         // COMPO.contactoSimpleCuerpos()
         COMPO.reboteElasticoCuerpos();
         COMPO.cuerpos.forEach((cuerpo) => {
