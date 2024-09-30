@@ -59,7 +59,7 @@ Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 COMPO.usarfpsNativos = true;
 COMPO.tick = 10;
 COMPO.animacion(() => {
-    let inicio: number = Date.now()
+    // let inicio: number = Date.now()
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
     Frontera.colisionConBorde(...Circunferencias, Atractor);
     COMPO.moverCuerpos();
@@ -69,7 +69,7 @@ COMPO.animacion(() => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
         cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999)
     })
-    console.log(Date.now() - inicio)
+    // console.log(Date.now() - inicio)
 
 }, () => {
     Render.limpiarCanvas();
