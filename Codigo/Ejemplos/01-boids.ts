@@ -99,8 +99,8 @@ ManejadorEventos.mouseEnCanvas('mouseenter', Render.canvas, setMousePresente, tr
 ManejadorEventos.mouseEnCanvas('mouseleave', Render.canvas, setMousePresente, false);
 ManejadorEventos.eventoMouseEnCanvas('mousemove', Render.canvas, (evento) => {
     if (DETECTARMOUSE) {
-        let mouseX: number = evento.pageX - Render.canvas.offsetLeft;
-        let mouseY: number = evento.pageY - Render.canvas.offsetTop
+        let mouseX: number = evento.offsetX;
+        let mouseY: number = evento.offsetY;
         vectorMouse = Vector.crear(mouseX, mouseY);
     }
 });
