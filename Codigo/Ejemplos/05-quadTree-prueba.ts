@@ -1,5 +1,5 @@
 import { QuadTree } from "../Fuente/Interaccion/QuadTree.js";
-import { Composicion, Cuerpo, Entorno, Forma, Fuerza, ManejadorEventos, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
+import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, ManejadorEventos, Matematica, Punto, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
 const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 COMPO.tamanoCanvas(1080, 1080);
@@ -27,7 +27,15 @@ ManejadorEventos.eventoMouseEnCanvas('click', Render.canvas, (evento) => {
     Circulitos.push(circu);
     circu.estiloGrafico = { colorRelleno: 'red', colorTrazo: 'red' }
     Quad.insertarPunto(circu.posicion)
-
+    let puntosRango: Punto[] = Quad.puntosEnRango(50, 250, 50, 250);
+    let circulosRango: Forma[] = []
+    puntosRango.forEach(punto => {
+        let coincidente = Circulitos.find(circulito => circulito.posicion.x == punto.x && circulito.posicion.y == punto.y);
+        if (coincidente) {
+            circulosRango.push(coincidente)
+        }
+    })
+    circulosRango.forEach(circulito => circulito.estiloGrafico = { colorRelleno: 'skyblue' })
     // for (let i: number = 0; i < 150; i++) {
     //     const circu: Forma = Forma.circunferencia(Matematica.aleatorioEntero(MouseX - 250, MouseX + 250), Matematica.aleatorioEntero(MouseY - 250, MouseY + 250), 3);
     //     Circulitos.push(circu);

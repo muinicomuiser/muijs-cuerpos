@@ -39,7 +39,6 @@ export class QuadTree {
             else if (this.puntos.length < this.capacidad) {
                 this.puntos.push(punto)
             }
-
             else {
                 if (!this.subDividido) {
                     let quadSurEste: QuadTree = new QuadTree(this.x + this.ancho / 2, this.y + this.alto / 2, this.ancho / 2, this.alto / 2, this.capacidad)
@@ -99,5 +98,24 @@ export class QuadTree {
         return coincidencia
     }
 
+    puntosEnRango(limiteIzquierda: number, limiteDerecha: number, limiteSuperior: number, limiteInferior: number): Punto[] {
+        let PuntosDentroDelRango: Punto[] = [];
+        this.puntos.forEach(punto => {
+            if (punto.x >= limiteIzquierda && punto.x <= limiteDerecha && punto.y >= limiteSuperior && punto.y <= limiteInferior) {
+                PuntosDentroDelRango.push(punto)
+            }
+        })
+        this.puntosRepetidos.forEach(punto => {
+            if (punto.x >= limiteIzquierda && punto.x <= limiteDerecha && punto.y >= limiteSuperior && punto.y <= limiteInferior) {
+                PuntosDentroDelRango.push(punto)
+            }
+        })
+        if (this.subDivisiones.length > 0) {
+            this.subDivisiones.forEach(subdivision => {
+                PuntosDentroDelRango.push(...subdivision.puntosEnRango(limiteIzquierda, limiteDerecha, limiteSuperior, limiteInferior))
+            })
+        }
+        return PuntosDentroDelRango;
+    }
 
 }
