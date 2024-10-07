@@ -9,6 +9,8 @@ import { Geometria } from "../Utiles/Geometria.js";
 import { OpcionesForma } from "../GeometriaPlana/OpcionesForma.js";
 import { Vector } from "../GeometriaPlana/Vector.js";
 import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma.js";
+import { Interaccion } from "./Interaccion.js";
+import { Cuerpo } from "../mui.js";
 
 export class QuadTree {
     subDividido: boolean = false;
@@ -31,13 +33,15 @@ export class QuadTree {
     }
 
     /**Agrega un punto a un QuadTree. Si al agregar el punto se sobrepasa la capacidad del QuadTree, se subdivide en cuatro QuadTrees nuevos. */
-    insertarPunto(punto: Punto): boolean {
+    insertarPunto(punto: Punto, contenido?: Forma): boolean {
+        let puntoInsertado: Punto = contenido != undefined ? { x: punto.x, y: punto.y, contenido: contenido } : punto;
+
         if (this.comprobarInsercion(punto)) {
             if (this.buscarPuntoRepetido(punto)) {
-                this.puntosRepetidos.push(punto)
+                this.puntosRepetidos.push(puntoInsertado)
             }
             else if (this.puntos.length < this.capacidad) {
-                this.puntos.push(punto)
+                this.puntos.push(puntoInsertado)
             }
             else {
                 if (!this.subDividido) {
@@ -54,10 +58,10 @@ export class QuadTree {
                     })
                     this.subDividido = true;
                 }
-                if (this.subDivisiones[0].insertarPunto(punto)) { return true }
-                else if (this.subDivisiones[1].insertarPunto(punto)) { return true }
-                else if (this.subDivisiones[2].insertarPunto(punto)) { return true }
-                else if (this.subDivisiones[3].insertarPunto(punto)) { return true }
+                if (this.subDivisiones[0].insertarPunto(puntoInsertado)) { return true }
+                else if (this.subDivisiones[1].insertarPunto(puntoInsertado)) { return true }
+                else if (this.subDivisiones[2].insertarPunto(puntoInsertado)) { return true }
+                else if (this.subDivisiones[3].insertarPunto(puntoInsertado)) { return true }
             }
             return true;
         }
@@ -116,6 +120,22 @@ export class QuadTree {
             })
         }
         return PuntosDentroDelRango;
+    }
+    colisionCuerpos(): void {
+        if (!this.subDividido) {
+            if (this.puntos.length > 1) {
+                let cuerpos: Cuerpo[] = []
+                this.puntos.forEach(punto => {
+                    if (punto.contenido instanceof Cuerpo) {
+                        cuerpos.push(punto.contenido)
+                    }
+                })
+                Interaccion.contactoSimple(cuerpos)
+            }
+        }
+        else {
+            this.subDivisiones.forEach(subdivision => subdivision.colisionCuerpos())
+        }
     }
 
 }
