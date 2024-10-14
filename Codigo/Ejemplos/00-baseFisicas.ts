@@ -1,4 +1,4 @@
-import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
+import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, ManejadorEventos, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
 const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 let ancho: number = window.visualViewport!.width < 600 ? window.visualViewport!.width : 600;
@@ -49,7 +49,8 @@ Atractor.fijo = false;
 
 //Se integran todos los cuerpos a la composición
 COMPO.agregarCuerpos(...Circunferencias, Atractor);
-
+COMPO.nivelesQuadTree = 6;
+COMPO.trazarQuadTree = true;
 
 //Frontera del canvas
 const Frontera: Entorno = Entorno.crearEntornoCanvas(Render.canvas);
@@ -72,7 +73,9 @@ COMPO.animacion(() => {
     // console.log(Date.now() - inicio)
 
 }, () => {
-    Render.limpiarCanvas();
+    Render.limpiarCanvas(0.6);
     Render.trazar(Frontera.cuerpo);
     COMPO.renderizarCuerpos();
 })
+
+ManejadorEventos.eventoMouseEnCanvas('click', COMPO.render.canvas, () => COMPO.trazarQuadTree = !COMPO.trazarQuadTree)

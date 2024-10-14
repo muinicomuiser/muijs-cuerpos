@@ -13,5 +13,4 @@ export interface OpcionesCuerpo extends OpcionesForma {
     densidad?: number,
     /**Si el cuerpo se verá afectado por eventos de teclado o mouse.*/
     controlable?: boolean,
-
 }

@@ -1,24 +1,24 @@
-import { QuadTree } from "../Fuente/Interaccion/QuadTree.js";
-import { Colision, Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, Interaccion, ManejadorEventos, Matematica, Punto, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
+import { Composicion, Cuerpo, Entorno, Matematica, Renderizado, Vector } from "../Fuente/mui.js";
 
 const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
-COMPO.tamanoCanvas(1080, 1080);
+COMPO.tamanoCanvas(1920, 1080);
 const Render: Renderizado = COMPO.render;
 Render.colorCanvas = 'black';
-let Quad: QuadTree = new QuadTree(0, 0, Render.anchoCanvas, Render.altoCanvas, 50);
 const entorno: Entorno = Entorno.crearEntornoCanvas(Render.canvas)
+COMPO.entorno = entorno;
 
-const NumeroCuerpos: number = 6000;
+const NumeroCuerpos: number = 3000;
 let Cuerpos: Cuerpo[] = []
-const RadioCuerpo: number = 3;
+const RadioCuerpo: number = 4;
 for (let i: number = 0; i < NumeroCuerpos; i++) {
-    const cuerpito: Cuerpo = Cuerpo.circunferencia(Matematica.aleatorioEntero(0, Render.anchoCanvas), Matematica.aleatorioEntero(0, Render.altoCanvas), RadioCuerpo)
-    cuerpito.estiloGrafico = { colorRelleno: 'white', colorTrazo: 'white' }
-    cuerpito.velocidad = Vector.crear(Matematica.aleatorioEntero(-3, 3), Matematica.aleatorioEntero(-3, 3))
+    const cuerpito: Cuerpo = Cuerpo.circunferencia(Matematica.aleatorioEntero(0, Render.anchoCanvas), Matematica.aleatorioEntero(0, Render.altoCanvas), 1.5 * RadioCuerpo * Math.random() + RadioCuerpo)
+    cuerpito.masa = cuerpito.radio ** 5
+    cuerpito.estiloGrafico = { rellenada: true, colorRelleno: 'white', colorTrazo: 'white' }
+    cuerpito.velocidad = Vector.crear(Matematica.aleatorio(-1, 1), Matematica.aleatorio(-1, 1))
     Cuerpos.push(cuerpito)
 }
 COMPO.agregarCuerpos(...Cuerpos)
-
+COMPO.entorno.agregarCuerposContenidos(...Cuerpos)
 //Sección para temporizar los cálculos
 let contadorTick: number = 0;
 let tiempoTranscurrido: number = 0;
@@ -29,28 +29,19 @@ function tiempoPromedio(deltaTick: number): number {
 }
 
 function animar() {
-    Quad = new QuadTree(0, 0, Render.anchoCanvas, Render.altoCanvas, 50)
-    Cuerpos.forEach(cuerpo => {
-        Quad.insertarPunto(cuerpo.posicion, cuerpo)
-    });
-
     let inicio: number = Date.now()
     Render.limpiarCanvas();
+    COMPO.reboteElasticoCuerpos()
+    // COMPO.bordesEntornoInfinitos(entorno)
+    COMPO.entorno.rebotarCircunferenciasConBorde()
     COMPO.moverCuerpos()
-    COMPO.bordesEntornoInfinitos(entorno)
-
-    //Forma Antigua
-    // COMPO.reboteElasticoCuerpos()
-    // COMPO.contactoSimpleCuerpos()    <-- Aguanta hasta 700~ cuerpos a 16ms por cálculo
-
-    //Forma Nueva
-    Quad.colisionCuerpos()  // <-- Aguanta hasta 6000~ cuerpos a 16ms por cálculo
-
+    // COMPO.contactoSimpleCuerpos()
 
     // Quad.trazar(Render, { colorTrazo: 'white', colorRelleno: 'white' })
     Render.renderizarFormas(Cuerpos);
+    // Quad.trazar(Render)
     let final: number = Date.now() - inicio
-    console.clear()
+    // console.clear()
     console.log('Duración de cálculo promedio: ', tiempoPromedio(final))
     requestAnimationFrame(animar)
 }

@@ -8,15 +8,15 @@ Render.colorCanvas = 'black'
 //CUERPOS
 //Formas generadoras
 const RADIOGENERADORA: number = 380;
-const RADIOGENERADORADOS: number = 280;
-const NUMEROCUERPOSFUERA: number = 30;
-const NUMEROCUERPOSCENTRO: number = 60
+const RADIOGENERADORADOS: number = 250;
+const NUMEROCUERPOSCENTRO: number = 50
+const NUMEROCUERPOSFUERA: number = 100;
 const FormaGeneradora: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSFUERA, RADIOGENERADORA)
 const FormaGeneradoraDos: Forma = Forma.poligono(Render.centroCanvas.x, Render.centroCanvas.y, NUMEROCUERPOSCENTRO, RADIOGENERADORADOS)
 
 //Cuerpos
-const RADIOCUERPO: number = 18;
-const RADIOCUERPODOS: number = 10;
+const RADIOCUERPO: number = 10;
+const RADIOCUERPODOS: number = 8;
 const Circunferencias: Cuerpo[] = []
 
 FormaGeneradora.verticesTransformados.forEach((vertice) => {
@@ -38,7 +38,7 @@ FormaGeneradoraDos.verticesTransformados.forEach((vertice) => {
 const MagnitudAtraccion: number = 0.02;
 const RADIOATRACTOR: number = 50
 const Atractor: Cuerpo = Cuerpo.circunferencia(Render.centroCanvas.x, Render.centroCanvas.y, RADIOATRACTOR)
-Atractor.masa = 5000
+Atractor.masa = 50000
 Atractor.estiloGrafico = { colorRelleno: 'orange', colorTrazo: 'black', rellenada: true }
 Atractor.fijo = false;
 
@@ -89,14 +89,14 @@ function animar() {
 
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion))
     Frontera.colisionConBorde(...Circunferencias, Atractor);
-    COMPO.moverCuerpos()
-    COMPO.contactoSimpleCuerpos()
-    // COMPO.reboteElasticoCuerpos()
+    // COMPO.contactoSimpleCuerpos()
 
     COMPO.cuerpos.forEach((cuerpo) => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
         cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999)
     })
+    COMPO.moverCuerpos()
+    COMPO.reboteElasticoCuerpos()
 
     Render.trazar(Frontera.cuerpo);
     COMPO.renderizarCuerpos();

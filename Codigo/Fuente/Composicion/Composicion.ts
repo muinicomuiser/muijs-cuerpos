@@ -1,15 +1,15 @@
 //Junta los cuerpos, interacciones, entorno, casos límite y renderizado.
 //Debería estar acá la creación de canvas y contexto??
 
+import { Cuadricula } from "../Cuadricula/Cuadricula.js";
 import { Contenedor } from "../Fisicas/Contenedor.js";
 import { Cuerpo } from "../Fisicas/Cuerpo.js";
-import { Cuadricula } from "../Cuadricula/Cuadricula.js";
-import { Entorno } from "../Interaccion/Entorno.js";
 import { Forma } from "../GeometriaPlana/Formas.js";
-import { Interaccion } from "../Interaccion/Interaccion.js";
+import { Entorno } from "../Interaccion/Entorno.js";
+import { QuadTree } from "../Interaccion/QuadTree.js";
+import { Restriccion } from "../Interaccion/Restriccion.js";
 import { Renderizado } from "../Renderizado/Renderizado.js";
 import { Tiempo } from "./Tiempo.js";
-import { Restriccion } from "../Interaccion/Restriccion.js"
 
 export class Composicion {
 
@@ -27,6 +27,8 @@ export class Composicion {
     usarfpsNativos: boolean = false;
     tick: number = 50;
     animar: boolean = true;
+    nivelesQuadTree: number = 8;
+    trazarQuadTree: boolean = false;
 
 
     private constructor(canvas?: HTMLCanvasElement, idCanvas?: string) {
@@ -77,12 +79,32 @@ export class Composicion {
 
     /**Calcula la colisión entre los cuerpos de la composición y resuelve sus choques como choques elásticos.*/
     reboteElasticoCuerpos() {
-        Interaccion.reboteEntreCuerpos(this.cuerpos)
+        // Interaccion.reboteEntreCuerpos(this.cuerpos)
+        let niveles: number = this.nivelesQuadTree;
+        let capacidad: number = Math.ceil(this.cuerpos.length / (2 ** niveles))
+        const Quad: QuadTree = new QuadTree(0, 0, this.render.anchoCanvas, this.render.altoCanvas, capacidad, niveles);
+        for (let cuerpo of this.cuerpos) {
+            Quad.insertarPunto(cuerpo.posicion, cuerpo)
+        }
+        Quad.reboteEslasticoCuerpos()
+        if (this.trazarQuadTree) {
+            Quad.trazar(this.render, { colorTrazo: 'skyblue' })
+        }
     }
 
     /**Calcula la colisión entre los cuerpos de la composición y evita que los cuerpos se solapen.*/
     contactoSimpleCuerpos() {
-        Interaccion.contactoSimple(this.cuerpos)
+        // Interaccion.contactoSimple(this.cuerpos)
+        let niveles: number = 9;
+        let capacidad: number = Math.ceil(this.cuerpos.length / (2 ** niveles))
+        const Quad: QuadTree = new QuadTree(0, 0, this.render.anchoCanvas, this.render.altoCanvas, capacidad, niveles);
+        for (let cuerpo of this.cuerpos) {
+            Quad.insertarPunto(cuerpo.posicion, cuerpo)
+        }
+        Quad.contactoSimpleCuerpos()
+        if (this.trazarQuadTree) {
+            Quad.trazar(this.render, { colorTrazo: 'skybule' })
+        }
     }
 
     /**Método gráfico. Pinta el interior de los cuerpos de la composición en el canvas.*/

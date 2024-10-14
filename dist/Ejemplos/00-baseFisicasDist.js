@@ -16,6 +16,9 @@
             let rango = 1 + max - min;
             return Math.trunc((Math.random() * rango) + min);
         }
+        static compararNumeros(numeroUno, numeroDos, epsilon = Number.EPSILON) {
+            return (Math.abs(numeroUno - numeroDos) < epsilon);
+        }
     }
 
     /**MÓDULO DE GEOMETRÍA EN ESPAÑOL
@@ -57,6 +60,15 @@
         /**Retorna el punto medio entre dos puntos de un plano cartesiano.*/
         static puntoMedio(puntoUno, puntoDos) {
             return { x: (puntoUno.x / 2 + puntoDos.x / 2), y: (puntoUno.y / 2, +puntoDos.y / 2) };
+        }
+        /**Compara las coordenadas de dos puntos.
+         * Retorna true si son iguales y false si no lo son.
+        */
+        static compararPuntos(puntoUno, puntoDos) {
+            if (puntoUno.x == puntoDos.x && puntoUno.y == puntoDos.y) {
+                return true;
+            }
+            return false;
         }
     }
 
@@ -639,7 +651,7 @@
     */
     class Colision {
         static get iteraciones() {
-            return 20;
+            return 2;
         }
         /**Detecta colisiones usando el teorema SAT entre formas de tipo circunferencia y/o polígono.
          * Retorna true si detecta una colisión.
@@ -866,7 +878,7 @@
     //Interacciones entre cuerpos.
     class Interaccion {
         static get iteraciones() {
-            return 5;
+            return 1;
         }
         /**Retorna una copia del conjunto de cuerpos con la resolución de rebote para cuerpos que han colisionado.      */
         static reboteEntreCuerpos(cuerpos) {
@@ -902,6 +914,7 @@
         }
         /**Retorna una copia del conjunto de cuerpos con la resolución de contacto sólido para cuerpos que han colisionado.      */
         static contactoSimple(cuerpos) {
+            // console.log('Comprobando')
             for (let iteracion = 0; iteracion < Interaccion.iteraciones; iteracion++) {
                 // let cuerposRebotados: Cuerpo[] = [];
                 for (let i = 0; i < cuerpos.length - 1; i++) {
@@ -1584,6 +1597,180 @@
         }
     }
 
+    /**
+     * Inicio Quadtree
+     */
+    class QuadTree {
+        constructor(x, y, ancho, alto, capacidad = 4, niveles = 7) {
+            this.puntos = [];
+            this.idPunto = 1;
+            this.subDividido = false;
+            this.subDivisiones = [];
+            this.x = x;
+            this.y = y;
+            this.ancho = ancho;
+            this.alto = alto;
+            this.capacidad = capacidad;
+            this.capacidadEspecifica = capacidad;
+            this.longitudMenor = this.ancho < this.alto ? this.ancho : this.alto;
+            this.niveles = niveles;
+            this.longitudMinima = Math.ceil(this.longitudMenor / (Math.pow(2, niveles)));
+            this.contorno = this.formaCuadrante();
+        }
+        /**Agrega un punto a un QuadTree. Si al agregar el punto se sobrepasa la capacidad del QuadTree, se subdivide en cuatro QuadTrees nuevos. */
+        insertarPunto(punto, contenido) {
+            if (contenido != undefined && punto.contenido == undefined)
+                punto.contenido = contenido;
+            if (punto.id == 0) {
+                punto.id = this.idPunto;
+                this.idPunto++;
+            }
+            if (this.validarInsercion(punto)) {
+                if (this.verificarPuntoRepetido(punto)) {
+                    this.puntos.push(punto);
+                    this.capacidadEspecifica++;
+                    return true;
+                }
+                if (this.puntos.length < this.capacidadEspecifica || this.longitudMenor <= this.longitudMinima) {
+                    this.puntos.push(punto);
+                    return true;
+                }
+                else {
+                    if (!this.subDividido) {
+                        this.crearSubdivisiones();
+                        this.puntos.forEach(puntoGuardado => this.insertarEnSubdivisiones(puntoGuardado));
+                        this.insertarEnSubdivisiones(punto);
+                        this.subDividido = true;
+                        return true;
+                    }
+                    else {
+                        this.insertarEnSubdivisiones(punto);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        crearSubdivisiones() {
+            let quadSurEste = new QuadTree(this.x + this.ancho / 2, this.y + this.alto / 2, this.ancho / 2, this.alto / 2, this.capacidad, this.niveles - 1);
+            let quadSurOeste = new QuadTree(this.x, this.y + this.alto / 2, this.ancho / 2, this.alto / 2, this.capacidad, this.niveles - 1);
+            let quadNorOeste = new QuadTree(this.x, this.y, this.ancho / 2, this.alto / 2, this.capacidad, this.niveles - 1);
+            let quadNorEste = new QuadTree(this.x + this.ancho / 2, this.y, this.ancho / 2, this.alto / 2, this.capacidad, this.niveles - 1);
+            this.subDivisiones.push(quadSurEste, quadSurOeste, quadNorOeste, quadNorEste);
+        }
+        insertarEnSubdivisiones(punto) {
+            this.subDivisiones.forEach(subdivision => subdivision.insertarPunto(punto));
+        }
+        validarInsercion(punto) {
+            if (punto.contenido) {
+                if ((punto.x + punto.contenido.radio >= this.x && punto.x - punto.contenido.radio <= this.x + this.ancho)
+                    && (punto.y + punto.contenido.radio >= this.y && punto.y - punto.contenido.radio <= this.y + this.alto)) {
+                    return true;
+                }
+                return false;
+            }
+            else {
+                if (punto.x >= this.x && punto.x <= this.x + this.ancho && punto.y >= this.y && punto.y <= this.y + this.alto) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        trazar(dibujante, opciones) {
+            if (opciones) {
+                this.contorno.estiloGrafico = opciones;
+            }
+            this.contorno.trazar(dibujante);
+            if (this.subDivisiones.length > 0) {
+                this.subDivisiones.forEach(sub => sub.trazar(dibujante, opciones));
+            }
+        }
+        formaCuadrante() {
+            const centroX = this.x + (this.ancho / 2);
+            const centroY = this.y + (this.alto / 2);
+            return Forma.rectangulo(centroX, centroY, this.ancho, this.alto);
+        }
+        verificarPuntoRepetido(punto) {
+            let coincidencia = false;
+            this.puntos.forEach((puntoGuardado) => {
+                if (Matematica.compararNumeros(punto.x, puntoGuardado.x) && Matematica.compararNumeros(punto.y, puntoGuardado.y)) {
+                    coincidencia = true;
+                    return;
+                }
+            });
+            return coincidencia;
+        }
+        puntosEnRango(limiteIzquierda, limiteDerecha, limiteSuperior, limiteInferior, arregloPuntos = []) {
+            let PuntosDentroDelRango = arregloPuntos;
+            if (this.x <= limiteDerecha && this.x + this.ancho >= limiteIzquierda && this.y <= limiteInferior && this.y + this.alto >= limiteSuperior) {
+                if (this.x >= limiteIzquierda && this.x + this.ancho <= limiteDerecha && this.y >= limiteSuperior && this.y + this.alto <= limiteInferior) {
+                    this.puntos.forEach(punto => {
+                        if (punto.id != undefined) {
+                            if (PuntosDentroDelRango.findIndex(puntoEnRango => punto.id == puntoEnRango.id) < 0) {
+                                PuntosDentroDelRango.push(punto);
+                            }
+                        }
+                        else {
+                            PuntosDentroDelRango.push(punto);
+                        }
+                    });
+                }
+                else {
+                    this.puntos.forEach(punto => {
+                        if (punto.x >= limiteIzquierda && punto.x <= limiteDerecha && punto.y >= limiteSuperior && punto.y <= limiteInferior) {
+                            if (punto.id != undefined) {
+                                if (PuntosDentroDelRango.findIndex(puntoEnRango => punto.id == puntoEnRango.id) < 0) {
+                                    PuntosDentroDelRango.push(punto);
+                                }
+                            }
+                            else {
+                                PuntosDentroDelRango.push(punto);
+                            }
+                        }
+                    });
+                }
+                if (this.subDivisiones.length > 0) {
+                    this.subDivisiones.forEach(subdivision => {
+                        subdivision.puntosEnRango(limiteIzquierda, limiteDerecha, limiteSuperior, limiteInferior, PuntosDentroDelRango);
+                    });
+                }
+            }
+            return PuntosDentroDelRango;
+        }
+        contactoSimpleCuerpos() {
+            if (!this.subDividido) {
+                if (this.puntos.length > 1) {
+                    let cuerpos = [];
+                    this.puntos.forEach(punto => {
+                        if (punto.contenido instanceof Cuerpo) {
+                            cuerpos.push(punto.contenido);
+                        }
+                    });
+                    Interaccion.contactoSimple(cuerpos);
+                }
+            }
+            else {
+                this.subDivisiones.forEach(subdivision => subdivision.contactoSimpleCuerpos());
+            }
+        }
+        reboteEslasticoCuerpos() {
+            if (!this.subDividido) {
+                if (this.puntos.length > 1) {
+                    let cuerpos = [];
+                    this.puntos.forEach(punto => {
+                        if (punto.contenido instanceof Cuerpo) {
+                            cuerpos.push(punto.contenido);
+                        }
+                    });
+                    Interaccion.reboteEntreCuerpos(cuerpos);
+                }
+            }
+            else {
+                this.subDivisiones.forEach(subdivision => subdivision.reboteEslasticoCuerpos());
+            }
+        }
+    }
+
     /**Contador de tiempo, en milisegundos.
      * Su propiedad 'activo' se vuelve false cuando ha transcurrido el tiempo ingresado.
     */
@@ -1666,6 +1853,8 @@
             this.usarfpsNativos = false;
             this.tick = 50;
             this.animar = true;
+            this.nivelesQuadTree = 8;
+            this.trazarQuadTree = false;
             if (canvas) {
                 this.render = Renderizado.crearConCanvas(canvas);
             }
@@ -1704,11 +1893,31 @@
         }
         /**Calcula la colisión entre los cuerpos de la composición y resuelve sus choques como choques elásticos.*/
         reboteElasticoCuerpos() {
-            Interaccion.reboteEntreCuerpos(this.cuerpos);
+            // Interaccion.reboteEntreCuerpos(this.cuerpos)
+            let niveles = this.nivelesQuadTree;
+            let capacidad = Math.ceil(this.cuerpos.length / (Math.pow(2, niveles)));
+            const Quad = new QuadTree(0, 0, this.render.anchoCanvas, this.render.altoCanvas, capacidad, niveles);
+            for (let cuerpo of this.cuerpos) {
+                Quad.insertarPunto(cuerpo.posicion, cuerpo);
+            }
+            Quad.reboteEslasticoCuerpos();
+            if (this.trazarQuadTree) {
+                Quad.trazar(this.render, { colorTrazo: 'skyblue' });
+            }
         }
         /**Calcula la colisión entre los cuerpos de la composición y evita que los cuerpos se solapen.*/
         contactoSimpleCuerpos() {
-            Interaccion.contactoSimple(this.cuerpos);
+            // Interaccion.contactoSimple(this.cuerpos)
+            let niveles = 9;
+            let capacidad = Math.ceil(this.cuerpos.length / (Math.pow(2, niveles)));
+            const Quad = new QuadTree(0, 0, this.render.anchoCanvas, this.render.altoCanvas, capacidad, niveles);
+            for (let cuerpo of this.cuerpos) {
+                Quad.insertarPunto(cuerpo.posicion, cuerpo);
+            }
+            Quad.contactoSimpleCuerpos();
+            if (this.trazarQuadTree) {
+                Quad.trazar(this.render, { colorTrazo: 'skybule' });
+            }
         }
         /**Método gráfico. Pinta el interior de los cuerpos de la composición en el canvas.*/
         rellenarCuerpos() {
@@ -1758,6 +1967,100 @@
         }
     }
 
+    //Tengo que integrar un modo de recibir eventos de hardware
+    class ManejadorEventos {
+        /**Agrega un eventListener para eventos de teclado. Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+        static eventoTeclado(tipoEvento, tecla, manejarEvento, parametro) {
+            document.addEventListener(tipoEvento, (evento) => {
+                if (evento.key == CODIGOSTECLA[tecla]) {
+                    manejarEvento(parametro);
+                }
+            });
+        }
+        /**Agrega un eventListener para eventos de teclado tipo keyup. Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+        static eventoKeyup(tecla, manejarEvento, parametro) {
+            ManejadorEventos.eventoTeclado('keyup', tecla, manejarEvento, parametro);
+        }
+        /**Agrega un eventListener para eventos de teclado tipo keydown. Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+        static eventoKeydown(tecla, manejarEvento, parametro) {
+            ManejadorEventos.eventoTeclado('keydown', tecla, manejarEvento, parametro);
+        }
+        /**Agrega un eventListener para eventos de teclado tipo keypress. Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+        static eventoKeypress(tecla, manejarEvento, parametro) {
+            ManejadorEventos.eventoTeclado('keypress', tecla, manejarEvento, parametro);
+        }
+        /**Agrega un eventListener para eventos de mouse y para trabajar con las propiedades del evento.
+         * Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+        static eventoMouseEnCanvas(tipoEvento, canvas, manejarEvento, parametro) {
+            canvas.addEventListener(tipoEvento, (evento) => {
+                if (parametro != undefined) {
+                    manejarEvento(evento, parametro);
+                }
+                else {
+                    manejarEvento(evento, undefined);
+                }
+            });
+        }
+        /**Agrega un eventListener para detectar cambios en el mouse, mas no trabaja con el evento.
+         * Recibe una función callback y opcionalmente un parámetro si la función lo requiere.*/
+        static mouseEnCanvas(tipoEvento, canvas, manejarEvento, parametro) {
+            canvas.addEventListener(tipoEvento, () => {
+                if (parametro != undefined) {
+                    manejarEvento(parametro);
+                }
+                else {
+                    manejarEvento(undefined);
+                }
+            });
+        }
+        /**Previene que se activen acciones por defecto al presionar la tecla definida. */
+        static anularAccionPorDefecto(tecla) {
+            document.addEventListener('keydown', (event) => {
+                if (event.key == CODIGOSTECLA[tecla]) {
+                    event.preventDefault();
+                }
+            });
+        }
+    }
+    /**Constante que almacena los códigos de eventos de teclado.*/
+    const CODIGOSTECLA = {
+        espacio: " ",
+        enter: 'Enter',
+        arriba: 'ArrowUp',
+        abajo: 'ArrowDown',
+        izquierda: 'ArrowLeft',
+        derecha: 'ArrowRight',
+        a: 'a',
+        b: 'b',
+        c: 'c',
+        d: 'd',
+        e: 'e',
+        f: 'f',
+        g: 'g',
+        h: 'h',
+        i: 'i',
+        j: 'j',
+        k: 'k',
+        l: 'l',
+        m: 'm',
+        n: 'n',
+        ñ: 'ñ',
+        o: 'o',
+        p: 'p',
+        q: 'q',
+        r: 'r',
+        s: 's',
+        t: 't',
+        u: 'u',
+        v: 'v',
+        w: 'w',
+        x: 'x',
+        y: 'y',
+        z: 'z',
+        mas: '+',
+        menos: '-',
+    };
+
     const COMPO = Composicion.crearConIDCanvas('canvas');
     let ancho = window.visualViewport.width < 600 ? window.visualViewport.width : 600;
     let alto = window.visualViewport.height < 600 ? window.visualViewport.height : 600;
@@ -1799,6 +2102,8 @@
     Atractor.fijo = false;
     //Se integran todos los cuerpos a la composición
     COMPO.agregarCuerpos(...Circunferencias, Atractor);
+    COMPO.nivelesQuadTree = 6;
+    COMPO.trazarQuadTree = true;
     //Frontera del canvas
     const Frontera = Entorno.crearEntornoCanvas(Render.canvas);
     Frontera.cuerpo.masa = 10000000000;
@@ -1806,7 +2111,7 @@
     COMPO.usarfpsNativos = true;
     COMPO.tick = 10;
     COMPO.animacion(() => {
-        let inicio = Date.now();
+        // let inicio: number = Date.now()
         Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
         Frontera.colisionConBorde(...Circunferencias, Atractor);
         COMPO.moverCuerpos();
@@ -1816,11 +2121,12 @@
             cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10);
             cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999);
         });
-        console.log(Date.now() - inicio);
+        // console.log(Date.now() - inicio)
     }, () => {
-        Render.limpiarCanvas();
+        Render.limpiarCanvas(0.6);
         Render.trazar(Frontera.cuerpo);
         COMPO.renderizarCuerpos();
     });
+    ManejadorEventos.eventoMouseEnCanvas('click', COMPO.render.canvas, () => COMPO.trazarQuadTree = !COMPO.trazarQuadTree);
 
 })();
