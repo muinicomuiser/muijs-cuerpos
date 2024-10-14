@@ -32,6 +32,8 @@ export class Forma {
 
     protected transformar: boolean = true;
 
+    id?: number;
+
     radio: number = 0;
 
     lados: number = 0;
@@ -393,5 +395,3 @@ export class Forma {
         dibujante.rellenar(this);
     }
 }
-
-

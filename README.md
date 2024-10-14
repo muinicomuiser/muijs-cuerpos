@@ -25,6 +25,7 @@ Hasta el momento permite:
 - choque elástico entre circunferencias
 - grabar canvas
 - control de tick y fps
+- calcular colisiones con quadtree
 
 ## Demostración
 

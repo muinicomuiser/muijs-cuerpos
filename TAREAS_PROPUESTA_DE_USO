@@ -54,9 +54,10 @@ TAREAS Asociadas a Versión, previas a 1.0.0:
 - Crear método para agrupar formas.
 
 0.1
-- Quadtree
+- Quadtree      <----
 - Iteraciones
 - FPS
+- Periodic Boundarya Conditions
 
 
 
@@ -87,3 +88,6 @@ PARA VERSIONES FUTURAS:
 
 - Cuerpos blandos
 - Torque y momento / movimiento angular
+- Sprites
+- Cámara
+- Condiciones de frontera (abierta, periódica, reflectora)

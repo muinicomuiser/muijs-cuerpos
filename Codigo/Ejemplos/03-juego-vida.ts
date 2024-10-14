@@ -81,7 +81,7 @@ ManejadorEventos.eventoKeyup('abajo', () => {
             COMPO.tick--
         }
     }
-    console.log(COMPO.tick)
+    // console.log(COMPO.tick)
 });
 ManejadorEventos.eventoKeyup('arriba', () => {
     if (COMPO.tick < 60) {
@@ -95,7 +95,7 @@ ManejadorEventos.eventoKeyup('arriba', () => {
             COMPO.tick++
         }
     }
-    console.log(COMPO.tick)
+    // console.log(COMPO.tick)
 });
 ManejadorEventos.eventoMouseEnCanvas('click', Render.canvas, evento => {
     let mouseX: number = evento.pageX - Render.canvas.offsetLeft;

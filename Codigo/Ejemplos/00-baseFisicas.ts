@@ -1,4 +1,4 @@
-import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
+import { Composicion, Cuerpo, Entorno, Forma, Fuerza, Geometria, ManejadorEventos, Matematica, Renderizado, Restriccion, Vector } from "../Fuente/mui.js";
 
 const COMPO: Composicion = Composicion.crearConIDCanvas('canvas');
 let ancho: number = window.visualViewport!.width < 600 ? window.visualViewport!.width : 600;
@@ -49,7 +49,8 @@ Atractor.fijo = false;
 
 //Se integran todos los cuerpos a la composición
 COMPO.agregarCuerpos(...Circunferencias, Atractor);
-
+COMPO.nivelesQuadTree = 6;
+COMPO.trazarQuadTree = true;
 
 //Frontera del canvas
 const Frontera: Entorno = Entorno.crearEntornoCanvas(Render.canvas);
@@ -59,7 +60,7 @@ Frontera.cuerpo.estiloGrafico = { colorTrazo: 'white', grosorTrazo: 4 }
 COMPO.usarfpsNativos = true;
 COMPO.tick = 10;
 COMPO.animacion(() => {
-    let inicio: number = Date.now()
+    // let inicio: number = Date.now()
     Circunferencias.forEach((circunferencia) => circunferencia.aceleracion = Fuerza.atraer(circunferencia, Atractor, MagnitudAtraccion));
     Frontera.colisionConBorde(...Circunferencias, Atractor);
     COMPO.moverCuerpos();
@@ -69,10 +70,12 @@ COMPO.animacion(() => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
         cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999)
     })
-    console.log(Date.now() - inicio)
+    // console.log(Date.now() - inicio)
 
 }, () => {
-    Render.limpiarCanvas();
+    Render.limpiarCanvas(0.6);
     Render.trazar(Frontera.cuerpo);
     COMPO.renderizarCuerpos();
 })
+
+ManejadorEventos.eventoMouseEnCanvas('click', COMPO.render.canvas, () => COMPO.trazarQuadTree = !COMPO.trazarQuadTree)
