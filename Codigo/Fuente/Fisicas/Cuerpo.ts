@@ -93,7 +93,8 @@ export class Cuerpo extends Forma {
         let poliForma: Forma = super.poligono(x, y, lados, radio);
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
         if (opciones) {
-            poligono.aplicarOpciones(opciones)
+            Object.assign(poligono, opciones)
+            // poligono.aplicarOpciones(opciones)
         }
         return poligono;
     }
@@ -105,7 +106,8 @@ export class Cuerpo extends Forma {
         let poliForma: Forma = super.poligonoSegunVertices(vertices);
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
         if (opciones) {
-            poligono.aplicarOpciones(opciones)
+            Object.assign(poligono, opciones)
+            // poligono.aplicarOpciones(opciones)
         }
         return poligono;
     }
@@ -115,7 +117,8 @@ export class Cuerpo extends Forma {
         let rectForma: Forma = super.rectangulo(x, y, base, altura);
         let rectangulo: Cuerpo = Cuerpo.cuerpoSegunForma(rectForma);
         if (opciones) {
-            rectangulo.aplicarOpciones(opciones)
+            Object.assign(rectangulo, opciones)
+            // rectangulo.aplicarOpciones(opciones)
         }
         return rectangulo;
     }
@@ -126,7 +129,8 @@ export class Cuerpo extends Forma {
         let circuloForma: Forma = super.circunferencia(x, y, radio);
         let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
         if (opciones) {
-            circunferencia.aplicarOpciones(opciones)
+            Object.assign(circuloForma, opciones)
+            // circunferencia.aplicarOpciones(opciones)
         }
         return circunferencia;
     }
@@ -140,26 +144,6 @@ export class Cuerpo extends Forma {
         cuerpo.radio = forma.radio;
         cuerpo.tipo = forma.tipo;
         return cuerpo;
-    }
-
-    /**Aplicación de la opciones definidas al crear un cuerpo nuevo.*/
-    protected aplicarOpciones(opciones: OpcionesCuerpo): void {
-        super.aplicarOpciones(opciones)
-        if (opciones.masa) {
-            this.masa = opciones.masa;
-        }
-        if (opciones.densidad) {
-            this.densidad = opciones.densidad;
-        }
-        if (opciones.fijo != undefined) {
-            this.fijo = opciones.fijo;
-        }
-        if (opciones.rotarSegunVelocidad != undefined) {
-            this.rotarSegunVelocidad = opciones.rotarSegunVelocidad;
-        }
-        if (opciones.controlable != undefined) {
-            this.controlable = opciones.controlable!
-        }
     }
 
     /**Retorna una copia del cuerpo como un cuerpo nuevo.*/

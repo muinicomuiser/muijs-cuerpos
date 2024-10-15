@@ -162,7 +162,8 @@ export class Forma {
 
     /**Permite modificar las opciones gráficas con la interfaz OpcionesGraficasForma*/
     set estiloGrafico(opciones: OpcionesGraficasForma) {
-        this.aplicarOpciones(opciones)
+        Object.assign(this, opciones)
+        // this.aplicarOpciones(opciones)
     }
 
     /**Inicia los vértices de la forma creada.*/
@@ -197,7 +198,7 @@ export class Forma {
         nuevoPoligono.vertices = nuevoPoligono.crearVertices();
         nuevoPoligono.tipo = TipoFormas.poligono;
         if (opciones) {
-            nuevoPoligono.aplicarOpciones(opciones)
+            Object.assign(nuevoPoligono, opciones)
         }
         nuevoPoligono.iniciarTransformacion(x, y)
         return nuevoPoligono;
@@ -218,7 +219,7 @@ export class Forma {
         nuevaCircunferencia.vertices = nuevaCircunferencia.crearVertices();
         nuevaCircunferencia.tipo = TipoFormas.circunferencia;
         if (opciones) {
-            nuevaCircunferencia.aplicarOpciones(opciones)
+            Object.assign(nuevaCircunferencia, opciones)
         }
         nuevaCircunferencia.iniciarTransformacion(x, y)
         return nuevaCircunferencia;
@@ -236,7 +237,7 @@ export class Forma {
         rectangulo.vertices = [ver1, ver2, ver3, ver4];
         rectangulo.tipo = TipoFormas.poligono;
         if (opciones) {
-            rectangulo.aplicarOpciones(opciones)
+            Object.assign(rectangulo, opciones)
         }
         rectangulo.iniciarTransformacion(x, y);
         return rectangulo;
@@ -252,7 +253,7 @@ export class Forma {
         linea.vertices = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
         linea.tipo = TipoFormas.linea;
         if (opciones) {
-            linea.aplicarOpciones(opciones)
+            Object.assign(linea, opciones)
         }
         linea.iniciarTransformacion(centro.x, centro.y);
         return linea;
@@ -273,7 +274,7 @@ export class Forma {
         trazo.lados = vertices.length - 1;
         trazo.tipo = TipoFormas.linea;
         if (opciones) {
-            trazo.aplicarOpciones(opciones)
+            Object.assign(trazo, opciones)
         }
         trazo.iniciarTransformacion(centro.x, centro.y);
         return trazo;
@@ -293,7 +294,7 @@ export class Forma {
         poligono.lados = vertices.length - 1;
         poligono.tipo = TipoFormas.poligono;
         if (opciones) {
-            poligono.aplicarOpciones(opciones)
+            Object.assign(poligono, opciones)
         }
         poligono.iniciarTransformacion(centro.x, centro.y);
         return poligono;
@@ -305,31 +306,6 @@ export class Forma {
         this.transformacionAnterior = this._transformacion.clonarTransformación()
     }
 
-    /**Aplicación de la opciones definidas al crear una forma nueva.*/
-    protected aplicarOpciones(opciones: OpcionesForma & OpcionesGraficasForma): void {
-        if (opciones.colorTrazo) {
-            this.colorTrazo = opciones.colorTrazo;
-        }
-        if (opciones.colorRelleno) {
-            this.colorRelleno = opciones.colorRelleno;
-        }
-        if (opciones.trazada != undefined) {
-            this.trazada = opciones.trazada;
-        }
-        if (opciones.rellenada != undefined) {
-            this.rellenada = opciones.rellenada;
-        }
-        if (opciones.grosorTrazo) {
-            this.grosorTrazo = opciones.grosorTrazo;
-        }
-        if (opciones.escala) {
-            this.escala = opciones.escala
-        }
-        if (opciones.rotacion) {
-            this.rotacion = opciones.rotacion
-        }
-    }
-
     /**Actualiza el conjunto de vectores transformados.*/
     protected transformarVertices(): void {
         this.verticesTransformadosAnteriores = Vector.clonarConjunto(this._verticesTransformados)
@@ -339,18 +315,8 @@ export class Forma {
 
     /**Retorna una copia de la forma como una forma nueva.*/
     public clonar(): Forma {
-        const clonForma: Forma = new Forma()
-        clonForma.vertices = this.vertices;
-        clonForma.transformacion = this.transformacion;
-        clonForma.lados = this.lados;
-        clonForma.radio = this.radio;
-        clonForma.tipo = this.tipo;
-        clonForma.colorRelleno = this.colorRelleno;
-        clonForma.colorTrazo = this.colorTrazo;
-        clonForma.rellenada = this.rellenada;
-        clonForma.trazada = this.trazada;
-        clonForma.grosorTrazo = this.grosorTrazo;
-        clonForma.opacidad = this.opacidad;
+        const clonForma: Forma = new Forma();
+        Object.assign(clonForma, this)
         clonForma.iniciarTransformacion(this.posicion.x, this.posicion.y);
         return clonForma;
     }
