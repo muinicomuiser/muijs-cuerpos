@@ -54,10 +54,10 @@ TAREAS Asociadas a Versión, previas a 1.0.0:
 - Crear método para agrupar formas.
 
 0.1
-- Quadtree      <----
-- Iteraciones
-- FPS
-- Periodic Boundarya Conditions
++ Quadtree (3)     <----
+- Iteraciones (3)
+- FPS (3)
+- Periodic Boundary Conditions (1)
 
 
 

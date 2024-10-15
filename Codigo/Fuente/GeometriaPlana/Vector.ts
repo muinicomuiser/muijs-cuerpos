@@ -50,29 +50,40 @@ export class Vector {
     static cero(): Vector {
         return new Vector(0, 0);
     }
-    static arriba(escalar?: number): Vector {
-        if (escalar) {
-            return new Vector(0, -1 * escalar);
+    static arriba(magnitud?: number): Vector {
+        if (magnitud) {
+            return new Vector(0, -1 * magnitud);
         }
         return new Vector(0, -1);
     }
-    static abajo(escalar?: number): Vector {
-        if (escalar) {
-            return new Vector(0, 1 * escalar);
+    static abajo(magnitud?: number): Vector {
+        if (magnitud) {
+            return new Vector(0, 1 * magnitud);
         }
         return new Vector(0, 1);
     }
-    static izquierda(escalar?: number): Vector {
-        if (escalar) {
-            return new Vector(-1 * escalar, 0);
+    static izquierda(magnitud?: number): Vector {
+        if (magnitud) {
+            return new Vector(-1 * magnitud, 0);
         }
         return new Vector(-1, 0);
     }
-    static derecha(escalar?: number): Vector {
-        if (escalar) {
-            return new Vector(1 * escalar, 0);
+    static derecha(magnitud?: number): Vector {
+        if (magnitud) {
+            return new Vector(1 * magnitud, 0);
         }
         return new Vector(1, 0);
+    }
+    /**Retorna un Vector aleatorio con magnitud definida.       
+     * Si no se determina una magnitud, retorna un vector normalizado.
+     */
+    static aleatorio(magnitud?: number): Vector {
+        let x: number = Math.random() * 2 - 1;
+        let y: number = Math.random() * 2 - 1;
+        if (magnitud != undefined) {
+            return Vector.escalar(Vector.normalizar(Vector.crear(x, y)), magnitud)
+        }
+        return Vector.normalizar(Vector.crear(x, y))
     }
 
     /**Retorna un vector nuevo a partir de las componentes x e y ingresadas.*/
