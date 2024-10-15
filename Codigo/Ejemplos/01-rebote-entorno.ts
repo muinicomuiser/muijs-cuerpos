@@ -33,10 +33,10 @@ function animar() {
     // Render.limpiarCanvas()
     cuerpos.forEach((cuerpo) => {
         cuerpo.aceleracion = Fuerza.atraer(cuerpo, atractorGravedad, 0.05)
-        cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.99)
+        cuerpo.velocidad = cuerpo.velocidad.escalar(0.99)
     })
     contenedor.cuerpo.aceleracion = Fuerza.atraer(contenedor.cuerpo, atractorGravedad, 0.1)
-    contenedor.cuerpo.velocidad = Vector.escalar(contenedor.cuerpo.velocidad, 0.99)
+    contenedor.cuerpo.velocidad = contenedor.cuerpo.velocidad.escalar(0.99)
     contenedor.mover()
     entorno.rebotarCircunferenciasConBorde()
     atractorGravedad.rotarSegunPunto(Render.centroCanvas, 0.02)

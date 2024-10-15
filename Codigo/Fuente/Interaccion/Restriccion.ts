@@ -9,8 +9,8 @@ export class Restriccion {
     static limitarVelocidad(cuerpo: Cuerpo, limite: number): Vector {
         let magnitudVel: number = cuerpo.velocidad.magnitud;
         if (magnitudVel > limite) {
-            let velNormalizado: Vector = Vector.normalizar(cuerpo.velocidad)
-            return Vector.escalar(velNormalizado, limite);
+            let velNormalizado: Vector = cuerpo.velocidad.normalizar()
+            return velNormalizado.escalar(limite);
         }
         return cuerpo.velocidad;
     }
@@ -23,8 +23,8 @@ export class Restriccion {
         if (magnitudAceleracion != 0 && magnitudVelocidad != 0) {
             if (magnitudVelocidad + magnitudAceleracion > limiteVelocidad) {
                 let razonAceleracion: number = magnitudAceleracion / (magnitudAceleracion + magnitudVelocidad);
-                let aceleracionNormalizada: Vector = Vector.normalizar(cuerpo.aceleracion)
-                let aceleracionEscalada: Vector = Vector.escalar(aceleracionNormalizada, razonAceleracion * limiteVelocidad)
+                let aceleracionNormalizada: Vector = cuerpo.aceleracion.normalizar()
+                let aceleracionEscalada: Vector = aceleracionNormalizada.escalar(razonAceleracion * limiteVelocidad)
                 return aceleracionEscalada;
             }
         }

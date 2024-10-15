@@ -9,8 +9,8 @@ export class Fuerza {
     */
     static atraer(cuerpo: Cuerpo, atractor: Cuerpo, magnitudAtraccion: number): Vector {
         let vectorAtractor: Vector = Vector.segunPuntos(cuerpo.posicion, atractor.posicion);
-        vectorAtractor = Vector.normalizar(vectorAtractor);
-        vectorAtractor = Vector.escalar(vectorAtractor, magnitudAtraccion);
+        vectorAtractor = vectorAtractor.normalizar();
+        vectorAtractor = vectorAtractor.escalar(magnitudAtraccion);
         return vectorAtractor;
     }
     /**Retorna un vector correspondiente a la aceleración de un cuerpo atraído hacia un vector atractor.        
@@ -18,8 +18,8 @@ export class Fuerza {
     */
     static atraerAVector(cuerpo: Cuerpo, atractor: Vector, magnitudAtraccion: number): Vector {
         let vectorAtractor: Vector = Vector.segunPuntos(cuerpo.posicion, atractor);
-        vectorAtractor = Vector.normalizar(vectorAtractor);
-        vectorAtractor = Vector.escalar(vectorAtractor, magnitudAtraccion);
+        vectorAtractor = vectorAtractor.normalizar();
+        vectorAtractor = vectorAtractor.escalar(magnitudAtraccion);
         return vectorAtractor;
     }
 
@@ -28,8 +28,8 @@ export class Fuerza {
     */
     static repeler(cuerpo: Cuerpo, repulsor: Cuerpo, magnitudRepulsion: number): Vector {
         let vectorAtractor: Vector = Vector.segunPuntos(repulsor.posicion, cuerpo.posicion);
-        vectorAtractor = Vector.normalizar(vectorAtractor);
-        vectorAtractor = Vector.escalar(vectorAtractor, magnitudRepulsion);
+        vectorAtractor = vectorAtractor.normalizar();
+        vectorAtractor = vectorAtractor.escalar(magnitudRepulsion);
         return vectorAtractor;
     }
 
@@ -38,8 +38,8 @@ export class Fuerza {
    */
     static repelerDeVector(cuerpo: Cuerpo, repulsor: Vector, magnitudRepulsion: number): Vector {
         let vectorRepulsor: Vector = Vector.segunPuntos(repulsor, cuerpo.posicion);
-        vectorRepulsor = Vector.normalizar(vectorRepulsor);
-        vectorRepulsor = Vector.escalar(vectorRepulsor, magnitudRepulsion);
+        vectorRepulsor = vectorRepulsor.normalizar();
+        vectorRepulsor = vectorRepulsor.escalar(magnitudRepulsion);
         return vectorRepulsor;
     }
 }

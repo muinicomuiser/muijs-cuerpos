@@ -68,14 +68,12 @@ export class Forma {
 
     /**Retorna una copia del vector de la posición después de aplicar las transformaciones.*/
     get posicion(): Vector {
-        let posicion: Vector = Vector.clonar(this._transformacion.posicion);
-        return posicion;
+        return this._transformacion.posicion.clonar()
     }
 
     /**Retorna una copia del vector de la posición antes de aplicar las transformaciones.*/
     get posicionAnterior(): Vector {
-        let posicion: Vector = Vector.clonar(this.transformacionAnterior.posicion);
-        return posicion;
+        return this.transformacionAnterior.posicion.clonar()
     }
 
     /**Retorna el ángulo de rotación actual de la forma.*/
@@ -140,7 +138,7 @@ export class Forma {
     set posicion(nuevaPosicion: Vector) {
         this.transformar = true;
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.clonar(nuevaPosicion);
+        this._transformacion.posicion = nuevaPosicion.clonar();
     }
 
     /**Modifica el valor de la rotación de la figura con respecto a su forma sin transformaciones.*/
@@ -269,8 +267,8 @@ export class Forma {
         let centro: Vector = Vector.crear(0, 0)
         let trazo: Forma = new Forma();
         let verticesTrazo: Vector[] = []
-        vertices.forEach((vertice) => centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length)))
-        vertices.forEach((vertice) => verticesTrazo.push(Vector.resta(vertice, centro)))
+        vertices.forEach((vertice) => centro = centro.sumar(vertice.escalar(1 / vertices.length)))
+        vertices.forEach((vertice) => verticesTrazo.push(vertice.restar(centro)))
         trazo.vertices = verticesTrazo
         trazo.lados = vertices.length - 1;
         trazo.tipo = TipoFormas.linea;
@@ -289,8 +287,8 @@ export class Forma {
         let centro: Vector = Vector.crear(0, 0)
         let poligono: Forma = new Forma();
         let verticesPoligono: Vector[] = []
-        vertices.forEach((vertice) => centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length)))
-        vertices.forEach((vertice) => verticesPoligono.push(Vector.resta(vertice, centro)))
+        vertices.forEach((vertice) => centro = centro.sumar(vertice.escalar(1 / vertices.length)))
+        vertices.forEach((vertice) => verticesPoligono.push(vertice.restar(centro)))
         poligono.vertices = verticesPoligono;
         poligono.lados = vertices.length - 1;
         poligono.tipo = TipoFormas.poligono;
@@ -367,22 +365,22 @@ export class Forma {
     /**Suma el vector ingresado al vector de posición de la forma.*/
     public desplazar(vector: Vector) {
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vector);
+        this._transformacion.posicion = this._transformacion.posicion.sumar(vector);
     }
 
     /**Rota la forma alrededor del punto (0, 0)*/
     public rotarSegunOrigen(angulo: number) {
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.rotar(this._transformacion.posicion, angulo);
+        this._transformacion.posicion = this._transformacion.posicion.rotar(angulo);
     }
 
     /**rota la forma alrededor del punto ingresado.*/
     public rotarSegunPunto(punto: Punto, angulo: number): void {
         let vectorAcomodador: Vector = Vector.crear(punto.x, punto.y);
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
+        this._transformacion.posicion = this._transformacion.posicion.restar(vectorAcomodador);
         this.rotarSegunOrigen(angulo);
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
+        this._transformacion.posicion = this._transformacion.posicion.sumar(vectorAcomodador);
     }
 
     /**Traza el contorno de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/

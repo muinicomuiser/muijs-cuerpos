@@ -26,14 +26,14 @@ export class Interaccion {
                         // cuerpos[i].velocidad = Cinematica.reboteSimple(cuerpos[i], normales[1])
                         // cuerpos[j].velocidad = Cinematica.reboteSimple(cuerpos[j], normales[0])
                         if (cuerpos[i].fijo) {
-                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                            cuerpos[j].posicion = cuerpos[j].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
                         }
                         else if (cuerpos[j].fijo) {
-                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                            cuerpos[i].posicion = cuerpos[i].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
                         }
                         else {
-                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
-                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                            cuerpos[i].posicion = cuerpos[i].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                            cuerpos[j].posicion = cuerpos[j].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
                         }
                     }
                 }
@@ -56,14 +56,14 @@ export class Interaccion {
                         let normales: Vector[] = Colision.normalesContacto(cuerpos[i], cuerpos[j]);
                         let velocidadesFinales: Vector[] = Cinematica.reboteElastico(cuerpos[i], cuerpos[j])
                         if (cuerpos[i].fijo) {
-                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                            cuerpos[j].posicion = cuerpos[j].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
                         }
                         else if (cuerpos[j].fijo) {
-                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                            cuerpos[i].posicion = cuerpos[i].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
                         }
                         else {
-                            cuerpos[i].posicion = Vector.suma(cuerpos[i].posicion, Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
-                            cuerpos[j].posicion = Vector.suma(cuerpos[j].posicion, Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
+                            cuerpos[i].posicion = cuerpos[i].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[i], cuerpos[j], normales[1]))
+                            cuerpos[j].posicion = cuerpos[j].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
                         }
                     }
                 }
@@ -76,13 +76,13 @@ export class Interaccion {
     }
 
     private static resolverSolapamiento(cuerpoUno: Cuerpo, cuerpoDos: Cuerpo, normal: Vector): Vector {
-        let vectorDesplazamiento: Vector = Vector.normalizar(normal);
+        let vectorDesplazamiento: Vector = normal.normalizar();
         let solapamiento: number = (cuerpoDos.radio + cuerpoUno.radio) - Geometria.distanciaEntrePuntos(cuerpoDos.posicion, cuerpoUno.posicion);
         if (cuerpoDos.fijo) {
-            vectorDesplazamiento = Vector.escalar(vectorDesplazamiento, solapamiento);
+            vectorDesplazamiento = vectorDesplazamiento.escalar(solapamiento);
             return vectorDesplazamiento;
         }
-        vectorDesplazamiento = Vector.escalar(vectorDesplazamiento, 0.5 * solapamiento);
+        vectorDesplazamiento = vectorDesplazamiento.escalar(0.5 * solapamiento);
         return vectorDesplazamiento;
     }
 
@@ -94,11 +94,11 @@ export class Interaccion {
             let solapamiento: number | null = Colision.circunferenciaEntorno(circunferencias[i], entorno);
             if (solapamiento != null) {
                 let normal: Vector = Colision.normalContactoConEntorno(circunferencias[i], entorno);
-                let normalInvertida: Vector = Vector.invertir(normal)
+                let normalInvertida: Vector = normal.invertir()
                 // circunferencias[i].velocidad = Cinematica.reboteElastico(circunferencias[i], entorno)[0]
                 // circunferencias[i].velocidad = Vector.invertir(Cinematica.reboteElastico(circunferencias[i], entorno)[0])
                 circunferencias[i].velocidad = Cinematica.reboteSimple(circunferencias[i], normalInvertida)
-                circunferencias[i].posicion = Vector.suma(circunferencias[i].posicion, Interaccion.resolverSolapamientoEntorno(normalInvertida, solapamiento))
+                circunferencias[i].posicion = circunferencias[i].posicion.sumar(Interaccion.resolverSolapamientoEntorno(normalInvertida, solapamiento))
             }
             cuerposRebotados.push(circunferencias[i])
         }
@@ -106,8 +106,8 @@ export class Interaccion {
     }
 
     private static resolverSolapamientoEntorno(normal: Vector, solapamiento: number): Vector {
-        let vectorDesplazamiento: Vector = Vector.normalizar(normal);
-        vectorDesplazamiento = Vector.escalar(vectorDesplazamiento, 1 * solapamiento);
+        let vectorDesplazamiento: Vector = normal.normalizar();
+        vectorDesplazamiento = vectorDesplazamiento.escalar(1 * solapamiento);
         return vectorDesplazamiento;
     }
 }

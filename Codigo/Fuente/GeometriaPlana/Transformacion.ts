@@ -41,7 +41,7 @@ export class Transformacion {
     aplicarEscalaVectores(vectores: Vector[]): Vector[] {
         let vectoresEscalados: Vector[] = [];
         for (let vector of vectores) {
-            let vectorEscalado: Vector = Vector.escalar(vector, this.escala);
+            let vectorEscalado: Vector = vector.escalar(this.escala);
             vectoresEscalados.push(vectorEscalado);
         }
         return vectoresEscalados;

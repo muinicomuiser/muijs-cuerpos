@@ -119,8 +119,8 @@ export class Renderizado extends Dibujante {
     /**Traza las normales de una forma geométrica.*/
     trazarNormales(forma: Forma): void {
         forma.normales.forEach((normal) => {
-            let normalTrazable: Vector = Vector.clonar(normal);
-            normalTrazable.origen = Vector.suma(forma.posicion, Vector.escalar(Vector.normalizar(normal), forma.apotema));
+            let normalTrazable: Vector = normal.clonar();
+            normalTrazable.origen = forma.posicion.sumar(normal.normalizar().escalar(forma.apotema));
             this.trazarVector(normalTrazable)
         })
     }

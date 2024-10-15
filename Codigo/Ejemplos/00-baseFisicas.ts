@@ -68,7 +68,7 @@ COMPO.animacion(() => {
     COMPO.reboteElasticoCuerpos();
     COMPO.cuerpos.forEach((cuerpo) => {
         cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, 10)
-        cuerpo.velocidad = Vector.escalar(cuerpo.velocidad, 0.999)
+        cuerpo.velocidad = cuerpo.velocidad.escalar(0.999)
     })
     // console.log(Date.now() - inicio)
 

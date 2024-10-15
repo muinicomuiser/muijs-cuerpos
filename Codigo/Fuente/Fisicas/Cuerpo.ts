@@ -59,18 +59,18 @@ export class Cuerpo extends Forma {
 
     /**Retorna una copia del vector velocidad.*/
     get velocidad(): Vector {
-        return Vector.clonar(this._velocidad)
+        return this._velocidad.clonar()
     }
 
     /**Retorna una copia del vector aceleración.*/
     get aceleracion(): Vector {
-        return Vector.clonar(this._aceleracion);
+        return this._aceleracion.clonar();
     }
 
     get verticesTransformados(): Vector[] {
         if (this.rotarSegunVelocidad == true) {
             this.transformacionAnterior.rotacion = this._transformacion.rotacion
-            this.rotacion = Vector.angulo(this._velocidad) - Vector.angulo(this._vertices[0]);
+            this.rotacion = this._velocidad.angulo - this._vertices[0].angulo;
             return super.verticesTransformados;
         }
         return super.verticesTransformados;
@@ -78,12 +78,12 @@ export class Cuerpo extends Forma {
 
     /**Modifica el vector velocidad.*/
     set velocidad(velocidad: Vector) {
-        this._velocidad = Vector.clonar(velocidad);
+        this._velocidad = velocidad.clonar();
     }
 
     /**Modifica el vector aceleración.*/
     set aceleracion(aceleracion: Vector) {
-        this._aceleracion = Vector.clonar(aceleracion);
+        this._aceleracion = aceleracion.clonar();
     }
 
 
@@ -178,15 +178,15 @@ export class Cuerpo extends Forma {
     /**Suma la aceleración a la velocidad y la velocidad a la posición.*/
     public mover(): void {
         if (!this.fijo) {
-            this._velocidad = Vector.suma(this._velocidad, this._aceleracion);
-            this.posicion = Vector.suma(this.posicion, this._velocidad);
+            this._velocidad = this._velocidad.sumar(this._aceleracion);
+            this.posicion = this.posicion.sumar(this._velocidad);
         }
     }
 
     /**Traza el vector velocidad del cuerpo a partir de su centro.*/
     public trazarVelocidad(dibujante: Dibujante): void {
-        let vectorVelocidad: Vector = Vector.clonar(this._velocidad);
-        vectorVelocidad = Vector.escalar(Vector.normalizar(vectorVelocidad), this.radio);
+        let vectorVelocidad: Vector = this._velocidad.clonar();
+        vectorVelocidad = vectorVelocidad.normalizar().escalar(this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
         dibujante.trazarVector(vectorVelocidad);
     }
@@ -195,16 +195,16 @@ export class Cuerpo extends Forma {
     /**Aplica las transformaciones definidas para cada evento (de teclado, mouse u otro) sobre el cuerpo.*/
     public usarControles() {
         if (this.controles.arriba) {
-            this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), this.controles.rapidez))
+            this.posicion = this.posicion.sumar(this.normales[0].normalizar().escalar(this.controles.rapidez))
         }
         if (this.controles.abajo) {
-            this.posicion = Vector.suma(this.posicion, Vector.escalar(Vector.normalizar(this.normales[0]), -this.controles.rapidez))
+            this.posicion = this.posicion.sumar(this.normales[0].normalizar().escalar(-this.controles.rapidez))
         }
         if (this.controles.izquierda) {
-            this.posicion = Vector.suma(this.posicion, Vector.izquierda(this.controles.rapidez))
+            this.posicion = this.posicion.sumar(Vector.izquierda(this.controles.rapidez))
         }
         if (this.controles.derecha) {
-            this.posicion = Vector.suma(this.posicion, Vector.derecha(this.controles.rapidez))
+            this.posicion = this.posicion.sumar(Vector.derecha(this.controles.rapidez))
         }
         if (this.controles.rotarIzquierda) {
             this.rotacion -= this.controles.anguloRotacion

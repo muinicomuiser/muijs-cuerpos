@@ -49,7 +49,7 @@ function atraer() {
     Cuerpos.forEach((cuerpo) => {
         cuerpo.aceleracion = Vector.cero()
         Atractores.forEach((atractor) => {
-            cuerpo.aceleracion = Vector.suma(cuerpo.aceleracion, Fuerza.atraer(cuerpo, atractor, MAGNITUD_ATRACCION))
+            cuerpo.aceleracion = cuerpo.aceleracion.sumar(Fuerza.atraer(cuerpo, atractor, MAGNITUD_ATRACCION))
         })
     })
 }

@@ -9,10 +9,10 @@ export class Cinematica {
     /**Retorna un vector velocidad de un cuerpo que colisiona con una superficie.*/
     static reboteSimple(cuerpo: Cuerpo, normal: Vector): Vector {
         let vectorRebotado: Vector = cuerpo.velocidad;
-        if (Vector.anguloVectores(vectorRebotado, normal) > Geometria.PI_MEDIO) {
-            vectorRebotado = Vector.invertir(vectorRebotado);
+        if (vectorRebotado.anguloVectores(normal) > Geometria.PI_MEDIO) {
+            vectorRebotado = vectorRebotado.invertir();
         }
-        return Vector.rotar(vectorRebotado, (Vector.angulo(normal) - Vector.angulo(vectorRebotado)) * 2)
+        return vectorRebotado.rotar((normal.angulo - vectorRebotado.angulo) * 2)
     }
 
 
@@ -24,22 +24,22 @@ export class Cinematica {
     private static velocidadUnoFinal(cuerpoUno: Cuerpo, cuerpoDos: Cuerpo): Vector {
         const velUnoInicial: Vector = cuerpoUno.velocidad;
         const divisionMasas: number = (2 * cuerpoDos.masa) / (cuerpoUno.masa + cuerpoDos.masa);
-        const restaVelocidades: Vector = Vector.resta(cuerpoDos.velocidad, cuerpoUno.velocidad);
-        const restaPosiciones: Vector = Vector.resta(cuerpoDos.posicion, cuerpoUno.posicion);
-        const puntoVelocidadesPosiciones: number = Vector.punto(restaVelocidades, restaPosiciones);
+        const restaVelocidades: Vector = cuerpoDos.velocidad.restar(cuerpoUno.velocidad);
+        const restaPosiciones: Vector = cuerpoDos.posicion.restar(cuerpoUno.posicion);
+        const puntoVelocidadesPosiciones: number = restaVelocidades.punto(restaPosiciones);
         const moduloPosicionesCuadrado: number = restaPosiciones.magnitud ** 2;
-        const velUnoFinal: Vector = Vector.suma(velUnoInicial, Vector.escalar(restaPosiciones, divisionMasas * puntoVelocidadesPosiciones / moduloPosicionesCuadrado));
+        const velUnoFinal: Vector = velUnoInicial.sumar(restaPosiciones.escalar(divisionMasas * puntoVelocidadesPosiciones / moduloPosicionesCuadrado));
         return velUnoFinal;
     }
 
     private static velocidadDosFinal(cuerpoUno: Cuerpo, cuerpoDos: Cuerpo): Vector {
         const velDosInicial: Vector = cuerpoDos.velocidad;
         const divisionMasas: number = (2 * cuerpoUno.masa) / (cuerpoUno.masa + cuerpoDos.masa);
-        const restaVelocidades: Vector = Vector.resta(cuerpoUno.velocidad, cuerpoDos.velocidad);
-        const restaPosiciones: Vector = Vector.resta(cuerpoUno.posicion, cuerpoDos.posicion);
-        const puntoVelocidadesPosiciones: number = Vector.punto(restaVelocidades, restaPosiciones);
+        const restaVelocidades: Vector = cuerpoUno.velocidad.restar(cuerpoDos.velocidad);
+        const restaPosiciones: Vector = cuerpoUno.posicion.restar(cuerpoDos.posicion);
+        const puntoVelocidadesPosiciones: number = restaVelocidades.punto(restaPosiciones);
         const moduloPosicionesCuadrado: number = restaPosiciones.magnitud ** 2;
-        const velDosFinal: Vector = Vector.suma(velDosInicial, Vector.escalar(restaPosiciones, divisionMasas * puntoVelocidadesPosiciones / moduloPosicionesCuadrado));
+        const velDosFinal: Vector = velDosInicial.sumar(restaPosiciones.escalar(divisionMasas * puntoVelocidadesPosiciones / moduloPosicionesCuadrado));
         return velDosFinal;
     }
 }
