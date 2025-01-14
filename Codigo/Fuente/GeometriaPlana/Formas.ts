@@ -68,14 +68,12 @@ export class Forma {
 
     /**Retorna una copia del vector de la posición después de aplicar las transformaciones.*/
     get posicion(): Vector {
-        let posicion: Vector = Vector.clonar(this._transformacion.posicion);
-        return posicion;
+        return this._transformacion.posicion.clonar()
     }
 
     /**Retorna una copia del vector de la posición antes de aplicar las transformaciones.*/
     get posicionAnterior(): Vector {
-        let posicion: Vector = Vector.clonar(this.transformacionAnterior.posicion);
-        return posicion;
+        return this.transformacionAnterior.posicion.clonar()
     }
 
     /**Retorna el ángulo de rotación actual de la forma.*/
@@ -140,7 +138,7 @@ export class Forma {
     set posicion(nuevaPosicion: Vector) {
         this.transformar = true;
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.clonar(nuevaPosicion);
+        this._transformacion.posicion = nuevaPosicion.clonar();
     }
 
     /**Modifica el valor de la rotación de la figura con respecto a su forma sin transformaciones.*/
@@ -164,13 +162,19 @@ export class Forma {
 
     /**Permite modificar las opciones gráficas con la interfaz OpcionesGraficasForma*/
     set estiloGrafico(opciones: OpcionesGraficasForma) {
-        this.aplicarOpciones(opciones)
+        Object.assign(this, opciones)
+    }
+
+    ////////Agregar control de errores para índices mayores al número de vértices
+
+    public moverVertice(indice: number, punto: Punto) {
+        this._vertices[indice] = Vector.crear(punto.x, punto.y);
     }
 
     /**Inicia los vértices de la forma creada.*/
-    private crearVertices(): Vector[] {
+    private crearVertices(): void {
         if (this.lados == 0) {
-            return [];
+            this._vertices = [];
         }
         let theta = Geometria.DOS_PI / this.lados;
         let offset = theta * 0.5;
@@ -182,13 +186,7 @@ export class Forma {
             let vertice: Vector = Vector.crear(xx, yy);
             nVertices.push(vertice);
         }
-        return nVertices;
-    }
-
-    ////////Agregar control de errores para índices mayores al número de vértices
-
-    public moverVertice(indice: number, punto: Punto) {
-        this._vertices[indice] = Vector.crear(punto.x, punto.y);
+        this._vertices = nVertices;
     }
 
     /**Retorna una forma de tipo polígono. El radio es el valor de la distancia entre el centro y cualquiera de sus vértices.*/
@@ -196,10 +194,10 @@ export class Forma {
         let nuevoPoligono = new Forma();
         nuevoPoligono.lados = lados;
         nuevoPoligono.radio = radio;
-        nuevoPoligono.vertices = nuevoPoligono.crearVertices();
+        nuevoPoligono.crearVertices();
         nuevoPoligono.tipo = TipoFormas.poligono;
         if (opciones) {
-            nuevoPoligono.aplicarOpciones(opciones)
+            Object.assign(nuevoPoligono, opciones)
         }
         nuevoPoligono.iniciarTransformacion(x, y)
         return nuevoPoligono;
@@ -217,10 +215,10 @@ export class Forma {
             lados = 30;
         }
         nuevaCircunferencia.lados = lados;
-        nuevaCircunferencia.vertices = nuevaCircunferencia.crearVertices();
+        nuevaCircunferencia.crearVertices();
         nuevaCircunferencia.tipo = TipoFormas.circunferencia;
         if (opciones) {
-            nuevaCircunferencia.aplicarOpciones(opciones)
+            Object.assign(nuevaCircunferencia, opciones)
         }
         nuevaCircunferencia.iniciarTransformacion(x, y)
         return nuevaCircunferencia;
@@ -238,7 +236,7 @@ export class Forma {
         rectangulo.vertices = [ver1, ver2, ver3, ver4];
         rectangulo.tipo = TipoFormas.poligono;
         if (opciones) {
-            rectangulo.aplicarOpciones(opciones)
+            Object.assign(rectangulo, opciones)
         }
         rectangulo.iniciarTransformacion(x, y);
         return rectangulo;
@@ -254,7 +252,7 @@ export class Forma {
         linea.vertices = [Vector.crear(puntoUno.x - centro.x, puntoUno.y - centro.y), Vector.crear(puntoDos.x - centro.x, puntoDos.y - centro.y)];
         linea.tipo = TipoFormas.linea;
         if (opciones) {
-            linea.aplicarOpciones(opciones)
+            Object.assign(linea, opciones)
         }
         linea.iniciarTransformacion(centro.x, centro.y);
         return linea;
@@ -269,13 +267,13 @@ export class Forma {
         let centro: Vector = Vector.crear(0, 0)
         let trazo: Forma = new Forma();
         let verticesTrazo: Vector[] = []
-        vertices.forEach((vertice) => centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length)))
-        vertices.forEach((vertice) => verticesTrazo.push(Vector.resta(vertice, centro)))
+        vertices.forEach((vertice) => centro = centro.sumar(vertice.escalar(1 / vertices.length)))
+        vertices.forEach((vertice) => verticesTrazo.push(vertice.restar(centro)))
         trazo.vertices = verticesTrazo
         trazo.lados = vertices.length - 1;
         trazo.tipo = TipoFormas.linea;
         if (opciones) {
-            trazo.aplicarOpciones(opciones)
+            Object.assign(trazo, opciones)
         }
         trazo.iniciarTransformacion(centro.x, centro.y);
         return trazo;
@@ -289,47 +287,22 @@ export class Forma {
         let centro: Vector = Vector.crear(0, 0)
         let poligono: Forma = new Forma();
         let verticesPoligono: Vector[] = []
-        vertices.forEach((vertice) => centro = Vector.suma(centro, Vector.escalar(vertice, 1 / vertices.length)))
-        vertices.forEach((vertice) => verticesPoligono.push(Vector.resta(vertice, centro)))
+        vertices.forEach((vertice) => centro = centro.sumar(vertice.escalar(1 / vertices.length)))
+        vertices.forEach((vertice) => verticesPoligono.push(vertice.restar(centro)))
         poligono.vertices = verticesPoligono;
         poligono.lados = vertices.length - 1;
         poligono.tipo = TipoFormas.poligono;
         if (opciones) {
-            poligono.aplicarOpciones(opciones)
+            Object.assign(poligono, opciones)
         }
         poligono.iniciarTransformacion(centro.x, centro.y);
         return poligono;
     }
 
     /**Crea una transformación nueva para formas nuevas, con la posición ingresada.*/
-    iniciarTransformacion(x: number, y: number): void {
+    protected iniciarTransformacion(x: number, y: number): void {
         this._transformacion.posicion = Vector.crear(x, y);
         this.transformacionAnterior = this._transformacion.clonarTransformación()
-    }
-
-    /**Aplicación de la opciones definidas al crear una forma nueva.*/
-    protected aplicarOpciones(opciones: OpcionesForma & OpcionesGraficasForma): void {
-        if (opciones.colorTrazo) {
-            this.colorTrazo = opciones.colorTrazo;
-        }
-        if (opciones.colorRelleno) {
-            this.colorRelleno = opciones.colorRelleno;
-        }
-        if (opciones.trazada != undefined) {
-            this.trazada = opciones.trazada;
-        }
-        if (opciones.rellenada != undefined) {
-            this.rellenada = opciones.rellenada;
-        }
-        if (opciones.grosorTrazo) {
-            this.grosorTrazo = opciones.grosorTrazo;
-        }
-        if (opciones.escala) {
-            this.escala = opciones.escala
-        }
-        if (opciones.rotacion) {
-            this.rotacion = opciones.rotacion
-        }
     }
 
     /**Actualiza el conjunto de vectores transformados.*/
@@ -341,18 +314,8 @@ export class Forma {
 
     /**Retorna una copia de la forma como una forma nueva.*/
     public clonar(): Forma {
-        const clonForma: Forma = new Forma()
-        clonForma.vertices = this.vertices;
-        clonForma.transformacion = this.transformacion;
-        clonForma.lados = this.lados;
-        clonForma.radio = this.radio;
-        clonForma.tipo = this.tipo;
-        clonForma.colorRelleno = this.colorRelleno;
-        clonForma.colorTrazo = this.colorTrazo;
-        clonForma.rellenada = this.rellenada;
-        clonForma.trazada = this.trazada;
-        clonForma.grosorTrazo = this.grosorTrazo;
-        clonForma.opacidad = this.opacidad;
+        const clonForma: Forma = new Forma();
+        Object.assign(clonForma, this)
         clonForma.iniciarTransformacion(this.posicion.x, this.posicion.y);
         return clonForma;
     }
@@ -367,22 +330,22 @@ export class Forma {
     /**Suma el vector ingresado al vector de posición de la forma.*/
     public desplazar(vector: Vector) {
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vector);
+        this._transformacion.posicion = this._transformacion.posicion.sumar(vector);
     }
 
     /**Rota la forma alrededor del punto (0, 0)*/
     public rotarSegunOrigen(angulo: number) {
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.rotar(this._transformacion.posicion, angulo);
+        this._transformacion.posicion = this._transformacion.posicion.rotar(angulo);
     }
 
     /**rota la forma alrededor del punto ingresado.*/
     public rotarSegunPunto(punto: Punto, angulo: number): void {
         let vectorAcomodador: Vector = Vector.crear(punto.x, punto.y);
         this.transformacionAnterior.posicion = this._transformacion.posicion;
-        this._transformacion.posicion = Vector.resta(this._transformacion.posicion, vectorAcomodador);
+        this._transformacion.posicion = this._transformacion.posicion.restar(vectorAcomodador);
         this.rotarSegunOrigen(angulo);
-        this._transformacion.posicion = Vector.suma(this._transformacion.posicion, vectorAcomodador);
+        this._transformacion.posicion = this._transformacion.posicion.sumar(vectorAcomodador);
     }
 
     /**Traza el contorno de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
@@ -393,5 +356,10 @@ export class Forma {
     /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
     public rellenar(dibujante: Dibujante): void {
         dibujante.rellenar(this);
+    }
+
+    /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
+    public renderizar(dibujante: Dibujante): void {
+        dibujante.renderizar(this);
     }
 }

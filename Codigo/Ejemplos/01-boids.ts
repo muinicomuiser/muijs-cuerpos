@@ -70,11 +70,11 @@ function animar() {
             if (distancia < DISTANCIACOORDINAR) {
                 if (distancia < DISTANCIAREPELER) {
                     boids[i].aceleracion = Fuerza.repeler(boids[i], boids[j], FUERZAREPELER * (1 / distancia))
-                    boids[j].aceleracion = Vector.invertir(boids[i].aceleracion)
+                    boids[j].aceleracion = boids[i].aceleracion.invertir()
                 }
                 let velI: Vector = boids[i].velocidad;
-                boids[i].velocidad = Vector.suma(boids[i].velocidad, Vector.escalar(boids[j].velocidad, FACTORCOORDINACION * (1 / distancia)))
-                boids[j].velocidad = Vector.suma(boids[j].velocidad, Vector.escalar(velI, FACTORCOORDINACION * (1 / distancia)))
+                boids[i].velocidad = boids[i].velocidad.sumar(boids[j].velocidad.escalar(FACTORCOORDINACION * (1 / distancia)))
+                boids[j].velocidad = boids[j].velocidad.sumar(velI.escalar(FACTORCOORDINACION * (1 / distancia)))
             }
 
         }
@@ -82,7 +82,7 @@ function animar() {
     if (DETECTARMOUSE && mousePresente) {
         boids.forEach((boid) => {
             let distanciaMouse: number = Geometria.distanciaEntrePuntos(boid.posicion, vectorMouse);
-            boid.aceleracion = Vector.suma(boid.aceleracion, Fuerza.atraerAVector(boid, vectorMouse, ATRACCIONMOUSE * (1 / distanciaMouse)));
+            boid.aceleracion = boid.aceleracion.sumar(Fuerza.atraerAVector(boid, vectorMouse, ATRACCIONMOUSE * (1 / distanciaMouse)));
 
         })
     }

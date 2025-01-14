@@ -151,6 +151,16 @@ export class Dibujante {
         this.context.fill();
     }
 
+    /**Rellena y/o traza una forma, según su estilo gráfico.*/
+    renderizar(forma: Forma): void {
+        if (forma.rellenada) {
+            this.rellenar(forma)
+        }
+        if (forma.trazada) {
+            this.trazar(forma)
+        }
+    }
+
     /**Rellena en el canvas la celda ingresada como argumento.*/
     rellenarCelda(celda: Celda): void {
         this.context.beginPath();

@@ -107,8 +107,8 @@ export class Colision {
             /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
             let menorPoli: number = Colision.proyeccionMenor(poligono.verticesTransformados, normal);
             let mayorPoli: number = Colision.proyeccionMayor(poligono.verticesTransformados, normal);
-            let menorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radioTransformado;
-            let mayorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radioTransformado;
+            let menorCirc: number = circunferencia.posicion.proyeccion(normal) - circunferencia.radioTransformado;
+            let mayorCirc: number = circunferencia.posicion.proyeccion(normal) + circunferencia.radioTransformado;
 
             /**Comparación. Si se encuentra una separación, retorna false.*/
             if (menorPoli > mayorCirc || mayorPoli < menorCirc) {
@@ -121,12 +121,12 @@ export class Colision {
 
     /**Retorna el valor menor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
     private static proyeccionMenor(vertices: Vector[], normal: Vector): number {
-        let menor = Vector.proyeccion(vertices[0], normal);
+        let menor = vertices[0].proyeccion(normal);
 
         /**Búsqueda de proyecciones mínimas de los vértices del polígono uno.*/
         for (let vertice of vertices) {
-            if (Vector.proyeccion(vertice, normal) < menor) {
-                menor = Vector.proyeccion(vertice, normal);
+            if (vertice.proyeccion(normal) < menor) {
+                menor = vertice.proyeccion(normal);
             }
         }
         return menor;
@@ -135,12 +135,12 @@ export class Colision {
 
     /**Retorna el valor mayor entre las proyecciones de un conjunto de vértices sobre un eje representado por un vector normal.*/
     private static proyeccionMayor(vertices: Vector[], normal: Vector): number {
-        let mayor = Vector.proyeccion(vertices[0], normal);
+        let mayor = vertices[0].proyeccion(normal);
 
         /**Búsqueda de proyecciones máximas de los vértices del polígono uno.*/
         for (let vertice of vertices) {
-            if (Vector.proyeccion(vertice, normal) > mayor) {
-                mayor = Vector.proyeccion(vertice, normal);
+            if (vertice.proyeccion(normal) > mayor) {
+                mayor = vertice.proyeccion(normal);
             }
         }
         return mayor;
@@ -160,21 +160,21 @@ export class Colision {
             normalUno = vectorUnoADos;
         }
         else {
-            normalUno = Vector.clonar(formaUno.normales[0]);
+            normalUno = formaUno.normales[0].clonar();
             for (let normal of formaUno.normales) {
-                if (Vector.punto(vectorUnoADos, normal) > Vector.punto(vectorUnoADos, normalUno)) {
-                    normalUno = Vector.clonar(normal);
+                if (vectorUnoADos.punto(normal) > vectorUnoADos.punto(normalUno)) {
+                    normalUno = normal.clonar();
                 }
             }
         }
         if (formaDos.tipo == TipoFormas.circunferencia) {
-            normalDos = Vector.clonar(vectorDosAUno);
+            normalDos = vectorDosAUno.clonar();
         }
         else {
-            normalDos = Vector.clonar(formaDos.normales[0])
+            normalDos = formaDos.normales[0].clonar()
             for (let normal of formaDos.normales) {
-                if (Vector.punto(vectorDosAUno, normal) > Vector.punto(vectorDosAUno, normalDos)) {
-                    normalDos = Vector.clonar(normal);
+                if (vectorDosAUno.punto(normal) > vectorDosAUno.punto(normalDos)) {
+                    normalDos = normal.clonar();
                 }
             }
         }
@@ -196,8 +196,8 @@ export class Colision {
                 /**Búsqueda de proyecciones mínimas y máximas de los vértices de los polígonos sobre las normales del polígono uno.*/
                 let menorPoli: number = Colision.proyeccionMenor(entorno.verticesTransformados, normal);
                 let mayorPoli: number = Colision.proyeccionMayor(entorno.verticesTransformados, normal);
-                let menorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) - circunferencia.radioTransformado;
-                let mayorCirc: number = Vector.proyeccion(circunferencia.posicion, normal) + circunferencia.radioTransformado;
+                let menorCirc: number = circunferencia.posicion.proyeccion(normal) - circunferencia.radioTransformado;
+                let mayorCirc: number = circunferencia.posicion.proyeccion(normal) + circunferencia.radioTransformado;
 
                 /**Comparación. Si se encuentra una separación, retorna true.*/
                 if (menorPoli > menorCirc) {
@@ -220,9 +220,9 @@ export class Colision {
         for (let i: number = 0; i < numeroVertices - 1; i++) {
             let vectorCentroAVerticeUno: Vector = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i]);
             let vectorCentroAVerticeDos: Vector = Vector.segunPuntos(entorno.posicion, entorno.verticesTransformados[i + 1]);
-            let anguloVertices: number = Vector.anguloVectores(vectorCentroAVerticeDos, vectorCentroAVerticeUno);
-            if (Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeUno) < anguloVertices
-                && Vector.anguloVectores(vectorCentroAForma, vectorCentroAVerticeDos) < anguloVertices) {
+            let anguloVertices: number = vectorCentroAVerticeDos.anguloVectores(vectorCentroAVerticeUno);
+            if (vectorCentroAForma.anguloVectores(vectorCentroAVerticeUno) < anguloVertices
+                && vectorCentroAForma.anguloVectores(vectorCentroAVerticeDos) < anguloVertices) {
                 normalEntorno = entorno.normales[i];
             }
         }

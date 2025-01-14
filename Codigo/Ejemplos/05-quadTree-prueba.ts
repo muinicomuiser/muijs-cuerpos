@@ -9,7 +9,7 @@ COMPO.entorno = entorno;
 
 const NumeroCuerpos: number = 3000;
 let Cuerpos: Cuerpo[] = []
-const RadioCuerpo: number = 4;
+const RadioCuerpo: number = 3;
 for (let i: number = 0; i < NumeroCuerpos; i++) {
     const cuerpito: Cuerpo = Cuerpo.circunferencia(Matematica.aleatorioEntero(0, Render.anchoCanvas), Matematica.aleatorioEntero(0, Render.altoCanvas), 1.5 * RadioCuerpo * Math.random() + RadioCuerpo)
     cuerpito.masa = cuerpito.radio ** 5
@@ -29,7 +29,7 @@ function tiempoPromedio(deltaTick: number): number {
 }
 
 function animar() {
-    let inicio: number = Date.now()
+    // let inicio: number = Date.now()
     Render.limpiarCanvas();
     COMPO.reboteElasticoCuerpos()
     // COMPO.bordesEntornoInfinitos(entorno)
@@ -40,9 +40,9 @@ function animar() {
     // Quad.trazar(Render, { colorTrazo: 'white', colorRelleno: 'white' })
     Render.renderizarFormas(Cuerpos);
     // Quad.trazar(Render)
-    let final: number = Date.now() - inicio
+    // let final: number = Date.now() - inicio
     // console.clear()
-    console.log('Duración de cálculo promedio: ', tiempoPromedio(final))
+    // console.log('Duración de cálculo promedio: ', tiempoPromedio(final))
     requestAnimationFrame(animar)
 }
 animar()
