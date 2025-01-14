@@ -1,10 +1,10 @@
 //Interacciones entre cuerpos.
 
-import { Cinematica } from "../Fisicas/Cinematica";
-import { Cuerpo } from "../Fisicas/Cuerpo";
-import { Vector } from "../GeometriaPlana/Vector";
-import { Geometria } from "../Utiles/Geometria";
-import { Colision } from "./Colision";
+import { Cinematica } from "../fisicas/cinematica";
+import { Cuerpo } from "../fisicas/cuerpo";
+import { Vector } from "../geometria-plana/vector";
+import { Geometria } from "../utiles/geometria";
+import { Colision } from "./colision";
 
 export class Interaccion {
     static get iteraciones(): number {

@@ -1,6 +1,9 @@
-import { Cuerpo } from "./Cuerpo";
-import { Vector } from "../GeometriaPlana/Vector";
+
 //Módulo de cálculos físicos
+
+import { Vector } from "../geometria-plana/vector";
+import { Cuerpo } from "./cuerpo";
+
 //Considerar: fricción, gravedad, resortes, torques.
 export class Fuerza {
 

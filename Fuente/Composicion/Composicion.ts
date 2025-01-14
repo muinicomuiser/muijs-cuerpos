@@ -1,15 +1,15 @@
 //Junta los cuerpos, interacciones, entorno, casos límite y renderizado.
 //Debería estar acá la creación de canvas y contexto??
 
-import { Cuadricula } from "../Cuadricula/Cuadricula";
-import { Contenedor } from "../Fisicas/Contenedor";
-import { Cuerpo } from "../Fisicas/Cuerpo";
-import { Forma } from "../GeometriaPlana/Formas";
-import { Entorno } from "../Interaccion/Entorno";
-import { QuadTree } from "../Interaccion/QuadTree";
-import { Restriccion } from "../Interaccion/Restriccion";
-import { Renderizado } from "../Renderizado/Renderizado";
-import { Tiempo } from "./Tiempo";
+import { Cuadricula } from "../cuadricula/cuadricula";
+import { Contenedor } from "../fisicas/contenedor";
+import { Cuerpo } from "../fisicas/cuerpo";
+import { Forma } from "../geometria-plana/formas";
+import { Entorno } from "../interaccion/entorno";
+import { QuadTree } from "../interaccion/quad-tree";
+import { Restriccion } from "../interaccion/restriccion";
+import { Renderizado } from "../renderizado/renderizado";
+import { Tiempo } from "./tiempo";
 
 export class Composicion {
 

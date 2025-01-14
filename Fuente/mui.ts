@@ -1,38 +1,38 @@
 /**Utiles*/
-export { Matematica } from "./Utiles/Matematica";
-export { Geometria } from "./Utiles/Geometria";
-export { Grabador } from "./Utiles/Grabacion";
+export { Geometria } from "./utiles/geometria";
+export { Grabador } from "./utiles/grabacion";
+export { Matematica } from "./utiles/matematica";
 
 /**Geometría Plana*/
-export { Forma } from "./GeometriaPlana/Formas";
-export { Punto } from "./GeometriaPlana/Punto";
-export { TipoFormas } from "./GeometriaPlana/TipoFormas";
-export { Vector } from "./GeometriaPlana/Vector";
-export { OpcionesForma } from "./GeometriaPlana/OpcionesForma"
+export { Forma } from "./geometria-plana/formas";
+export type { Punto } from "./geometria-plana/punto";
+export { TipoFormas } from "./geometria-plana/tipo-formas";
+export { Vector } from "./geometria-plana/vector";
+export type { OpcionesForma } from "./geometria-plana/opciones-forma"
 
 /**Interacción*/
-export { Colision } from "./Interaccion/Colision";
-export { Entorno } from "./Interaccion/Entorno";
-export { Interaccion } from "./Interaccion/Interaccion";
-export { Restriccion } from "./Interaccion/Restriccion";
+export { Colision } from "./interaccion/colision";
+export { Entorno } from "./interaccion/entorno";
+export { Interaccion } from "./interaccion/interaccion";
+export { Restriccion } from "./interaccion/restriccion";
 
 /**Físicas*/
-export { Cinematica } from "./Fisicas/Cinematica";
-export { Cuerpo } from "./Fisicas/Cuerpo";
-export { Fuerza } from "./Fisicas/Fuerza";
-export { OpcionesCuerpo } from "./Fisicas/OpcionesCuerpo"
-export { Contenedor } from "./Fisicas/Contenedor";
+export { Cinematica } from "./fisicas/cinematica";
+export { Cuerpo } from "./fisicas/cuerpo";
+export { Fuerza } from "./fisicas/fuerza";
+export type { OpcionesCuerpo } from "./fisicas/opciones-cuerpo"
+export { Contenedor } from "./fisicas/contenedor";
 
 /**Renderizado*/
-export { Dibujante } from "./Renderizado/Dibujante";
-export { Renderizado } from "./Renderizado/Renderizado";
+export { Dibujante } from "./renderizado/dibujante";
+export { Renderizado } from "./renderizado/renderizado";
 
 /**Composición*/
-export { Composicion } from "./Composicion/Composicion";
-export { ManejadorEventos } from "./Composicion/ManejadorEventos"
-export { Tiempo } from "./Composicion/Tiempo";
+export { Composicion } from "./composicion/composicion";
+export { ManejadorEventos } from "./composicion/manejador-eventos"
+export { Tiempo } from "./composicion/tiempo";
 
 /**Cuadrícula*/
-export { Celda } from "./Cuadricula/Celda"
-export { Cuadricula } from "./Cuadricula/Cuadricula"
-export { Temporizador } from "./Composicion/Temporizador"
+export { Celda } from "./cuadricula/celda"
+export { Cuadricula } from "./cuadricula/cuadricula"
+export { Temporizador } from "./composicion/temporizador"

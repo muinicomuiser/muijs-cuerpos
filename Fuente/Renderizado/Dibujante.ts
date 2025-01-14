@@ -1,12 +1,12 @@
-import { Forma } from "../GeometriaPlana/Formas";
-import { Geometria } from "../Utiles/Geometria";
-import { Punto } from "../GeometriaPlana/Punto";
-import { Vector } from "../GeometriaPlana/Vector";
-import { TipoFormas } from "../GeometriaPlana/TipoFormas";
-import { Celda } from "../Cuadricula/Celda";
-import { OpcionesGraficasForma } from "./OpcionesGraficasForma";
-import { OpcionesGraficasVector } from "./OpcionesGraficasVector";
-import { OpcionesGraficasTexto } from "./OpcionesTexto";
+import { Celda } from "../cuadricula/celda";
+import { Forma } from "../geometria-plana/formas";
+import { Punto } from "../geometria-plana/punto";
+import { TipoFormas } from "../geometria-plana/tipo-formas";
+import { Vector } from "../geometria-plana/vector";
+import { Geometria } from "../utiles/geometria";
+import { OpcionesGraficasForma } from "./opciones-graficas-forma";
+import { OpcionesGraficasVector } from "./opciones-graficas-vector";
+import { OpcionesGraficasTexto } from "./opciones-texto";
 
 /**MÓDULO DE DIBUJO         
  * Instancia una herramienta dibujante.         

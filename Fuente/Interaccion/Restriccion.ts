@@ -1,5 +1,5 @@
-import { Cuerpo } from "../Fisicas/Cuerpo";
-import { Vector } from "../GeometriaPlana/Vector";
+import { Cuerpo } from "../fisicas/cuerpo";
+import { Vector } from "../geometria-plana/vector";
 
 export class Restriccion {
 

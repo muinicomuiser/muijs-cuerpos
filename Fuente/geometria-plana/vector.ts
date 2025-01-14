@@ -1,5 +1,6 @@
-import { Geometria } from "../Utiles/Geometria";
-import { Punto } from "./Punto";
+import { Geometria } from "../utiles/geometria";
+import { Punto } from "./punto";
+
 //POR REVISAR
 export class Vector {
     x: number;

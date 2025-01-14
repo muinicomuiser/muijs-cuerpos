@@ -1,10 +1,8 @@
-
 //Fricción, bordes, gravedad
-
-import { Contenedor } from "../Fisicas/Contenedor";
-import { Cuerpo } from "../Fisicas/Cuerpo";
-import { Vector } from "../GeometriaPlana/Vector";
-import { Interaccion } from "./Interaccion";
+import { Contenedor } from "../fisicas/contenedor";
+import { Cuerpo } from "../fisicas/cuerpo";
+import { Vector } from "../geometria-plana/vector";
+import { Interaccion } from "./interaccion";
 
 export class Entorno extends Contenedor {
     private canvas: HTMLCanvasElement;
@@ -18,7 +16,7 @@ export class Entorno extends Contenedor {
         this.cuerpo.fijo = true;
     }
 
-    get normales(): Vector[] {
+    override get normales(): Vector[] {
         return Vector.clonarConjunto(this.cuerpo.normales)
     }
 

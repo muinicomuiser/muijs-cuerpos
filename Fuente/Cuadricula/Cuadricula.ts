@@ -1,7 +1,7 @@
-import { Vector } from "../GeometriaPlana/Vector"
-import { Dibujante } from "../Renderizado/Dibujante";
-import { Matematica } from "../Utiles/Matematica";
-import { Celda } from "./Celda";
+import { Vector } from "../geometria-plana/vector";
+import { Dibujante } from "../renderizado/dibujante";
+import { Matematica } from "../utiles/matematica";
+import { Celda } from "./celda";
 
 export class Cuadricula {
 

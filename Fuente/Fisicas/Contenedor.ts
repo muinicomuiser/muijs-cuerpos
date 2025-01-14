@@ -1,9 +1,8 @@
 //REPENSAR ESTA CLASE
 
-
-import { Vector } from "../GeometriaPlana/Vector";
-import { Interaccion } from "../Interaccion/Interaccion";
-import { Cuerpo } from "./Cuerpo";
+import { Vector } from "../geometria-plana/vector";
+import { Interaccion } from "../interaccion/interaccion";
+import { Cuerpo } from "./cuerpo";
 
 export class Contenedor {
     cuerpo: Cuerpo;

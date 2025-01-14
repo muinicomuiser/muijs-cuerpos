@@ -10,12 +10,13 @@
 
  */
 
-import { Forma } from "../GeometriaPlana/Formas";
-import { Vector } from "../GeometriaPlana/Vector";
-import { Geometria } from "../Utiles/Geometria";
-import { Dibujante } from "../Renderizado/Dibujante";
-import { OpcionesControlesCuerpo } from "./OpcionesControlesCuerpo";
-import { OpcionesCuerpo } from "./OpcionesCuerpo";
+import { Forma } from "../geometria-plana/formas";
+import { Vector } from "../geometria-plana/vector";
+import { Dibujante } from "../renderizado/dibujante";
+import { Geometria } from "../utiles/geometria";
+import { OpcionesControlesCuerpo } from "./opciones-controles-cuerpo";
+import { OpcionesCuerpo } from "./opciones-cuerpo";
+
 //TAREAS
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones
@@ -67,7 +68,7 @@ export class Cuerpo extends Forma {
         return this._aceleracion.clonar();
     }
 
-    get verticesTransformados(): Vector[] {
+    override get verticesTransformados(): Vector[] {
         if (this.rotarSegunVelocidad) {
             this.transformacionAnterior.rotacion = this._transformacion.rotacion
             this.rotacion = this._velocidad.angulo - this._vertices[0].angulo;
@@ -89,7 +90,7 @@ export class Cuerpo extends Forma {
 
     /**Retorna un cuerpo geométrico regular.     
      * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-    static poligono(x: number, y: number, lados: number, radio: number, opciones?: OpcionesCuerpo) {
+    static override poligono(x: number, y: number, lados: number, radio: number, opciones?: OpcionesCuerpo) {
         let poliForma: Forma = super.poligono(x, y, lados, radio);
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
         if (opciones) {
@@ -102,7 +103,7 @@ export class Cuerpo extends Forma {
 
     /**Retorna un cuerpo geométrico regular.     
      * El radio corresponde a la distancia entre el centro y cualquiera de sus vértices.*/
-    static poligonoSegunVertices(vertices: Vector[], opciones?: OpcionesCuerpo) {
+    static override poligonoSegunVertices(vertices: Vector[], opciones?: OpcionesCuerpo) {
         let poliForma: Forma = super.poligonoSegunVertices(vertices);
         let poligono: Cuerpo = Cuerpo.cuerpoSegunForma(poliForma);
         if (opciones) {
@@ -113,7 +114,7 @@ export class Cuerpo extends Forma {
     }
 
     /**Retorna un cuerpo rectangular.*/
-    static rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesCuerpo) {
+    static override rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesCuerpo) {
         let rectForma: Forma = super.rectangulo(x, y, base, altura);
         let rectangulo: Cuerpo = Cuerpo.cuerpoSegunForma(rectForma);
         if (opciones) {
@@ -125,7 +126,7 @@ export class Cuerpo extends Forma {
 
 
     /**Retorna un cuerpo con forma de circunferencia.*/
-    static circunferencia(x: number, y: number, radio: number, opciones?: OpcionesCuerpo): Cuerpo {
+    static override circunferencia(x: number, y: number, radio: number, opciones?: OpcionesCuerpo): Cuerpo {
         let circuloForma: Forma = super.circunferencia(x, y, radio);
         let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
         if (opciones) {
@@ -146,7 +147,7 @@ export class Cuerpo extends Forma {
     }
 
     /**Retorna una copia del cuerpo como un cuerpo nuevo.*/
-    public clonar(): Cuerpo {
+    public override clonar(): Cuerpo {
         const formaClonada: Forma = super.clonar();
         const cuerpoClonado: Cuerpo = Cuerpo.cuerpoSegunForma(formaClonada);
         cuerpoClonado.masa = this.masa;

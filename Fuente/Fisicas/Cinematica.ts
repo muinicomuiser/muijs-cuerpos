@@ -1,8 +1,10 @@
-import { Cuerpo } from "./Cuerpo";
-import { Vector } from "../GeometriaPlana/Vector";
-import { Geometria } from "../Utiles/Geometria";
+
 
 //Momento lineal, movimiento acelerado, momento angular, energía cinética y potencial.
+
+import { Vector } from "../geometria-plana/vector";
+import { Geometria } from "../utiles/geometria";
+import { Cuerpo } from "./cuerpo";
 
 export class Cinematica {
 

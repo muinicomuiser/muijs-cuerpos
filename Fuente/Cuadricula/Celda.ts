@@ -1,5 +1,5 @@
-import { Dibujante } from "../Renderizado/Dibujante";
-import { Vector } from "../GeometriaPlana/Vector";
+import { Vector } from "../geometria-plana/vector";
+import { Dibujante } from "../renderizado/dibujante";
 
 export class Celda {
     posicion: Vector;

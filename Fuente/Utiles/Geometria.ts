@@ -1,4 +1,5 @@
-import { Punto } from "../GeometriaPlana/Punto";
+import { Punto } from "../geometria-plana/punto";
+
 /**MÓDULO DE GEOMETRÍA EN ESPAÑOL               
  * Útilitario para mui.js               
  * Incluye métodos de conversión de grados y distancia entre puntos.

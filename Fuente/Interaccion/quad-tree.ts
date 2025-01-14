@@ -2,13 +2,14 @@
  * Inicio Quadtree
  */
 
-import { Cuerpo } from "../Fisicas/Cuerpo";
-import { Forma } from "../GeometriaPlana/Formas";
-import { Punto } from "../GeometriaPlana/Punto";
-import { Dibujante } from "../Renderizado/Dibujante";
-import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma";
-import { Matematica } from "../Utiles/Matematica";
-import { Interaccion } from "./Interaccion";
+import { Cuerpo } from "../fisicas/cuerpo";
+import { Forma } from "../geometria-plana/formas";
+import { Punto } from "../geometria-plana/punto";
+import { Dibujante } from "../renderizado/dibujante";
+import { OpcionesGraficasForma } from "../renderizado/opciones-graficas-forma";
+import { Matematica } from "../utiles/matematica";
+import { Interaccion } from "./interaccion";
+
 
 
 export class QuadTree {

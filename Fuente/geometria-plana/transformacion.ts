@@ -10,7 +10,8 @@
 
  */
 
-import { Vector } from "./Vector";
+import { Vector } from "./vector";
+
 
 /**Aplica transformaciones de escala, rotación y desplazamiento sobre arreglos de vectores.        
  * Siempre retorna copias nuevas de los arreglos.       

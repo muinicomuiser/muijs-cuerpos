@@ -1,7 +1,4 @@
-import { Forma } from "../GeometriaPlana/Formas";
-import { TipoFormas } from "../GeometriaPlana/TipoFormas";
-import { Vector } from "../GeometriaPlana/Vector";
-import { Geometria } from "../Utiles/Geometria";
+
 /**
         =============================================
                  * MÓDULO DE COLISIONES *
@@ -11,6 +8,12 @@ import { Geometria } from "../Utiles/Geometria";
         Usa el Teorema de ejes de separación (SAT) para detectar colisiones.
 
  */
+
+import { Forma } from "../geometria-plana/formas";
+import { TipoFormas } from "../geometria-plana/tipo-formas";
+import { Vector } from "../geometria-plana/vector";
+import { Geometria } from "../utiles/geometria";
+
 /**MÓDULO DE COLISIONES         
  * Trabaja usando objetos de tipo Forma.        
  * Usa el Teorema de ejes de separación (SAT) para detectar colisiones.     
