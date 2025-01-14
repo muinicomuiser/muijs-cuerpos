@@ -2,13 +2,13 @@
  * Inicio Quadtree
  */
 
-import { Cuerpo } from "../Fisicas/Cuerpo.js";
-import { Forma } from "../GeometriaPlana/Formas.js";
-import { Punto } from "../GeometriaPlana/Punto.js";
-import { Dibujante } from "../Renderizado/Dibujante.js";
-import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma.js";
-import { Matematica } from "../Utiles/Matematica.js";
-import { Interaccion } from "./Interaccion.js";
+import { Cuerpo } from "../Fisicas/Cuerpo";
+import { Forma } from "../GeometriaPlana/Formas";
+import { Punto } from "../GeometriaPlana/Punto";
+import { Dibujante } from "../Renderizado/Dibujante";
+import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma";
+import { Matematica } from "../Utiles/Matematica";
+import { Interaccion } from "./Interaccion";
 
 
 export class QuadTree {

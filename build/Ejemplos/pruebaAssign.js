@@ -1,0 +1,8 @@
+import { Composicion, Forma } from "../Fuente/mui.js";
+const COMPO = Composicion.crearConIDCanvas('canvas');
+COMPO.tamanoCanvas(1080, 1080);
+const Render = COMPO.render;
+Render.colorCanvas = 'black';
+let formaPrueba = Forma.circunferencia(500, 500, 200);
+formaPrueba.estiloGrafico = { colorRelleno: 'red', trazada: true, colorTrazo: 'green', opacidad: 1, rellenada: true, grosorTrazo: 10 };
+formaPrueba.renderizar(Render);

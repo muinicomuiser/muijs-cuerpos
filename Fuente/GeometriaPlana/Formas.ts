@@ -1,11 +1,11 @@
-import { Punto } from "./Punto.js";
-import { Vector } from "./Vector.js";
-import { Transformacion } from "./Transformacion.js";
-import { Dibujante } from "../Renderizado/Dibujante.js";
-import { Geometria } from "../Utiles/Geometria.js";
-import { TipoFormas } from "./TipoFormas.js";
-import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma.js";
-import { OpcionesForma } from "./OpcionesForma.js";
+import { Punto } from "./Punto";
+import { Vector } from "./Vector";
+import { Transformacion } from "./Transformacion";
+import { Dibujante } from "../Renderizado/Dibujante";
+import { Geometria } from "../Utiles/Geometria";
+import { TipoFormas } from "./TipoFormas";
+import { OpcionesGraficasForma } from "../Renderizado/OpcionesGraficasForma";
+import { OpcionesForma } from "./OpcionesForma";
 //POR INTEGRAR
 // Para una forma personalizada, ya sea abierta o cerrada, agregar un método para calcular su radio o su centro
 // Función de reflejar

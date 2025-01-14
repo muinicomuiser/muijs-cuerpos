@@ -1,7 +1,7 @@
-import { Forma } from "../GeometriaPlana/Formas.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Punto } from "../GeometriaPlana/Punto.js";
-import { Dibujante } from "./Dibujante.js";
+import { Forma } from "../GeometriaPlana/Formas";
+import { Vector } from "../GeometriaPlana/Vector";
+import { Punto } from "../GeometriaPlana/Punto";
+import { Dibujante } from "./Dibujante";
 
 /**MÓDULO DE RENDERIZADO        
  * Extiende las funciones de Dibujante.         

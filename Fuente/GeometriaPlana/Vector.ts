@@ -1,5 +1,5 @@
-import { Geometria } from "../Utiles/Geometria.js";
-import { Punto } from "./Punto.js";
+import { Geometria } from "../Utiles/Geometria";
+import { Punto } from "./Punto";
 //POR REVISAR
 export class Vector {
     x: number;

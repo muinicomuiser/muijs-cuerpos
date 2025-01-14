@@ -1,4 +1,4 @@
-import { OpcionesForma } from "../GeometriaPlana/OpcionesForma.js";
+import { OpcionesForma } from "../GeometriaPlana/OpcionesForma";
 
 export interface OpcionesCuerpo extends OpcionesForma {
 

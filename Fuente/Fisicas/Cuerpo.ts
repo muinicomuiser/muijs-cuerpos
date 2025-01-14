@@ -10,12 +10,12 @@
 
  */
 
-import { Forma } from "../GeometriaPlana/Formas.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Geometria } from "../Utiles/Geometria.js";
-import { Dibujante } from "../Renderizado/Dibujante.js";
-import { OpcionesControlesCuerpo } from "./OpcionesControlesCuerpo.js";
-import { OpcionesCuerpo } from "./OpcionesCuerpo.js";
+import { Forma } from "../GeometriaPlana/Formas";
+import { Vector } from "../GeometriaPlana/Vector";
+import { Geometria } from "../Utiles/Geometria";
+import { Dibujante } from "../Renderizado/Dibujante";
+import { OpcionesControlesCuerpo } from "./OpcionesControlesCuerpo";
+import { OpcionesCuerpo } from "./OpcionesCuerpo";
 //TAREAS
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.
 //Un solo método para aplicar transformar y actualizar transformaciones

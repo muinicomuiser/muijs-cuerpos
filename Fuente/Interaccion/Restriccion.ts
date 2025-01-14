@@ -1,5 +1,5 @@
-import { Cuerpo } from "../Fisicas/Cuerpo.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
+import { Cuerpo } from "../Fisicas/Cuerpo";
+import { Vector } from "../GeometriaPlana/Vector";
 
 export class Restriccion {
 

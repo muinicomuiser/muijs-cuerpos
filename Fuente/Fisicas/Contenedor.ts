@@ -1,9 +1,9 @@
 //REPENSAR ESTA CLASE
 
 
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Interaccion } from "../Interaccion/Interaccion.js";
-import { Cuerpo } from "./Cuerpo.js";
+import { Vector } from "../GeometriaPlana/Vector";
+import { Interaccion } from "../Interaccion/Interaccion";
+import { Cuerpo } from "./Cuerpo";
 
 export class Contenedor {
     cuerpo: Cuerpo;

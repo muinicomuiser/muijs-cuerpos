@@ -1,6 +1,6 @@
-import { Cuerpo } from "./Cuerpo.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Geometria } from "../Utiles/Geometria.js";
+import { Cuerpo } from "./Cuerpo";
+import { Vector } from "../GeometriaPlana/Vector";
+import { Geometria } from "../Utiles/Geometria";
 
 //Momento lineal, movimiento acelerado, momento angular, energía cinética y potencial.
 

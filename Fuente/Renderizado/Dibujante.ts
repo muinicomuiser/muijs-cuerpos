@@ -1,12 +1,12 @@
-import { Forma } from "../GeometriaPlana/Formas.js";
-import { Geometria } from "../Utiles/Geometria.js";
-import { Punto } from "../GeometriaPlana/Punto.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { TipoFormas } from "../GeometriaPlana/TipoFormas.js";
-import { Celda } from "../Cuadricula/Celda.js";
-import { OpcionesGraficasForma } from "./OpcionesGraficasForma.js";
-import { OpcionesGraficasVector } from "./OpcionesGraficasVector.js";
-import { OpcionesGraficasTexto } from "./OpcionesTexto.js";
+import { Forma } from "../GeometriaPlana/Formas";
+import { Geometria } from "../Utiles/Geometria";
+import { Punto } from "../GeometriaPlana/Punto";
+import { Vector } from "../GeometriaPlana/Vector";
+import { TipoFormas } from "../GeometriaPlana/TipoFormas";
+import { Celda } from "../Cuadricula/Celda";
+import { OpcionesGraficasForma } from "./OpcionesGraficasForma";
+import { OpcionesGraficasVector } from "./OpcionesGraficasVector";
+import { OpcionesGraficasTexto } from "./OpcionesTexto";
 
 /**MÓDULO DE DIBUJO         
  * Instancia una herramienta dibujante.         

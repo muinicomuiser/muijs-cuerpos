@@ -1,4 +1,4 @@
-import { Temporizador } from "./Temporizador.js";
+import { Temporizador } from "./Temporizador";
 
 export class Tiempo {
     private _tiempoInicial: number = Date.now();

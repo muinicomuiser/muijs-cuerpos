@@ -1,10 +1,10 @@
 
 //Fricción, bordes, gravedad
 
-import { Contenedor } from "../Fisicas/Contenedor.js";
-import { Cuerpo } from "../Fisicas/Cuerpo.js";
-import { Vector } from "../GeometriaPlana/Vector.js";
-import { Interaccion } from "./Interaccion.js";
+import { Contenedor } from "../Fisicas/Contenedor";
+import { Cuerpo } from "../Fisicas/Cuerpo";
+import { Vector } from "../GeometriaPlana/Vector";
+import { Interaccion } from "./Interaccion";
 
 export class Entorno extends Contenedor {
     private canvas: HTMLCanvasElement;
