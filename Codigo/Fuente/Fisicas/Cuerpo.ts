@@ -68,7 +68,7 @@ export class Cuerpo extends Forma {
     }
 
     get verticesTransformados(): Vector[] {
-        if (this.rotarSegunVelocidad == true) {
+        if (this.rotarSegunVelocidad) {
             this.transformacionAnterior.rotacion = this._transformacion.rotacion
             this.rotacion = this._velocidad.angulo - this._vertices[0].angulo;
             return super.verticesTransformados;
@@ -130,7 +130,6 @@ export class Cuerpo extends Forma {
         let circunferencia: Cuerpo = Cuerpo.cuerpoSegunForma(circuloForma);
         if (opciones) {
             Object.assign(circuloForma, opciones)
-            // circunferencia.aplicarOpciones(opciones)
         }
         return circunferencia;
     }

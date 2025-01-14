@@ -90,13 +90,13 @@ export class Renderizado extends Dibujante {
     /**Rellena y/o traza, según el caso, un conjunto de formas.*/
     renderizarFormas(formas: Forma[]): void {
         for (let forma of formas) {
-            if (forma.trazada) {
-                this.trazar(forma)
-                // forma.trazar(this);
-            }
             if (forma.rellenada) {
                 this.rellenar(forma)
                 // forma.rellenar(this);
+            }
+            if (forma.trazada) {
+                this.trazar(forma)
+                // forma.trazar(this);
             }
         }
     }

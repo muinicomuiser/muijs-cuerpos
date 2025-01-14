@@ -163,13 +163,18 @@ export class Forma {
     /**Permite modificar las opciones gráficas con la interfaz OpcionesGraficasForma*/
     set estiloGrafico(opciones: OpcionesGraficasForma) {
         Object.assign(this, opciones)
-        // this.aplicarOpciones(opciones)
+    }
+
+    ////////Agregar control de errores para índices mayores al número de vértices
+
+    public moverVertice(indice: number, punto: Punto) {
+        this._vertices[indice] = Vector.crear(punto.x, punto.y);
     }
 
     /**Inicia los vértices de la forma creada.*/
-    private crearVertices(): Vector[] {
+    private crearVertices(): void {
         if (this.lados == 0) {
-            return [];
+            this._vertices = [];
         }
         let theta = Geometria.DOS_PI / this.lados;
         let offset = theta * 0.5;
@@ -181,13 +186,7 @@ export class Forma {
             let vertice: Vector = Vector.crear(xx, yy);
             nVertices.push(vertice);
         }
-        return nVertices;
-    }
-
-    ////////Agregar control de errores para índices mayores al número de vértices
-
-    public moverVertice(indice: number, punto: Punto) {
-        this._vertices[indice] = Vector.crear(punto.x, punto.y);
+        this._vertices = nVertices;
     }
 
     /**Retorna una forma de tipo polígono. El radio es el valor de la distancia entre el centro y cualquiera de sus vértices.*/
@@ -195,7 +194,7 @@ export class Forma {
         let nuevoPoligono = new Forma();
         nuevoPoligono.lados = lados;
         nuevoPoligono.radio = radio;
-        nuevoPoligono.vertices = nuevoPoligono.crearVertices();
+        nuevoPoligono.crearVertices();
         nuevoPoligono.tipo = TipoFormas.poligono;
         if (opciones) {
             Object.assign(nuevoPoligono, opciones)
@@ -216,7 +215,7 @@ export class Forma {
             lados = 30;
         }
         nuevaCircunferencia.lados = lados;
-        nuevaCircunferencia.vertices = nuevaCircunferencia.crearVertices();
+        nuevaCircunferencia.crearVertices();
         nuevaCircunferencia.tipo = TipoFormas.circunferencia;
         if (opciones) {
             Object.assign(nuevaCircunferencia, opciones)
@@ -301,7 +300,7 @@ export class Forma {
     }
 
     /**Crea una transformación nueva para formas nuevas, con la posición ingresada.*/
-    iniciarTransformacion(x: number, y: number): void {
+    protected iniciarTransformacion(x: number, y: number): void {
         this._transformacion.posicion = Vector.crear(x, y);
         this.transformacionAnterior = this._transformacion.clonarTransformación()
     }
@@ -357,5 +356,10 @@ export class Forma {
     /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
     public rellenar(dibujante: Dibujante): void {
         dibujante.rellenar(this);
+    }
+
+    /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
+    public renderizar(dibujante: Dibujante): void {
+        dibujante.renderizar(this);
     }
 }
