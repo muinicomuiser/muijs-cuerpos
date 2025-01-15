@@ -1,6 +1,0 @@
-Comando para compilar el archivo bundle.js:
-    npx rollup build/main.js --file bundle.js --format iife
-
-
-Comando para compilar el archivo rebotesDist.js:
-    npx rollup build/Ejemplos/rebotes.js --file dist/Ejemplos/rebotesDist.js --format iife

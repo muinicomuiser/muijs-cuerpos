@@ -1,0 +1,4 @@
+Versión previa a la refactorización del código para subirlo a NPM
+Antes esta librería solo se podía usar en webs estáticas y con un archivo js único
+Actualmente estoy trabajando en desarrollar esta misma demostración, con una interfaz para modificar los 
+    elementos y en una web desarrollada en Angular o React
