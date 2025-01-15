@@ -1,2 +1,2 @@
 export * from './index';
-export as namespace mui;
+// export as namespace mui;
