@@ -29,7 +29,7 @@ Hasta el momento permite:
 
 ## Demostración
 
-<a href="https://muinicomuiser.github.io/mui-js/" target="_blank">Figuras geométricas y colisiones</a>
+<a href="https://muinicomuiser.github.io/muijs-cuerpos/" target="_blank">Figuras geométricas y colisiones</a>
 
 ## Proyectos creados con mui.js
 - <a href="https://muinicomuiser.github.io/boids" target="_blank">boids</a>
