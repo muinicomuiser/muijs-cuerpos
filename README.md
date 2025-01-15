@@ -4,7 +4,7 @@
 </p>
 
 
-## mui.js
+## mui.js - cuerpos
 Motor simulador y graficador de cuerpos rígidos     
 Completamente en Español      
 Proyecto de estudio       
@@ -13,7 +13,7 @@ Creado por Nicolás Donoso
 ## Descripción
 En proceso      
 
-mui.js es un motor para simular y graficar interacciones entre cuerpos rígidos.   
+__mui.js - cuerpos__ es un motor para simular y graficar interacciones entre cuerpos rígidos.   
 Hasta el momento permite:   
 - crear y dibujar figuras geométricas     
 - crear cuerpos con formas geométricas      
