@@ -1,3 +1,5 @@
+import { Punto } from "../tipos/tipos";
+
 /**MÓDULO DE GEOMETRÍA EN ESPAÑOL               
  * Útilitario para mui.js               
  * Incluye métodos de conversión de grados y distancia entre puntos.

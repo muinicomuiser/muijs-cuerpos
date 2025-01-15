@@ -2,6 +2,6 @@
 //Tiempo, longitudes, densidades.
 //Definir opciones para determinar cómo se convertirán las magnitudes
 
-export class Unidades{
+export class Unidades {
 
 }

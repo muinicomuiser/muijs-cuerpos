@@ -6,6 +6,7 @@
 
 import { Forma } from "../geometria-plana/formas";
 import { Vector } from "../geometria-plana/vector";
+import { Punto } from "../tipos/tipos";
 import { Dibujante } from "./dibujante";
 
 export class Renderizado extends Dibujante {

@@ -53,7 +53,7 @@ export class Tiempo {
 
     /**Elimina del registro de temporizadores aquellos que estén inactivos.*/
     actualizarTemporizadores(): void {
-        let indiceInactivo: number = this.temporizadores.findIndex((temporizador) => temporizador.activo == false)
+        let indiceInactivo: number = this.temporizadores.findIndex((temporizador: Temporizador) => temporizador.activo == false)
         if (indiceInactivo != -1) {
             this.temporizadores.splice(indiceInactivo, 1);
         }

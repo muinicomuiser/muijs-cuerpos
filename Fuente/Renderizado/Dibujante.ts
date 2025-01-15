@@ -2,6 +2,7 @@ import { Celda } from "../cuadricula/celda";
 import { Forma } from "../geometria-plana/formas";
 import { TipoFormas } from "../geometria-plana/tipo-formas";
 import { Vector } from "../geometria-plana/vector";
+import { OpcionesGraficasForma, OpcionesGraficasTexto, OpcionesGraficasVector, Punto } from "../tipos/tipos";
 import { Geometria } from "../utiles/geometria";
 
 /**MÓDULO DE DIBUJO         

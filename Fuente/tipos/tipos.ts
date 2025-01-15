@@ -1,21 +1,23 @@
-// Interfaces de estructura
+import { Forma } from "../geometria-plana/formas";
 
-interface Punto {
+// Interfaces de estructura
+export interface Punto {
 
     x: number,
     y: number,
     id?: number,
     contenido?: Forma
+
 }
 
-interface OpcionesForma {
+export interface OpcionesForma {
 
     escala?: number;
     rotacion?: number;
 
 }
 
-interface OpcionesCuerpo extends OpcionesForma {
+export interface OpcionesCuerpo extends OpcionesForma {
 
     /**Determina si el cuerpo rotará ajustándose al ángulo del vector velocidad.*/
     rotarSegunVelocidad?: boolean,
@@ -32,7 +34,7 @@ interface OpcionesCuerpo extends OpcionesForma {
 
 // Interfaces gráficas
 
-interface OpcionesGraficasForma {
+export interface OpcionesGraficasForma {
 
     /**Color de trazado de la forma.*/
     colorTrazo?: string,
@@ -49,14 +51,14 @@ interface OpcionesGraficasForma {
 
 }
 
-interface OpcionesGraficasVector {
+export interface OpcionesGraficasVector {
     /**Color del trazo del vecto.*/
     color: string,
     /**Ancho del trazo del vector en pixeles. */
     grosorTrazo: number,
 }
 
-interface OpcionesGraficasTexto {
+export interface OpcionesGraficasTexto {
 
     tamano?: number,
     /**Opciones: 'center', 'end', 'left', 'right', 'start' */
@@ -70,7 +72,7 @@ interface OpcionesGraficasTexto {
 
 // Interfaces de evento
 
-interface OpcionesControlesCuerpo {
+export interface OpcionesControlesCuerpo {
 
     arriba: boolean,
     abajo: boolean,

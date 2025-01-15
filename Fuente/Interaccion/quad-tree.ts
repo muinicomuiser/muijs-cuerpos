@@ -5,6 +5,7 @@
 import { Cuerpo } from "../fisicas/cuerpo";
 import { Forma } from "../geometria-plana/formas";
 import { Dibujante } from "../renderizado/dibujante";
+import { OpcionesGraficasForma, Punto } from "../tipos/tipos";
 import { Matematica } from "../utiles/matematica";
 import { Interaccion } from "./interaccion";
 
@@ -133,7 +134,7 @@ export class QuadTree {
             if (this.x >= limiteIzquierda && this.x + this.ancho <= limiteDerecha && this.y >= limiteSuperior && this.y + this.alto <= limiteInferior) {
                 this.puntos.forEach(punto => {
                     if (punto.id != undefined) {
-                        if (PuntosDentroDelRango.findIndex(puntoEnRango => punto.id == puntoEnRango.id) < 0) {
+                        if (PuntosDentroDelRango.findIndex((puntoEnRango: Punto) => punto.id == puntoEnRango.id) < 0) {
                             PuntosDentroDelRango.push(punto)
                         }
                     }

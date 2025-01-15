@@ -5,6 +5,7 @@
 // SUMAR FORMAS
 
 import { Dibujante } from "../renderizado/dibujante";
+import { OpcionesGraficasForma, Punto, OpcionesForma } from "../tipos/tipos";
 import { Geometria } from "../utiles/geometria";
 import { TipoFormas } from "./tipo-formas";
 import { Transformacion } from "./transformacion";

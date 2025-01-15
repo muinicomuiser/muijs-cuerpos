@@ -94,5 +94,9 @@ PARA VERSIONES FUTURAS:
 
 SOBRE LA CREACIÓN DEL PACKAGE   
 
-    Seguí el tutorial de Under Ctrl
-    Usaré tsup para hacer el dist
+    Al final usé rollup
+    pasos:
+        tsc
+        rollup --config (tiene que ser dentro de un script del package.json)
+        copiar el .d.ts, .js y .js.map 
+            dentro de la carpeta dist

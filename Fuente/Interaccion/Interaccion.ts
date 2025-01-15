@@ -53,7 +53,7 @@ export class Interaccion {
                 for (let j: number = i + 1; j < cuerpos.length; j++) {
                     if (Colision.detectar(cuerpos[i], cuerpos[j])) {
                         let normales: Vector[] = Colision.normalesContacto(cuerpos[i], cuerpos[j]);
-                        let velocidadesFinales: Vector[] = Cinematica.reboteElastico(cuerpos[i], cuerpos[j])
+                        // let velocidadesFinales: Vector[] = Cinematica.reboteElastico(cuerpos[i], cuerpos[j])
                         if (cuerpos[i].fijo) {
                             cuerpos[j].posicion = cuerpos[j].posicion.sumar(Interaccion.resolverSolapamiento(cuerpos[j], cuerpos[i], normales[0]))
                         }

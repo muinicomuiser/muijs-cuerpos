@@ -13,6 +13,7 @@
 import { Forma } from "../geometria-plana/formas";
 import { Vector } from "../geometria-plana/vector";
 import { Dibujante } from "../renderizado/dibujante";
+import { OpcionesControlesCuerpo, OpcionesCuerpo } from "../tipos/tipos";
 import { Geometria } from "../utiles/geometria";
 
 //TAREAS

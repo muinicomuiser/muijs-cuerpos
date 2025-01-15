@@ -1,3 +1,4 @@
+import { Punto } from "../tipos/tipos";
 import { Geometria } from "../utiles/geometria";
 
 //POR REVISAR
