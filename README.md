@@ -13,7 +13,7 @@ Creado por Nicolás Donoso
 ## Descripción
 En proceso      
 
-__mui.js - cuerpos__ es un motor para simular y graficar interacciones entre cuerpos rígidos.   
+__'mui.js - cuerpos'__ es un motor para simular y graficar interacciones entre cuerpos rígidos.   
 Hasta el momento permite:   
 - crear y dibujar figuras geométricas     
 - crear cuerpos con formas geométricas      
