@@ -1,5 +1,3 @@
-
-
 /**MÓDULO DE RENDERIZADO        
  * Extiende las funciones de Dibujante.         
  * Permite trabajar con conjuntos de formas y sobre el canvas.          
@@ -7,7 +5,6 @@
  */
 
 import { Forma } from "../geometria-plana/formas";
-import { Punto } from "../geometria-plana/punto";
 import { Vector } from "../geometria-plana/vector";
 import { Dibujante } from "./dibujante";
 

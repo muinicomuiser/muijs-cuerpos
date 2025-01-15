@@ -91,3 +91,8 @@ PARA VERSIONES FUTURAS:
 - Sprites
 - Cámara
 - Condiciones de frontera (abierta, periódica, reflectora)
+
+SOBRE LA CREACIÓN DEL PACKAGE   
+
+    Seguí el tutorial de Under Ctrl
+    Usaré tsup para hacer el dist

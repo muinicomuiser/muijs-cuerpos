@@ -1,4 +1,4 @@
-export interface OpcionesForma {
-    escala?: number;
-    rotacion?: number;
-}
+// export interface OpcionesForma {
+//     escala?: number;
+//     rotacion?: number;
+// }

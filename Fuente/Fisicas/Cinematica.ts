@@ -1,5 +1,3 @@
-
-
 //Momento lineal, movimiento acelerado, momento angular, energía cinética y potencial.
 
 import { Vector } from "../geometria-plana/vector";

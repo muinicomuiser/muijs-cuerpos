@@ -1,4 +1,3 @@
-
 //Módulo de cálculos físicos
 
 import { Vector } from "../geometria-plana/vector";

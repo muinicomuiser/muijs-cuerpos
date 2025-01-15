@@ -3,9 +3,9 @@
 import { Forma } from "./formas";
 
 
-export interface Punto {
-    x: number,
-    y: number,
-    id?: number,
-    contenido?: Forma
-}
+// export interface Punto {
+//     x: number,
+//     y: number,
+//     id?: number,
+//     contenido?: Forma
+// }

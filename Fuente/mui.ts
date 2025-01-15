@@ -5,10 +5,10 @@ export { Matematica } from "./utiles/matematica";
 
 /**Geometría Plana*/
 export { Forma } from "./geometria-plana/formas";
-export type { Punto } from "./geometria-plana/punto";
+// export type { Punto } from "./geometria-plana/punto";
 export { TipoFormas } from "./geometria-plana/tipo-formas";
 export { Vector } from "./geometria-plana/vector";
-export type { OpcionesForma } from "./geometria-plana/opciones-forma"
+// export type { OpcionesForma } from "./geometria-plana/opciones-forma"
 
 /**Interacción*/
 export { Colision } from "./interaccion/colision";
@@ -20,7 +20,7 @@ export { Restriccion } from "./interaccion/restriccion";
 export { Cinematica } from "./fisicas/cinematica";
 export { Cuerpo } from "./fisicas/cuerpo";
 export { Fuerza } from "./fisicas/fuerza";
-export type { OpcionesCuerpo } from "./fisicas/opciones-cuerpo"
+// export type { OpcionesCuerpo } from "./fisicas/opciones-cuerpo"
 export { Contenedor } from "./fisicas/contenedor";
 
 /**Renderizado*/

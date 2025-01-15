@@ -14,8 +14,6 @@ import { Forma } from "../geometria-plana/formas";
 import { Vector } from "../geometria-plana/vector";
 import { Dibujante } from "../renderizado/dibujante";
 import { Geometria } from "../utiles/geometria";
-import { OpcionesControlesCuerpo } from "./opciones-controles-cuerpo";
-import { OpcionesCuerpo } from "./opciones-cuerpo";
 
 //TAREAS
 //Una propiedad que defina si es necesario actualizar la posición y la rotación.

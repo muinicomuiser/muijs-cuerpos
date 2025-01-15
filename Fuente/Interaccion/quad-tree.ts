@@ -4,9 +4,7 @@
 
 import { Cuerpo } from "../fisicas/cuerpo";
 import { Forma } from "../geometria-plana/formas";
-import { Punto } from "../geometria-plana/punto";
 import { Dibujante } from "../renderizado/dibujante";
-import { OpcionesGraficasForma } from "../renderizado/opciones-graficas-forma";
 import { Matematica } from "../utiles/matematica";
 import { Interaccion } from "./interaccion";
 
