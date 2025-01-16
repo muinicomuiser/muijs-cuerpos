@@ -67,7 +67,7 @@ Los siguientes 2 parámetros son las dimensiones de la figura, en este caso Base
 El parámetro opcional de estilo permite definir colores y maneras en que será dibujada la figura.
 
 Un ejemplo:
-En este caso se dibujará un rectángulo centrado en el punto (100, 100), con Base y Altura 50x50 pixeles (por lo tanto será un cuadrado), coloreado de amarillo y con un borde azul de 6 pixeles.
+En este caso se dibujará un rectángulo centrado en el punto (75, 75), con Base y Altura 50x50 pixeles (por lo tanto será un cuadrado), coloreado de amarillo y con un borde azul de 6 pixeles.
 ```typescript
 const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
     colorRelleno: 'yellow',
@@ -79,7 +79,7 @@ const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
 ### 4. Herramienta para dibujar
 Existen varios métodos para dibujar en el Canvas las figuras que vayas creando.   
 Uno de ellos es usando la herramienta __Renderizado__, que cuenta con un método para renderizar formas.
-Para usarla, primero hay que instanciarla usando el método __crearConIDCanvas__, que requiere el id del elemento Canvas
+Para usarla, primero hay que instanciarla usando el método __crearConIdCanvas__, que requiere el id del elemento Canvas
 ```typescript
 const Render: Renderizado = Renderizado.crearConIdCanvas("mi-canvas")
 ``` 
@@ -91,12 +91,11 @@ Render.renderizar(Cuadrado)
 ``` 
 <img src="./documentacion/primer_cuadrado.jpg">      
 
-
 Y el código se vería así
 ```typescript
 import { Renderizado, Forma } from 'muijs-cuerpos'
 
-const Cuadrado: Forma = Forma.rectangulo(100, 100, 50, 50, {
+const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
     colorRelleno: 'yellow',
     colorTrazo: 'blue',
     grosorTrazo: 6
