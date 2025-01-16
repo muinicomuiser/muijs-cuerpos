@@ -12,7 +12,7 @@
 
 import { Forma } from "../geometria-plana/formas";
 import { Vector } from "../geometria-plana/vector";
-import { Dibujante } from "../renderizado/dibujante";
+import { Lapiz } from "../renderizado/lapiz";
 import { OpcionesControlesCuerpo, OpcionesCuerpo } from "../tipos/tipos";
 import { Geometria } from "../utiles/geometria";
 
@@ -167,11 +167,11 @@ export class Cuerpo extends Forma {
     }
 
     /**Traza el vector velocidad del cuerpo a partir de su centro.*/
-    public trazarVelocidad(dibujante: Dibujante): void {
+    public trazarVelocidad(lapiz: Lapiz): void {
         let vectorVelocidad: Vector = this._velocidad.clonar();
         vectorVelocidad = vectorVelocidad.normalizar().escalar(this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
-        dibujante.trazarVector(vectorVelocidad);
+        lapiz.trazarVector(vectorVelocidad);
     }
 
 

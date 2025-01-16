@@ -11,8 +11,6 @@ Proyecto de estudio
 Creado por Nicolás Donoso       
 
 ## Descripción
-En proceso      
-
 __'mui.js - cuerpos'__ es un motor para simular y graficar interacciones entre cuerpos rígidos.   
 Hasta el momento permite:   
 - crear y dibujar figuras geométricas     
@@ -25,13 +23,92 @@ Hasta el momento permite:
 - choque elástico entre circunferencias
 - grabar canvas
 - control de tick y fps
-- calcular colisiones con quadtree
+- calcular colisiones con quadtree  
 
-## Demostración
+## Contenidos
 
-<a href="https://muinicomuiser.github.io/muijs-cuerpos/" target="_blank">Figuras geométricas y colisiones</a>
+1. [Instalación](#instalacion)
+2. [Primeros pasos](#primeros-pasos)
+3. [Proyectos creados con mui.js - cuerpos](#ejemplos)
 
-## Proyectos creados con mui.js
+<a name="instalacion"></a>
+## Instalación
+
+```bash
+npm install muijs-cuerpos
+```
+
+<a name="primeros-pasos"></a>
+## Primeros pasos
+
+### 1. Canvas
+__'mui.js - cuerpos'__ utiliza el elemento HTML Canvas.   
+Para dibujar, tienes que tener en tu proyecto un canvas con su id definida.
+
+```html
+<canvas id="mi-canvas"></canvas>
+```
+
+### 2. Importaciones
+En un archivo TypeScript importa la herramienta de dibujo y el generador de formas geométricas.
+
+```typescript
+import { Dibujante, Forma } from 'muijs-cuerpos'
+```
+
+### 3. Definiendo un cuadrado
+La herramienta __Forma__ permite crear distintas formas geométricas. 
+Usaremos el método __rectangulo__:
+```typescript
+Forma.rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesForma & OpcionesGraficasForma)
+```   
+Los primeros 2 parámetros son para las coordenadas (x, y) de su centro (considera que en el Canvas el eje Y está invertido, el origen está arriba y aumenta hacia abajo).   
+Los siguientes 2 parámetros son las dimensiones de la figura, en este caso Base y Altura.   
+El parámetro opcional de estilo permite definir colores y maneras en que será dibujada la figura.
+
+Un ejemplo:
+En este caso se dibujará un rectángulo centrado en el punto (75, 75), con Base y Altura 50x50 pixeles (por lo tanto será un cuadrado), coloreado de amarillo y con un borde azul de 6 pixeles.
+```typescript
+const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
+    colorRelleno: 'yellow',
+    colorTrazo: 'blue',
+    grosorTrazo: 6
+})
+```
+
+### 4. Herramienta para dibujar
+Existen varios métodos para dibujar en el Canvas las figuras que vayas creando.   
+Uno de ellos es usando la herramienta __Dibujante__, que cuenta con un método para dibujar formas.
+Para usarla, primero hay que instanciarla usando el método __crearConIdCanvas__, que requiere el id del elemento Canvas.
+```typescript
+const NuevoDibujante: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
+``` 
+
+### 5. Dibujar el cuadrado
+Puedes pasarle el cuadrado a la instancia de __Dibujante__ para dibujar tu primer cuadrado.   
+```typescript
+NuevoDibujante.dibujar(Cuadrado)
+``` 
+El código final se vería así:
+```typescript
+import { Dibujante, Forma } from 'muijs-cuerpos'
+
+const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
+    colorRelleno: 'yellow',
+    colorTrazo: 'blue',
+    grosorTrazo: 6
+})
+const NuevoDibujante: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
+NuevoDibujante.dibujar(Cuadrado)
+``` 
+Y tu cuadrado:   
+<img src="./documentacion/primer_cuadrado.png">      
+
+
+
+<a name="ejemplos"></a>
+## Proyectos creados con mui.js - cuerpos 
+- <a href="https://muinicomuiser.github.io/muijs-cuerpos/" target="_blank">Figuras geométricas y colisiones</a>
 - <a href="https://muinicomuiser.github.io/boids" target="_blank">boids</a>
 - <a href="https://muinicomuiser.github.io/Juego-de-la-vida" target="_blank">Juego de la Vida</a>
 - <a href="https://muinicomuiser.github.io/Vida-y-particulas/" target="_blank">Vida y partículas</a>
