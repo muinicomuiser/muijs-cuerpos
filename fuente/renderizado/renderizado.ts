@@ -11,15 +11,17 @@ import { Dibujante } from "./dibujante";
 
 export class Renderizado extends Dibujante {
     canvas: HTMLCanvasElement;
-    private _anchoCanvas: number = 500;
-    private _altoCanvas: number = 500;
-    private _colorFondo: string = 'black';
+    private _anchoCanvas: number;
+    private _altoCanvas: number;
+    private _colorFondo?: string;
     private constructor(canvas: HTMLCanvasElement) {
         super(canvas.getContext("2d")!);
         this.canvas = canvas;
-        this.canvas.style.backgroundColor = this._colorFondo;
-        this.canvas.width = this._anchoCanvas;
-        this.canvas.height = this._altoCanvas;
+        if (this.canvas.style.backgroundColor) {
+            this._colorFondo = this.canvas.style.backgroundColor;
+        }
+        this._anchoCanvas = this.canvas.width;
+        this._altoCanvas = this.canvas.height;
     }
 
     /**Retorna la medida horizontal del canvas.*/
@@ -38,7 +40,7 @@ export class Renderizado extends Dibujante {
     }
 
     /**Retorna el color del canvas.*/
-    get colorCanvas(): string {
+    get colorCanvas(): string | undefined {
         return this._colorFondo
     }
 
@@ -102,12 +104,18 @@ export class Renderizado extends Dibujante {
     }
 
     /**Borra el contenido del canvas.       
-     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorCanvas y con la opacidad especificada.
+     * Si se especifica opacidad, pinta el canvas completo usando como color el atributo colorCanvas y con la opacidad especificada.        
+     * Si no hay colorCanvas especificado, se pintará de blanco.
      */
     limpiarCanvas(opacidad?: number): void {
         if (opacidad != undefined) {
             this.context.globalAlpha = opacidad;
-            this.context.fillStyle = this._colorFondo;
+            if (this._colorFondo) {
+                this.context.fillStyle = this._colorFondo;
+            }
+            else {
+                this.context.fillStyle = 'white';
+            }
             this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
             this.context.globalAlpha = this.estiloForma.opacidad!;
         }

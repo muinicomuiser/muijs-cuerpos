@@ -5,7 +5,7 @@ const config = [
     {
         input: 'build/index.js',
         output: {
-            file: 'index.js',
+            file: 'dist/index.js',
             format: 'cjs',
             sourcemap: true,
         },
@@ -14,7 +14,7 @@ const config = [
     }, {
         input: 'build/index.d.ts',
         output: {
-            file: 'index.d.ts',
+            file: 'dist/index.d.ts',
             format: 'es'
         },
         plugins: [dts()]

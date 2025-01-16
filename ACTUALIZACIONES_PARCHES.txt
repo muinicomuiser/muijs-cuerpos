@@ -1,2 +1,6 @@
-0.5.1
+Por corregir para la 0.5.5
+
+    Renderizado:
+        Ya no tiene un valor predefinido ni para el color de fondo del Canvas ni para sus dimensiones.
+        Las dimensiones por defecto del canvas son las originales: 150x300
 
