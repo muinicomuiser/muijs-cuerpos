@@ -1,5 +1,5 @@
 import { Vector } from "../geometria-plana/vector";
-import { Dibujante } from "../renderizado/dibujante";
+import { Lapiz } from "../renderizado/lapiz";
 
 export class Celda {
     posicion: Vector;
@@ -30,9 +30,9 @@ export class Celda {
         return Vector.crear(-this.distanciaVecindad, this.distanciaVecindad)
     }
 
-    /**Pinta el interior de la celda. Usa como argumento una instancia de la clase Dibujante o Renderizado.*/
-    rellenar(dibujante: Dibujante): void {
-        dibujante.rellenarCelda(this);
+    /**Pinta el interior de la celda. Usa como argumento una instancia de la clase Lapiz o Dibujante.*/
+    rellenar(Lapiz: Lapiz): void {
+        Lapiz.rellenarCelda(this);
     }
 }
 

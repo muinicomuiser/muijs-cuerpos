@@ -1,5 +1,5 @@
 import { Vector } from "../geometria-plana/vector";
-import { Dibujante } from "../renderizado/dibujante";
+import { Lapiz } from "../renderizado/lapiz";
 import { Matematica } from "../utiles/matematica";
 import { Celda } from "./celda";
 
@@ -110,11 +110,11 @@ export class Cuadricula {
     }
 
     /**Pinta todas las celdas de la cuadrícula. Asigna la opacidad de acuerdo al estado de cada celda.*/
-    rellenarCeldas(dibujante: Dibujante): void {
+    rellenarCeldas(Lapiz: Lapiz): void {
         this.celdas.forEach((celdas) => {
             celdas.forEach((celda) => {
-                dibujante.estiloForma.opacidad = (celda.estado / (this.estados - 1));
-                celda.rellenar(dibujante);
+                Lapiz.estiloForma.opacidad = (celda.estado / (this.estados - 1));
+                celda.rellenar(Lapiz);
             })
         })
     }

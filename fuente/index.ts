@@ -22,8 +22,8 @@ export { Fuerza } from "./fisicas/fuerza";
 export { Contenedor } from "./fisicas/contenedor";
 
 /**Renderizado*/
+export { Lapiz } from "./renderizado/lapiz";
 export { Dibujante } from "./renderizado/dibujante";
-export { Renderizado } from "./renderizado/renderizado";
 
 /**Composición*/
 export { Composicion } from "./composicion/composicion";

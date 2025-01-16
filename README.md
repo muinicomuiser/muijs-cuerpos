@@ -78,18 +78,18 @@ const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
 
 ### 4. Herramienta para dibujar
 Existen varios métodos para dibujar en el Canvas las figuras que vayas creando.   
-Uno de ellos es usando la herramienta __Renderizado__, que cuenta con un método para renderizar formas.
+Uno de ellos es usando la herramienta __Dibujante__, que cuenta con un método para renderizar formas.
 Para usarla, primero hay que instanciarla usando el método __crearConIdCanvas__, que requiere el id del elemento Canvas
 ```typescript
-const Render: Renderizado = Renderizado.crearConIdCanvas("mi-canvas")
+const Interprete: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
 ``` 
 
 ### 5. Dibujar el cuadrado
-Puedes pasarle el cuadrado a la instancia de __Renderizado__ para dibujar tu primer cuadrado   
+Puedes pasarle el cuadrado a la instancia de __Dibujante__ para dibujar tu primer cuadrado   
 ```typescript
 Render.renderizar(Cuadrado)
 ``` 
-<img src="./documentacion/primer_cuadrado.jpg">      
+<img src="./documentacion/primer_cuadrado.png">      
 
 Y el código se vería así
 ```typescript
@@ -100,8 +100,8 @@ const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
     colorTrazo: 'blue',
     grosorTrazo: 6
 })
-const Render: Renderizado = Renderizado.crearConIdCanvas("mi-canvas")
-Render.renderizar(Cuadrado)
+const Interprete: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
+Interprete.dibujar(Cuadrado)
 ``` 
 
 <a name="ejemplos"></a>

@@ -4,7 +4,7 @@
 
 import { Cuerpo } from "../fisicas/cuerpo";
 import { Forma } from "../geometria-plana/formas";
-import { Dibujante } from "../renderizado/dibujante";
+import { Lapiz } from "../renderizado/lapiz";
 import { OpcionesGraficasForma, Punto } from "../tipos/tipos";
 import { Matematica } from "../utiles/matematica";
 import { Interaccion } from "./interaccion";
@@ -101,13 +101,13 @@ export class QuadTree {
         }
     }
 
-    trazar(dibujante: Dibujante, opciones?: OpcionesGraficasForma) {
+    trazar(Lapiz: Lapiz, opciones?: OpcionesGraficasForma) {
         if (opciones) {
             this.contorno.estiloGrafico = opciones;
         }
-        this.contorno.trazar(dibujante)
+        this.contorno.trazar(Lapiz)
         if (this.subDivisiones.length > 0) {
-            this.subDivisiones.forEach(sub => sub.trazar(dibujante, opciones))
+            this.subDivisiones.forEach(sub => sub.trazar(Lapiz, opciones))
         }
     }
 

@@ -1,4 +1,4 @@
-Por corregir para la 0.5.5
+Por corregir para la 0.53.5
 
     Renderizado:
         Ya no tiene un valor predefinido ni para el color de fondo del Canvas ni para sus dimensiones.

@@ -4,7 +4,7 @@
 // Función de reflejar
 // SUMAR FORMAS
 
-import { Dibujante } from "../renderizado/dibujante";
+import { Lapiz } from "../renderizado/lapiz";
 import { OpcionesGraficasForma, Punto, OpcionesForma } from "../tipos/tipos";
 import { Geometria } from "../utiles/geometria";
 import { TipoFormas } from "./tipo-formas";
@@ -44,9 +44,9 @@ export class Forma {
 
     colorRelleno: string | undefined;
 
-    /**Determina si la forma debe ser trazada al renderizar.*/
+    /**Determina si la forma debe ser trazada al dibujar.*/
     trazada: boolean = true;
-    /**Determina si la forma debe ser rellenada al renderizar.*/
+    /**Determina si la forma debe ser rellenada al dibujar.*/
     rellenada: boolean = true;
 
     grosorTrazo: number | undefined
@@ -339,7 +339,7 @@ export class Forma {
         this._transformacion.posicion = this._transformacion.posicion.rotar(angulo);
     }
 
-    /**rota la forma alrededor del punto ingresado.*/
+    /**Rota la forma alrededor del punto ingresado.*/
     public rotarSegunPunto(punto: Punto, angulo: number): void {
         let vectorAcomodador: Vector = Vector.crear(punto.x, punto.y);
         this.transformacionAnterior.posicion = this._transformacion.posicion;
@@ -348,18 +348,18 @@ export class Forma {
         this._transformacion.posicion = this._transformacion.posicion.sumar(vectorAcomodador);
     }
 
-    /**Traza el contorno de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
-    public trazar(dibujante: Dibujante): void {
-        dibujante.trazar(this);
+    /**Traza el contorno de la forma. Usa una instancia de la clase Lapiz o Dibujante.*/
+    public trazar(Lapiz: Lapiz): void {
+        Lapiz.trazar(this);
     }
 
-    /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
-    public rellenar(dibujante: Dibujante): void {
-        dibujante.rellenar(this);
+    /**Rellena el interior de la forma. Usa una instancia de la clase Lapiz o Dibujante.*/
+    public rellenar(Lapiz: Lapiz): void {
+        Lapiz.rellenar(this);
     }
 
-    /**Rellena el interior de la forma. Usa una instancia de la clase Dibujante o Renderizado.*/
-    public renderizar(dibujante: Dibujante): void {
-        dibujante.renderizar(this);
+    /**Rellena el interior de la forma. Usa una instancia de la clase Lapiz o Dibujante.*/
+    public dibujar(Lapiz: Lapiz): void {
+        Lapiz.dibujar(this);
     }
 }
