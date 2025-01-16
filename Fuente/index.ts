@@ -1,7 +1,7 @@
 /**Utiles*/
 export { Geometria } from "./utiles/geometria";
 export { Grabador } from "./utiles/grabacion";
-export { Matematica } from "./utiles/matematica";
+export { Matematica } from "./utiles/matematica"
 
 /**Geometría Plana*/
 export { Forma } from "./geometria-plana/formas";
