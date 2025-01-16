@@ -5,16 +5,17 @@ Por corregir para la 0.53.5
         Las dimensiones por defecto del canvas son las originales: 150x300
 
 ------------------------------------------------------------------------------------------------------
-Versión 0.53.6
+Versión 0.53.7
 
 Cambios importantes:
 
     Clases:
     - La clase Dibujante ahora se llama Lapiz
-
     - La clase Renderizado ahora se llama Dibujante
 
     Métodos:
     - El método de Dibujante y Lapiz "renderizar()" ahora se llama "dibujar()"
     - Y así, todos los métodos que comenzaban con "renderizar" ahora comienzan con "dibujar"
+    - Cambio Composicion.crearConIdCanvas() a Composicion.crearConIdDelCanvas()
+        Angular no reconocía el método anterior.
 

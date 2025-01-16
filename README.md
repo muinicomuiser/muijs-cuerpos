@@ -9,6 +9,7 @@ Motor simulador y graficador de cuerpos rígidos
 Completamente en Español      
 Proyecto de estudio       
 Creado por Nicolás Donoso       
+Versión actual: muijs-cuerpos@0.53.7
 
 ## Descripción
 __'mui.js - cuerpos'__ es un motor para simular y graficar interacciones entre cuerpos rígidos.   

@@ -32,12 +32,12 @@ export class Composicion {
     trazarQuadTree: boolean = false;
 
 
-    private constructor(canvas?: HTMLCanvasElement, idCanvas?: string) {
-        if (canvas) {
-            this.dibujante = Dibujante.crearConCanvas(canvas);
+    private constructor(opciones: { canvas?: HTMLCanvasElement, idCanvas?: string }) {
+        if (opciones.canvas) {
+            this.dibujante = Dibujante.crearConCanvas(opciones.canvas);
         }
         else {
-            this.dibujante = Dibujante.crearConIdCanvas(idCanvas!);
+            this.dibujante = Dibujante.crearConIdCanvas(opciones.idCanvas!);
         }
     }
     /**Retorna la medida horizontal del canvas.*/
@@ -84,14 +84,14 @@ export class Composicion {
     }
 
     /**Retorna un objeto de tipo Composicion a partir del id de un canvas.*/
-    static crearConIdCanvas(idCanvas: string): Composicion {
-        const nuevaCompo: Composicion = new Composicion(undefined, idCanvas)
+    static crearConIdDelCanvas(idCanvas: string): Composicion {
+        const nuevaCompo: Composicion = new Composicion({ idCanvas: idCanvas })
         return nuevaCompo;
     }
 
     /**Retorna un objeto de tipo Composicion a partir de un canvas.*/
     static crearConCanvas(canvas: HTMLCanvasElement): Composicion {
-        const nuevaCompo: Composicion = new Composicion(canvas);
+        const nuevaCompo: Composicion = new Composicion({ canvas: canvas });
         return nuevaCompo;
     }
 
