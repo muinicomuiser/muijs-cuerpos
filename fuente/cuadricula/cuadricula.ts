@@ -110,11 +110,11 @@ export class Cuadricula {
     }
 
     /**Pinta todas las celdas de la cuadrícula. Asigna la opacidad de acuerdo al estado de cada celda.*/
-    rellenarCeldas(Lapiz: Lapiz): void {
+    rellenarCeldas(lapiz: Lapiz): void {
         this.celdas.forEach((celdas) => {
             celdas.forEach((celda) => {
-                Lapiz.estiloForma.opacidad = (celda.estado / (this.estados - 1));
-                celda.rellenar(Lapiz);
+                lapiz.estiloForma.opacidad = (celda.estado / (this.estados - 1));
+                celda.rellenar(lapiz);
             })
         })
     }

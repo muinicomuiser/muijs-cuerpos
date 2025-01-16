@@ -101,13 +101,13 @@ export class QuadTree {
         }
     }
 
-    trazar(Lapiz: Lapiz, opciones?: OpcionesGraficasForma) {
+    trazar(lapiz: Lapiz, opciones?: OpcionesGraficasForma) {
         if (opciones) {
             this.contorno.estiloGrafico = opciones;
         }
-        this.contorno.trazar(Lapiz)
+        this.contorno.trazar(lapiz)
         if (this.subDivisiones.length > 0) {
-            this.subDivisiones.forEach(sub => sub.trazar(Lapiz, opciones))
+            this.subDivisiones.forEach(sub => sub.trazar(lapiz, opciones))
         }
     }
 

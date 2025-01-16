@@ -31,8 +31,8 @@ export class Celda {
     }
 
     /**Pinta el interior de la celda. Usa como argumento una instancia de la clase Lapiz o Dibujante.*/
-    rellenar(Lapiz: Lapiz): void {
-        Lapiz.rellenarCelda(this);
+    rellenar(lapiz: Lapiz): void {
+        lapiz.rellenarCelda(this);
     }
 }
 

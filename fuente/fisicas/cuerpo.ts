@@ -167,11 +167,11 @@ export class Cuerpo extends Forma {
     }
 
     /**Traza el vector velocidad del cuerpo a partir de su centro.*/
-    public trazarVelocidad(Lapiz: Lapiz): void {
+    public trazarVelocidad(lapiz: Lapiz): void {
         let vectorVelocidad: Vector = this._velocidad.clonar();
         vectorVelocidad = vectorVelocidad.normalizar().escalar(this.radio);
         vectorVelocidad.origen = this._transformacion.posicion;
-        Lapiz.trazarVector(vectorVelocidad);
+        lapiz.trazarVector(vectorVelocidad);
     }
 
 

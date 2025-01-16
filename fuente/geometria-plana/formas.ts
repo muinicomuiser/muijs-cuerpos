@@ -349,17 +349,17 @@ export class Forma {
     }
 
     /**Traza el contorno de la forma. Usa una instancia de la clase Lapiz o Dibujante.*/
-    public trazar(Lapiz: Lapiz): void {
-        Lapiz.trazar(this);
+    public trazar(lapiz: Lapiz): void {
+        lapiz.trazar(this);
     }
 
     /**Rellena el interior de la forma. Usa una instancia de la clase Lapiz o Dibujante.*/
-    public rellenar(Lapiz: Lapiz): void {
-        Lapiz.rellenar(this);
+    public rellenar(lapiz: Lapiz): void {
+        lapiz.rellenar(this);
     }
 
     /**Rellena el interior de la forma. Usa una instancia de la clase Lapiz o Dibujante.*/
-    public dibujar(Lapiz: Lapiz): void {
-        Lapiz.dibujar(this);
+    public dibujar(lapiz: Lapiz): void {
+        lapiz.dibujar(this);
     }
 }

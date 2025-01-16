@@ -43,22 +43,22 @@ npm install muijs-cuerpos
 
 ### 1. Canvas
 __'mui.js - cuerpos'__ utiliza el elemento HTML Canvas.   
-Para dibujar, tienes que tener en tu proyecto un canvas con su id definida:
+Para dibujar, tienes que tener en tu proyecto un canvas con su id definida.
 
 ```html
 <canvas id="mi-canvas"></canvas>
 ```
 
 ### 2. Importaciones
-En un archivo TypeScript importa la herramienta de renderizado y el generador de formas geométricas.
+En un archivo TypeScript importa la herramienta de dibujo y el generador de formas geométricas.
 
 ```typescript
-import { Renderizado, Forma } from 'muijs-cuerpos'
+import { Dibujante, Forma } from 'muijs-cuerpos'
 ```
 
 ### 3. Definiendo un cuadrado
 La herramienta __Forma__ permite crear distintas formas geométricas. 
-Usaremos el método __rectangulo__ :
+Usaremos el método __rectangulo__:
 ```typescript
 Forma.rectangulo(x: number, y: number, base: number, altura: number, opciones?: OpcionesForma & OpcionesGraficasForma)
 ```   
@@ -78,31 +78,33 @@ const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
 
 ### 4. Herramienta para dibujar
 Existen varios métodos para dibujar en el Canvas las figuras que vayas creando.   
-Uno de ellos es usando la herramienta __Dibujante__, que cuenta con un método para renderizar formas.
-Para usarla, primero hay que instanciarla usando el método __crearConIdCanvas__, que requiere el id del elemento Canvas
+Uno de ellos es usando la herramienta __Dibujante__, que cuenta con un método para dibujar formas.
+Para usarla, primero hay que instanciarla usando el método __crearConIdCanvas__, que requiere el id del elemento Canvas.
 ```typescript
-const Interprete: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
+const NuevoDibujante: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
 ``` 
 
 ### 5. Dibujar el cuadrado
-Puedes pasarle el cuadrado a la instancia de __Dibujante__ para dibujar tu primer cuadrado   
+Puedes pasarle el cuadrado a la instancia de __Dibujante__ para dibujar tu primer cuadrado.   
 ```typescript
-Render.renderizar(Cuadrado)
+NuevoDibujante.dibujar(Cuadrado)
 ``` 
-<img src="./documentacion/primer_cuadrado.png">      
-
-Y el código se vería así
+El código final se vería así:
 ```typescript
-import { Renderizado, Forma } from 'muijs-cuerpos'
+import { Dibujante, Forma } from 'muijs-cuerpos'
 
 const Cuadrado: Forma = Forma.rectangulo(75, 75, 50, 50, {
     colorRelleno: 'yellow',
     colorTrazo: 'blue',
     grosorTrazo: 6
 })
-const Interprete: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
-Interprete.dibujar(Cuadrado)
+const NuevoDibujante: Dibujante = Dibujante.crearConIdCanvas("mi-canvas")
+NuevoDibujante.dibujar(Cuadrado)
 ``` 
+Y tu cuadrado:   
+<img src="./documentacion/primer_cuadrado.png">      
+
+
 
 <a name="ejemplos"></a>
 ## Proyectos creados con mui.js - cuerpos 
