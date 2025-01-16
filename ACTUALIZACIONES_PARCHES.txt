@@ -4,3 +4,17 @@ Por corregir para la 0.53.5
         Ya no tiene un valor predefinido ni para el color de fondo del Canvas ni para sus dimensiones.
         Las dimensiones por defecto del canvas son las originales: 150x300
 
+------------------------------------------------------------------------------------------------------
+Versión 0.53.6
+
+Cambios importantes:
+
+    Clases:
+    - La clase Dibujante ahora se llama Lapiz
+
+    - La clase Renderizado ahora se llama Dibujante
+
+    Métodos:
+    - El método de Dibujante y Lapiz "renderizar()" ahora se llama "dibujar()"
+    - Y así, todos los métodos que comenzaban con "renderizar" ahora comienzan con "dibujar"
+

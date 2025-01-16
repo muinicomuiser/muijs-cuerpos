@@ -1,6 +1,6 @@
 {
   "name": "muijs-cuerpos",
-  "version": "0.53.5",
+  "version": "0.53.6",
   "description": "Librería para simular y graficar interacciones entre cuerpos rígidos ",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
