@@ -14,6 +14,7 @@ export { Colision } from "./interaccion/colision";
 export { Entorno } from "./interaccion/entorno";
 export { Interaccion } from "./interaccion/interaccion";
 export { Restriccion } from "./interaccion/restriccion";
+export { QuadTree } from "./interaccion/quad-tree";
 
 /**Físicas*/
 export { Cinematica } from "./fisicas/cinematica";
