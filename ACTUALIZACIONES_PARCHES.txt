@@ -19,3 +19,20 @@ Cambios importantes:
     - Cambio Composicion.crearConIdCanvas() a Composicion.crearConIdDelCanvas()
         Angular no reconocía el método anterior.
 
+------------------------------------------------------------------------------------------------------
+Versión 0.53.8
+Cambio:
+    - Exportación de QuadTree
+
+------------------------------------------------------------------------------------------------------
+Versión 0.53.9
+* Por Lanzar
+Cambios:
+    (Revisar)
+    - Composición:
+        médoto destruirAnimacion(): void
+            Usada para detener y destruir el proceso de animación en curso de la composición
+        médoto pausarAnimacion(): void
+            Usada para detener la ejecución de un requestAnimationFrame
+        propiedad canvas:
+            Para acceder al canvas desde la composición

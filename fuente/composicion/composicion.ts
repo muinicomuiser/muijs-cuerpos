@@ -30,7 +30,7 @@ export class Composicion {
     animar: boolean = true;
     nivelesQuadTree: number = 8;
     trazarQuadTree: boolean = false;
-
+    private _idFuncionAnimationFrame?: number;
 
     private constructor(opciones: { canvas?: HTMLCanvasElement, idCanvas?: string }) {
         if (opciones.canvas) {
@@ -178,7 +178,7 @@ export class Composicion {
                 tiempoCalculo.iterarPorSegundo(funcionCalcular, 1000 / this.tick)
                 funciondibujar();
             }
-            requestAnimationFrame(funcionAnimar)
+            this._idFuncionAnimationFrame = requestAnimationFrame(funcionAnimar)
         }
         funcionAnimar()
     }
@@ -194,5 +194,11 @@ export class Composicion {
         this.cuerpos.forEach((cuerpo) => {
             cuerpo.velocidad = Restriccion.limitarVelocidad(cuerpo, magnitudVelMaxima)
         })
+    }
+
+    destruirAnimacion() {
+        if (this._idFuncionAnimationFrame) {
+            cancelAnimationFrame(this._idFuncionAnimationFrame)
+        }
     }
 }
