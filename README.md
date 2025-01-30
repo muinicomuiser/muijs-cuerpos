@@ -9,7 +9,7 @@ Motor simulador y graficador de cuerpos rígidos
 Completamente en Español      
 Proyecto de estudio       
 Creado por Nicolás Donoso       
-Versión actual: muijs-cuerpos@0.53.8
+Versión actual: muijs-cuerpos@0.53.9
 
 <a href="http://54.160.132.98/">Sitio Web (en desarrollo)</a>    
 <a href="https://www.npmjs.com/package/muijs-cuerpos">NPM</a>
