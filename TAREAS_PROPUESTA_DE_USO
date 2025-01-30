@@ -100,3 +100,5 @@ SOBRE LA CREACIÓN DEL PACKAGE
         rollup --config (tiene que ser dentro de un script del package.json)
         copiar el .d.ts, .js y .js.map 
             dentro de la carpeta dist
+
+        -> **Ahora todo se ejecuta con "yarn build"

@@ -25,12 +25,17 @@ export class Composicion {
     contenedores: Contenedor[] = [];
     private _entorno: Entorno | undefined = undefined;
     fps: number = 60;
+
     usarfpsNativos: boolean = false;
     tick: number = 50;
+
+    /**Si es "true" la animación se ejecuta, si es "false" se pausa.*/
     animar: boolean = true;
+    /**El id del proceso que está ejecutando la animación.*/
+    private _idFuncionAnimationFrame?: number;
     nivelesQuadTree: number = 8;
     trazarQuadTree: boolean = false;
-    private _idFuncionAnimationFrame?: number;
+
 
     private constructor(opciones: { canvas?: HTMLCanvasElement, idCanvas?: string }) {
         if (opciones.canvas) {
@@ -40,6 +45,12 @@ export class Composicion {
             this.dibujante = Dibujante.crearConIdCanvas(opciones.idCanvas!);
         }
     }
+
+    /**Retorna el canvas sobre el que se creó la Composición.*/
+    get canvas(): HTMLCanvasElement {
+        return this.dibujante.canvas;
+    }
+
     /**Retorna la medida horizontal del canvas.*/
     get anchoCanvas(): number {
         return this.dibujante.anchoCanvas;
@@ -196,7 +207,8 @@ export class Composicion {
         })
     }
 
-    destruirAnimacion() {
+    /**Detiene definitivamente la animación en en curso.*/
+    cancelarAnimacion(): void {
         if (this._idFuncionAnimationFrame) {
             cancelAnimationFrame(this._idFuncionAnimationFrame)
         }

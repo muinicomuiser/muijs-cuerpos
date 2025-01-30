@@ -1,0 +1,7 @@
+- Composicion:
+    Revisar "entorno"
+
+- Insistencia en copia de objetos.
+
+- Colisiones:
+    Iteraciones de resolución de colisiones
